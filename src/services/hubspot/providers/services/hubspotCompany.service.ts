@@ -1,0 +1,128 @@
+import { Injectable } from '@nestjs/common';
+import c from 'common/constants';
+import { HttpError } from 'common/exceptions';
+import { FilterType, ResponseType } from 'common/models';
+import {
+  HubspotCompanyCreateDto,
+  HubspotCompanyDeleteDto,
+  HubspotCompanyUpdateDto,
+} from 'services/hubspot/dto';
+import { HubspotCompanySearchV2Dto } from 'services/hubspot/dto/companies/HubspotCompanySearch.dto';
+import HubspotClient from 'services/hubspot/providers/clients/hubspot.client';
+
+@Injectable()
+export default class HubspotCompanyService {
+  constructor(private readonly hubspotClient: HubspotClient) {
+    this.hubspotClient = hubspotClient;
+  }
+
+  async getCompanies(filter: FilterType): Promise<ResponseType> {
+    try {
+      const { name, domain, phone, ...rest } = filter;
+
+      const filters: Record<string, any>[] = [];
+
+      if (name) {
+        filters.push({
+          propertyName: 'name',
+          operator: 'EQ',
+          value: name,
+        });
+      }
+
+      if (domain) {
+        filters.push({
+          propertyName: 'domain',
+          operator: 'EQ',
+          value: domain,
+        });
+      }
+
+      if (phone) {
+        filters.push({
+          propertyName: 'phone',
+          operator: 'EQ',
+          value: phone,
+        });
+      }
+
+      const response =
+        await this.hubspotClient.client.crm.companies.searchApi.doSearch({
+          filterGroups: [
+            {
+              filters,
+            },
+          ],
+          limit: rest.perPage ?? c.PER_PAGE,
+          properties: ['name', 'domain', 'phone'],
+        });
+
+      const data = await Promise.all(response.results);
+
+      return { data, meta: { total: data.length } };
+    } catch (error) {
+      throw new HttpError(error);
+    }
+  }
+
+  async getCompanyById(
+    payload: HubspotCompanySearchV2Dto,
+  ): Promise<ResponseType> {
+    try {
+      const data =
+        await this.hubspotClient.client.crm.companies.basicApi.getById(
+          payload.companyId,
+          ['name', 'domain', 'phone'],
+        );
+
+      return { data };
+    } catch {
+      return { data: null };
+    }
+  }
+
+  async createCompany(
+    properties: HubspotCompanyCreateDto,
+  ): Promise<ResponseType> {
+    try {
+      if (!properties.phone) delete properties.phone;
+
+      return {
+        data: await this.hubspotClient.client.crm.companies.basicApi.create(
+          properties,
+        ),
+      };
+    } catch (error) {
+      throw new HttpError(error);
+    }
+  }
+
+  async updateCompany(
+    properties: HubspotCompanyUpdateDto,
+  ): Promise<ResponseType> {
+    try {
+      if (!properties.phone) delete properties.phone;
+
+      return {
+        data: await this.hubspotClient.client.crm.companies.basicApi.update(
+          properties.companyId,
+          {
+            properties,
+          },
+        ),
+      };
+    } catch (error) {
+      throw new HttpError(error);
+    }
+  }
+
+  async deleteCompany(payload: HubspotCompanyDeleteDto): Promise<void> {
+    try {
+      await this.hubspotClient.client.crm.companies.basicApi.archive(
+        payload.companyId,
+      );
+    } catch (error) {
+      throw new HttpError(error);
+    }
+  }
+}
