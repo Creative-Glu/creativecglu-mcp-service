@@ -1,3 +1,5 @@
-import HubspotContactSearchDto from './contacts/HubpotContactSearch.dto';
+import HubspotContactSearchDto, {
+  HubspotContactSearchV2Dto,
+} from './contacts/HubpotContactSearch.dto';
 
-export { HubspotContactSearchDto };
+export { HubspotContactSearchDto, HubspotContactSearchV2Dto };
