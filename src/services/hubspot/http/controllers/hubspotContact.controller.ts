@@ -1,7 +1,8 @@
-import { Get, Param, Query } from '@nestjs/common';
+import { Body, Get, Param, Post, Query } from '@nestjs/common';
 import { ExtendedController } from '@yuriyempty/nestjs-extended-controller';
 import { ResponseType } from 'common/models';
 import {
+  HubspotContactCreateDto,
   HubspotContactSearchDto,
   HubspotContactSearchV2Dto,
 } from 'services/hubspot/dto';
@@ -29,9 +30,16 @@ export default class HubspotContactController {
   }
 
   @Get(':contactId')
-  async getContact(
+  async getContactById(
     @Param() payload: HubspotContactSearchV2Dto,
   ): Promise<ResponseType> {
     return await this.hubspotContactService.getContactById(payload);
+  }
+
+  @Post()
+  async createContact(
+    @Body() payload: HubspotContactCreateDto,
+  ): Promise<ResponseType> {
+    return await this.hubspotContactService.createContact(payload);
   }
 }
