@@ -1,7 +1,7 @@
 import { ExtendedController } from '@yuriyempty/nestjs-extended-controller';
 import { Version1Controller } from 'services/app/http/controllers';
 
-export const PREFIX_CONTROLLER = 'contacts';
+export const PREFIX_CONTROLLER = 'hubspot';
 
 export const PREFIX_PERMISSION = 'contact';
 
