@@ -34,5 +34,4 @@ jobs:
           npm ci
           npm run build
           pm2 reload all --update-env
-          npm run migrate:up
         EOF
