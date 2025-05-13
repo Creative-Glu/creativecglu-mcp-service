@@ -1,7 +1,7 @@
-import { Get } from '@nestjs/common';
+import { Get, Query } from '@nestjs/common';
 import { ExtendedController } from '@yuriyempty/nestjs-extended-controller';
 import { ResponseType } from 'common/models';
-import { HubspotContactSearchDto } from 'services/hubspot/dto/contacts/HubspotContactSearch.dto';
+import { HubspotContactSearchDto } from 'services/hubspot/dto';
 import { HubspotContactService } from 'services/hubspot/providers/services';
 
 import { VersionControllers } from './hubspot.controller';
@@ -16,13 +16,12 @@ export default class HubspotContactController {
   }
 
   @Get()
-  async getContacts({
-    limit,
-    ...payload
-  }: HubspotContactSearchDto): Promise<ResponseType> {
+  async getContacts(
+    @Query() { limit, ...filter }: HubspotContactSearchDto,
+  ): Promise<ResponseType> {
     return await this.hubspotContactService.getContacts({
       perPage: limit,
-      ...payload,
+      ...filter,
     });
   }
 }
