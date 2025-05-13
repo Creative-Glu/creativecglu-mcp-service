@@ -1,10 +1,8 @@
 import { PartialType } from '@nestjs/mapped-types';
 import {
-  IsEmail,
   IsNotEmpty,
   IsNumber,
   IsOptional,
-  IsPhoneNumber,
   IsString,
   Min,
 } from 'class-validator';
@@ -26,11 +24,10 @@ export default class HubspotContactSearchDto extends PartialType(FilterType) {
 
   @IsOptional()
   @IsString()
-  @IsEmail()
   email?: string;
 
   @IsOptional()
-  @IsPhoneNumber(null)
+  @IsString()
   phone?: string;
 }
 
