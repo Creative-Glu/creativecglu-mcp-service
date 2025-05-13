@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import c from 'common/constants';
 import { HttpError } from 'common/exceptions';
 import { FilterType, ResponseType } from 'common/models';
+import { HubspotContactSearchV2Dto } from 'services/hubspot/dto';
 import HubspotClient from 'services/hubspot/providers/clients/hubspot.client';
 
 @Injectable()
@@ -85,30 +86,30 @@ export default class HubspotContactService {
     }
   }
 
-  // async getContactById(
-  //   payload: HubspotContactSearchV2Dto,
-  // ): Promise<ResponseType> {
-  //   try {
-  //     const contact =
-  //       await this.hubspotClient.client.crm.contacts.basicApi.getById(
-  //         payload.contactId,
-  //         ['firstname', 'lastname', 'email', 'phone', 'associatedcompanyid'],
-  //       );
+  async getContactById(
+    payload: HubspotContactSearchV2Dto,
+  ): Promise<ResponseType> {
+    try {
+      const contact =
+        await this.hubspotClient.client.crm.contacts.basicApi.getById(
+          payload.contactId,
+          ['firstname', 'lastname', 'email', 'phone', 'associatedcompanyid'],
+        );
 
-  //     if (contact.properties?.associatedcompanyid) {
-  //       const company =
-  //         await this.hubspotClient.client.crm.companies.basicApi.getById(
-  //           contact.properties.associatedcompanyid,
-  //           ['name', 'domain', 'phone'],
-  //         );
-  //       return { data: { ...contact, company: company.properties } };
-  //     }
+      if (contact.properties?.associatedcompanyid) {
+        const company =
+          await this.hubspotClient.client.crm.companies.basicApi.getById(
+            contact.properties.associatedcompanyid,
+            ['name', 'domain', 'phone'],
+          );
+        return { data: { ...contact, company: company.properties } };
+      }
 
-  //     return { data: contact };
-  //   } catch {
-  //     return { data: null };
-  //   }
-  // }
+      return { data: contact };
+    } catch {
+      return { data: null };
+    }
+  }
 
   // async createContact(
   //   properties: HubspotContactCreateDto,
