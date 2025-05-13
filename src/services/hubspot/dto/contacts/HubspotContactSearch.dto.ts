@@ -4,6 +4,7 @@ import {
   IsNotEmpty,
   IsNumber,
   IsOptional,
+  IsPhoneNumber,
   IsString,
   Min,
 } from 'class-validator';
@@ -29,7 +30,7 @@ export default class HubspotContactSearchDto extends PartialType(FilterType) {
   email?: string;
 
   @IsOptional()
-  @IsString()
+  @IsPhoneNumber(null)
   phone?: string;
 }
 

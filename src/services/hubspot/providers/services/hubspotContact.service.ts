@@ -2,13 +2,22 @@ import { Injectable } from '@nestjs/common';
 import c from 'common/constants';
 import { HttpError } from 'common/exceptions';
 import { FilterType, ResponseType } from 'common/models';
-import { HubspotContactSearchV2Dto } from 'services/hubspot/dto';
+import {
+  HubspotContactCreateDto,
+  HubspotContactSearchV2Dto,
+} from 'services/hubspot/dto';
 import HubspotClient from 'services/hubspot/providers/clients/hubspot.client';
+
+import HubspotCompanyService from './hubspotCompany.service';
 
 @Injectable()
 export default class HubspotContactService {
-  constructor(private readonly hubspotClient: HubspotClient) {
+  constructor(
+    private readonly hubspotClient: HubspotClient,
+    private readonly hubspotCompanyService: HubspotCompanyService,
+  ) {
     this.hubspotClient = hubspotClient;
+    this.hubspotCompanyService = hubspotCompanyService;
   }
 
   async getContacts(filter: FilterType): Promise<ResponseType> {
@@ -106,36 +115,41 @@ export default class HubspotContactService {
       }
 
       return { data: contact };
-    } catch {
-      return { data: null };
+    } catch (err) {
+      throw new HttpError(err);
     }
   }
 
-  // async createContact(
-  //   properties: HubspotContactCreateDto,
-  // ): Promise<ResponseType> {
-  //   try {
-  //     if (!properties.phone) delete properties.phone;
+  async createContact(
+    properties: HubspotContactCreateDto,
+  ): Promise<ResponseType> {
+    try {
+      if (!properties.phone) delete properties.phone;
 
-  //     const data = await this.hubspotClient.client.crm.contacts.basicApi.create(
-  //       {
-  //         properties,
-  //       },
-  //     );
+      if (properties.companyId)
+        await this.hubspotCompanyService.getCompanyById({
+          companyId: properties.companyId,
+        });
 
-  //     if (properties.companyId)
-  //       await this.hubspotClient.client.crm.contacts.associationsApi.create(
-  //         data.id,
-  //         'company',
-  //         properties.companyId,
-  //         'contact_to_company',
-  //       );
+      const data = await this.hubspotClient.client.crm.contacts.basicApi.create(
+        {
+          properties,
+        },
+      );
 
-  //     return { data: data };
-  //   } catch (error) {
-  //     throw new HttpError(error);
-  //   }
-  // }
+      if (properties.companyId)
+        await this.hubspotClient.client.crm.contacts.associationsApi.create(
+          data.id,
+          'company',
+          properties.companyId,
+          'contact_to_company',
+        );
+
+      return { data: data };
+    } catch (error) {
+      throw new HttpError(error);
+    }
+  }
 
   // async updateContact(
   //   properties: HubspotContactUpdateDto,
