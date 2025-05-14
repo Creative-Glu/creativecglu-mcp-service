@@ -1,10 +1,11 @@
-import { Body, Get, Param, Post, Query } from '@nestjs/common';
+import { Body, Delete, Get, Param, Post, Put, Query } from '@nestjs/common';
 import { ExtendedController } from '@yuriyempty/nestjs-extended-controller';
 import { ResponseType } from 'common/models';
 import {
   HubspotDealCreateDto,
   HubspotDealSearchDto,
   HubspotDealSearchV2Dto,
+  HubspotDealUpdateDto,
 } from 'services/hubspot/dto';
 import { HubspotDealService } from 'services/hubspot/providers/services';
 
@@ -41,5 +42,24 @@ export default class HubspotDealController {
     @Body() payload: HubspotDealCreateDto,
   ): Promise<ResponseType> {
     return await this.hubspotDealService.createDeal(payload);
+  }
+
+  @Put(':dealId')
+  async updateDeal(
+    @Body() payload: HubspotDealUpdateDto,
+    @Param() { dealId }: HubspotDealSearchV2Dto,
+  ): Promise<ResponseType> {
+    return await this.hubspotDealService.updateDeal({ ...payload, dealId });
+  }
+
+  @Delete(':dealId')
+  async deleteDeal(
+    @Param() { dealId }: HubspotDealSearchV2Dto,
+  ): Promise<ResponseType> {
+    await this.hubspotDealService.deleteDeal(dealId);
+
+    return {
+      message: 'Deal deleted successfully',
+    };
   }
 }

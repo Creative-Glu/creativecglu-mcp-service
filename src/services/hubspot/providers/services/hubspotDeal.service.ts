@@ -8,6 +8,7 @@ import {
   HubspotDealUpdateDto,
 } from 'services/hubspot/dto';
 import HubspotClient from 'services/hubspot/providers/clients/hubspot.client';
+import { removeEmpty } from 'utils';
 
 import HubspotContactService from './hubspotContact.service';
 
@@ -152,6 +153,10 @@ export default class HubspotDealService {
     contactId,
     ...properties
   }: HubspotDealCreateDto): Promise<ResponseType> {
+    await this.hubspotContactService.getContactById({
+      contactId,
+    });
+
     try {
       const deal = await this.hubspotClient.client.crm.deals.basicApi.create({
         properties: {
@@ -161,11 +166,6 @@ export default class HubspotDealService {
           amount: properties.amount ? properties.amount.toString() : '0',
         },
       });
-
-      if (contactId)
-        await this.hubspotClient.put({
-          url: `/crm/v3/objects/deals/${deal.id}/associations/contacts/${contactId}/3`,
-        });
 
       const contacts = [];
       const _contacts =
@@ -205,13 +205,18 @@ export default class HubspotDealService {
     }
   }
 
-  async updateDeal(properties: HubspotDealUpdateDto): Promise<ResponseType> {
+  async updateDeal({
+    dealId,
+    ...rest
+  }: HubspotDealUpdateDto): Promise<ResponseType> {
+    await this.getDealById({ dealId });
+
     try {
       return {
         data: await this.hubspotClient.client.crm.deals.basicApi.update(
-          properties.dealId,
+          dealId,
           {
-            properties,
+            properties: await removeEmpty(rest),
           },
         ),
       };
@@ -220,13 +225,13 @@ export default class HubspotDealService {
     }
   }
 
-  // async deleteDeal(payload: HubspotDealDeleteDto): Promise<void> {
-  //   try {
-  //     await this.hubspotClient.client.crm.deals.basicApi.archive(
-  //       payload.dealId,
-  //     );
-  //   } catch (error) {
-  //     throw new HttpError(error);
-  //   }
-  // }
+  async deleteDeal(dealId: string): Promise<void> {
+    await this.getDealById({ dealId });
+
+    try {
+      await this.hubspotClient.client.crm.deals.basicApi.archive(dealId);
+    } catch (error) {
+      throw new HttpError(error);
+    }
+  }
 }
