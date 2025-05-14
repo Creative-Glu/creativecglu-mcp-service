@@ -1,4 +1,4 @@
-import { Body, Get, Param, Post, Query } from '@nestjs/common';
+import { Body, Delete, Get, Param, Post, Put, Query } from '@nestjs/common';
 import { ExtendedController } from '@yuriyempty/nestjs-extended-controller';
 import { ResponseType } from 'common/models';
 import {
@@ -41,5 +41,27 @@ export default class HubspotCompanyController {
     @Body() payload: HubspotCompanyCreateDto,
   ): Promise<ResponseType> {
     return await this.hubspotCompanyService.createCompany(payload);
+  }
+
+  @Put(':companyId')
+  async updateCompany(
+    @Body() payload: HubspotCompanyCreateDto,
+    @Param() { companyId }: HubspotCompanySearchV2Dto,
+  ): Promise<ResponseType> {
+    return await this.hubspotCompanyService.updateCompany({
+      ...payload,
+      companyId,
+    });
+  }
+
+  @Delete(':companyId')
+  async deleteCompany(
+    @Param() { companyId }: HubspotCompanySearchV2Dto,
+  ): Promise<ResponseType> {
+    await this.hubspotCompanyService.deleteCompany(companyId);
+
+    return {
+      message: 'Company deleted successfully',
+    };
   }
 }

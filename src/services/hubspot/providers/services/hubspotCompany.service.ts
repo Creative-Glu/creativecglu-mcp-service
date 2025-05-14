@@ -1,10 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import c from 'common/constants';
-import { HttpError } from 'common/exceptions';
+import { HttpError, NotFoundException } from 'common/exceptions';
 import { FilterType, ResponseType } from 'common/models';
-import { HubspotCompanyCreateDto } from 'services/hubspot/dto';
+import {
+  HubspotCompanyCreateDto,
+  HubspotCompanyUpdateDto,
+} from 'services/hubspot/dto';
 import { HubspotCompanySearchV2Dto } from 'services/hubspot/dto/companies/HubspotCompanySearch.dto';
 import HubspotClient from 'services/hubspot/providers/clients/hubspot.client';
+import { removeEmpty } from 'utils';
 
 @Injectable()
 export default class HubspotCompanyService {
@@ -73,6 +77,12 @@ export default class HubspotCompanyService {
 
       return { data };
     } catch (err) {
+      if ([404, 400].includes(err.code))
+        throw new NotFoundException({
+          collection: 'company',
+          id: payload.companyId,
+        });
+
       throw new HttpError(err);
     }
   }
@@ -93,32 +103,35 @@ export default class HubspotCompanyService {
     }
   }
 
-  // async updateCompany(
-  //   properties: HubspotCompanyUpdateDto,
-  // ): Promise<ResponseType> {
-  //   try {
-  //     if (!properties.phone) delete properties.phone;
+  async updateCompany({
+    companyId,
+    ...rest
+  }: HubspotCompanyUpdateDto): Promise<ResponseType> {
+    await this.getCompanyById({ companyId });
 
-  //     return {
-  //       data: await this.hubspotClient.client.crm.companies.basicApi.update(
-  //         properties.companyId,
-  //         {
-  //           properties,
-  //         },
-  //       ),
-  //     };
-  //   } catch (error) {
-  //     throw new HttpError(error);
-  //   }
-  // }
+    try {
+      if (!rest.phone) delete rest.phone;
 
-  // async deleteCompany(payload: HubspotCompanyDeleteDto): Promise<void> {
-  //   try {
-  //     await this.hubspotClient.client.crm.companies.basicApi.archive(
-  //       payload.companyId,
-  //     );
-  //   } catch (error) {
-  //     throw new HttpError(error);
-  //   }
-  // }
+      return {
+        data: await this.hubspotClient.client.crm.companies.basicApi.update(
+          companyId,
+          {
+            properties: await removeEmpty(rest),
+          },
+        ),
+      };
+    } catch (error) {
+      throw new HttpError(error);
+    }
+  }
+
+  async deleteCompany(companyId: string): Promise<void> {
+    await this.getCompanyById({ companyId });
+
+    try {
+      await this.hubspotClient.client.crm.companies.basicApi.archive(companyId);
+    } catch (error) {
+      throw new HttpError(error);
+    }
+  }
 }
