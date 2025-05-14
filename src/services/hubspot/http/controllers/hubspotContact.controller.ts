@@ -1,10 +1,11 @@
-import { Body, Get, Param, Post, Query } from '@nestjs/common';
+import { Body, Delete, Get, Param, Post, Put, Query } from '@nestjs/common';
 import { ExtendedController } from '@yuriyempty/nestjs-extended-controller';
 import { ResponseType } from 'common/models';
 import {
   HubspotContactCreateDto,
   HubspotContactSearchDto,
   HubspotContactSearchV2Dto,
+  HubspotContactUpdateDto,
 } from 'services/hubspot/dto';
 import { HubspotContactService } from 'services/hubspot/providers/services';
 
@@ -41,5 +42,27 @@ export default class HubspotContactController {
     @Body() payload: HubspotContactCreateDto,
   ): Promise<ResponseType> {
     return await this.hubspotContactService.createContact(payload);
+  }
+
+  @Put(':contactId')
+  async updateContact(
+    @Body() payload: HubspotContactUpdateDto,
+    @Param() { contactId }: HubspotContactSearchV2Dto,
+  ): Promise<ResponseType> {
+    return await this.hubspotContactService.updateContact({
+      ...payload,
+      contactId,
+    });
+  }
+
+  @Delete(':contactId')
+  async deleteContact(
+    @Param() { contactId }: HubspotContactSearchV2Dto,
+  ): Promise<ResponseType> {
+    await this.hubspotContactService.deleteContact(contactId);
+
+    return {
+      message: 'Contact deleted successfully',
+    };
   }
 }

@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import c from 'common/constants';
-import { HttpError } from 'common/exceptions';
+import { HttpError, NotFoundException } from 'common/exceptions';
 import { FilterType, ResponseType } from 'common/models';
 import {
   HubspotContactCreateDto,
@@ -107,6 +107,12 @@ export default class HubspotContactService {
           ['firstname', 'lastname', 'email', 'phone', 'associatedcompanyid'],
         );
 
+      if (!contact) {
+        throw new HttpError(
+          `Contact with ID ${payload.contactId} does not exist`,
+        );
+      }
+
       if (contact.properties?.associatedcompanyid) {
         const company =
           await this.hubspotClient.client.crm.companies.basicApi.getById(
@@ -118,6 +124,12 @@ export default class HubspotContactService {
 
       return { data: contact };
     } catch (err) {
+      if ([404, 400].includes(err.code))
+        throw new NotFoundException({
+          collection: 'contact',
+          id: payload.contactId,
+        });
+
       throw new HttpError(err);
     }
   }
@@ -155,10 +167,10 @@ export default class HubspotContactService {
     contactId,
     ...rest
   }: HubspotContactUpdateDto): Promise<ResponseType> {
+    await this.getContactById({ contactId });
+
     try {
       if (!rest.phone) delete rest.phone;
-
-      await this.getContactById({ contactId: contactId });
 
       return {
         data: await this.hubspotClient.client.crm.contacts.basicApi.update(
@@ -173,13 +185,13 @@ export default class HubspotContactService {
     }
   }
 
-  // async deleteContact(paylaod: HubspotContactDeleteDto): Promise<void> {
-  //   try {
-  //     await this.hubspotClient.client.crm.contacts.basicApi.archive(
-  //       paylaod.contactId,
-  //     );
-  //   } catch (error) {
-  //     throw new HttpError(error);
-  //   }
-  // }
+  async deleteContact(contactId: string): Promise<void> {
+    await this.getContactById({ contactId });
+
+    try {
+      await this.hubspotClient.client.crm.contacts.basicApi.archive(contactId);
+    } catch (error) {
+      throw new HttpError(error);
+    }
+  }
 }

@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import c from 'common/constants';
-import { HttpError } from 'common/exceptions';
+import { HttpError, NotFoundException } from 'common/exceptions';
 import { FilterType, ResponseType } from 'common/models';
 import { HubspotCompanyCreateDto } from 'services/hubspot/dto';
 import { HubspotCompanySearchV2Dto } from 'services/hubspot/dto/companies/HubspotCompanySearch.dto';
@@ -73,6 +73,12 @@ export default class HubspotCompanyService {
 
       return { data };
     } catch (err) {
+      if ([404, 400].includes(err.code))
+        throw new NotFoundException({
+          collection: 'company',
+          id: payload.companyId,
+        });
+
       throw new HttpError(err);
     }
   }
