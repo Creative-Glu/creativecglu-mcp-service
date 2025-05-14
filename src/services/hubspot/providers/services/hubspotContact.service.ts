@@ -1,12 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import c from 'common/constants';
-import { HttpError } from 'common/exceptions';
+import { HttpError, NotFoundException } from 'common/exceptions';
 import { FilterType, ResponseType } from 'common/models';
 import {
   HubspotContactCreateDto,
   HubspotContactSearchV2Dto,
+  HubspotContactUpdateDto,
 } from 'services/hubspot/dto';
 import HubspotClient from 'services/hubspot/providers/clients/hubspot.client';
+import { removeEmpty } from 'utils';
 
 import HubspotCompanyService from './hubspotCompany.service';
 
@@ -105,6 +107,12 @@ export default class HubspotContactService {
           ['firstname', 'lastname', 'email', 'phone', 'associatedcompanyid'],
         );
 
+      if (!contact) {
+        throw new HttpError(
+          `Contact with ID ${payload.contactId} does not exist`,
+        );
+      }
+
       if (contact.properties?.associatedcompanyid) {
         const company =
           await this.hubspotClient.client.crm.companies.basicApi.getById(
@@ -116,32 +124,36 @@ export default class HubspotContactService {
 
       return { data: contact };
     } catch (err) {
+      if ([404, 400].includes(err.code))
+        throw new NotFoundException({
+          collection: 'contact',
+          id: payload.contactId,
+        });
+
       throw new HttpError(err);
     }
   }
 
-  async createContact(
-    properties: HubspotContactCreateDto,
-  ): Promise<ResponseType> {
+  async createContact(payload: HubspotContactCreateDto): Promise<ResponseType> {
     try {
-      if (!properties.phone) delete properties.phone;
+      if (!payload.phone) delete payload.phone;
 
-      if (properties.companyId)
+      if (payload.companyId)
         await this.hubspotCompanyService.getCompanyById({
-          companyId: properties.companyId,
+          companyId: payload.companyId,
         });
 
       const data = await this.hubspotClient.client.crm.contacts.basicApi.create(
         {
-          properties,
+          properties: await removeEmpty(payload),
         },
       );
 
-      if (properties.companyId)
+      if (payload.companyId)
         await this.hubspotClient.client.crm.contacts.associationsApi.create(
           data.id,
           'company',
-          properties.companyId,
+          payload.companyId,
           'contact_to_company',
         );
 
@@ -151,32 +163,35 @@ export default class HubspotContactService {
     }
   }
 
-  // async updateContact(
-  //   properties: HubspotContactUpdateDto,
-  // ): Promise<ResponseType> {
-  //   try {
-  //     if (!properties.phone) delete properties.phone;
+  async updateContact({
+    contactId,
+    ...rest
+  }: HubspotContactUpdateDto): Promise<ResponseType> {
+    await this.getContactById({ contactId });
 
-  //     return {
-  //       data: await this.hubspotClient.client.crm.contacts.basicApi.update(
-  //         properties.contactId,
-  //         {
-  //           properties,
-  //         },
-  //       ),
-  //     };
-  //   } catch (error) {
-  //     throw new HttpError(error);
-  //   }
-  // }
+    try {
+      if (!rest.phone) delete rest.phone;
 
-  // async deleteContact(paylaod: HubspotContactDeleteDto): Promise<void> {
-  //   try {
-  //     await this.hubspotClient.client.crm.contacts.basicApi.archive(
-  //       paylaod.contactId,
-  //     );
-  //   } catch (error) {
-  //     throw new HttpError(error);
-  //   }
-  // }
+      return {
+        data: await this.hubspotClient.client.crm.contacts.basicApi.update(
+          contactId,
+          {
+            properties: await removeEmpty(rest),
+          },
+        ),
+      };
+    } catch (error) {
+      throw new HttpError(error);
+    }
+  }
+
+  async deleteContact(contactId: string): Promise<void> {
+    await this.getContactById({ contactId });
+
+    try {
+      await this.hubspotClient.client.crm.contacts.basicApi.archive(contactId);
+    } catch (error) {
+      throw new HttpError(error);
+    }
+  }
 }
