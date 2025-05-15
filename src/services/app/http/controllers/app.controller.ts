@@ -2,12 +2,9 @@ import { Controller, Get } from '@nestjs/common';
 import c from 'common/constants';
 import { ResponseType } from 'common/models';
 import * as dayjs from 'dayjs';
-import { AppService } from 'services/app/providers/services';
 
 @Controller()
 export default class AppController {
-  constructor(private readonly appService: AppService) {}
-
   @Get()
   async index(): Promise<ResponseType> {
     const currentDate = dayjs();

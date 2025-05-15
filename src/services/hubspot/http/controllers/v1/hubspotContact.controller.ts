@@ -1,4 +1,5 @@
 import { Body, Delete, Get, Param, Post, Put, Query } from '@nestjs/common';
+import { ApiOperation } from '@nestjs/swagger';
 import { ExtendedController } from '@yuriyempty/nestjs-extended-controller';
 import { ResponseType } from 'common/models';
 import {
@@ -21,6 +22,10 @@ export default class HubspotContactController {
   }
 
   @Get()
+  @ApiOperation({
+    summary: 'Retrieve Contacts',
+    description: 'Fetch a list of contacts in Hubspot with optional filters such as `limit`, `email`, `firstname`, `lastname`, and `phone`.',
+  })
   async getContacts(
     @Query() { limit, ...filter }: HubspotContactSearchDto,
   ): Promise<ResponseType> {
