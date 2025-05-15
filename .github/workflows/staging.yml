@@ -1,4 +1,4 @@
-name: Deploy to EC2
+name: Deploy to EC2 Staging
 
 on:
   push:
@@ -31,7 +31,7 @@ jobs:
           cd \$APP_DIR
           git fetch --depth=1 origin staging
           git reset --hard origin/staging
-          npm ci
+          npm ci -f
           npm run build
           pm2 reload all --update-env
         EOF
