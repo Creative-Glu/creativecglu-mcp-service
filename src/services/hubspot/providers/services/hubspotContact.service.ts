@@ -92,8 +92,8 @@ export default class HubspotContactService {
       );
 
       return { data, meta: { total: data.length } };
-    } catch (error) {
-      throw new HttpError(error);
+    } catch (err) {
+      throw new HttpError(err.message);
     }
   }
 
@@ -134,32 +134,42 @@ export default class HubspotContactService {
     }
   }
 
-  async createContact(payload: HubspotContactCreateDto): Promise<ResponseType> {
+  async createContact({
+    companyId,
+    ...rest
+  }: HubspotContactCreateDto): Promise<ResponseType> {
     try {
-      if (!payload.phone) delete payload.phone;
+      if (!rest.phone) delete rest.phone;
 
-      if (payload.companyId)
+      if (companyId) {
         await this.hubspotCompanyService.getCompanyById({
-          companyId: payload.companyId,
+          companyId,
         });
+      }
 
       const data = await this.hubspotClient.client.crm.contacts.basicApi.create(
         {
-          properties: await removeEmpty(payload),
+          properties: await removeEmpty(rest),
         },
       );
 
-      if (payload.companyId)
-        await this.hubspotClient.client.crm.contacts.associationsApi.create(
-          data.id,
-          'company',
-          payload.companyId,
-          'contact_to_company',
+      if (companyId)
+        await this.hubspotClient.client.crm.associations.v4.batchApi.createDefault(
+          'Contacts',
+          'Companies',
+          {
+            inputs: [
+              {
+                _from: { id: data.id },
+                to: { id: companyId },
+              },
+            ],
+          },
         );
 
-      return { data: data };
-    } catch (error) {
-      throw new HttpError(error);
+      return { data };
+    } catch (err) {
+      throw new HttpError(err.message);
     }
   }
 
@@ -169,8 +179,22 @@ export default class HubspotContactService {
   }: HubspotContactUpdateDto): Promise<ResponseType> {
     await this.getContactById({ contactId });
 
+    if (rest.companyId)
+      await this.hubspotCompanyService.getCompanyById({
+        companyId: rest.companyId,
+      });
+
     try {
-      if (!rest.phone) delete rest.phone;
+      if (rest.companyId) {
+        await this.hubspotClient.client.crm.contacts.associationsApi.create(
+          contactId,
+          'company',
+          rest.companyId,
+          'contact_to_company',
+        );
+
+        delete rest.companyId;
+      }
 
       return {
         data: await this.hubspotClient.client.crm.contacts.basicApi.update(
@@ -180,8 +204,8 @@ export default class HubspotContactService {
           },
         ),
       };
-    } catch (error) {
-      throw new HttpError(error);
+    } catch (err) {
+      throw new HttpError(err.message);
     }
   }
 
@@ -190,8 +214,8 @@ export default class HubspotContactService {
 
     try {
       await this.hubspotClient.client.crm.contacts.basicApi.archive(contactId);
-    } catch (error) {
-      throw new HttpError(error);
+    } catch (err) {
+      throw new HttpError(err.message);
     }
   }
 }

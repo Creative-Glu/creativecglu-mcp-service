@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import c from 'common/constants';
 import { HttpError } from 'common/exceptions';
 import { FilterType, ResponseType } from 'common/models';
@@ -99,8 +99,8 @@ export default class HubspotDealService {
         data,
         meta: { total: data.length },
       };
-    } catch (error) {
-      throw new HttpError(error);
+    } catch (err) {
+      throw new HttpError(err.message);
     }
   }
 
@@ -145,7 +145,13 @@ export default class HubspotDealService {
         },
       };
     } catch (err) {
-      throw new HttpError(err);
+      if ([404, 400].includes(err.code))
+        throw new NotFoundException({
+          collection: 'deal',
+          id: payload.dealId,
+        });
+
+      throw new HttpError(err.message);
     }
   }
 
@@ -219,10 +225,8 @@ export default class HubspotDealService {
           contacts,
         },
       };
-    } catch (error) {
-      console.log(error);
-
-      throw new HttpError(error);
+    } catch (err) {
+      throw new HttpError(err.message);
     }
   }
 
@@ -251,8 +255,8 @@ export default class HubspotDealService {
           },
         ),
       };
-    } catch (error) {
-      throw new HttpError(error);
+    } catch (err) {
+      throw new HttpError(err.message);
     }
   }
 
@@ -261,8 +265,8 @@ export default class HubspotDealService {
 
     try {
       await this.hubspotClient.client.crm.deals.basicApi.archive(dealId);
-    } catch (error) {
-      throw new HttpError(error);
+    } catch (err) {
+      throw new HttpError(err.message);
     }
   }
 }
