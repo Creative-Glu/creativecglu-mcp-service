@@ -1,19 +1,32 @@
-import { IsEmail, IsNotEmpty, IsOptional, IsString } from 'class-validator';
+import {
+  IsArray,
+  IsNotEmpty,
+  IsNumber,
+  IsOptional,
+  IsString,
+  Min,
+} from 'class-validator';
 
 export default class HubspotDealCreateDto {
   @IsNotEmpty()
-  @IsString()
-  contactId: string;
+  @IsArray()
+  @IsString({ each: true })
+  contactIds: string[];
 
   @IsNotEmpty()
   @IsString()
-  dealname: string;
+  name: string;
 
   @IsNotEmpty()
-  @IsEmail()
-  amount: string;
+  @IsNumber()
+  @Min(1)
+  amount: number;
 
   @IsOptional()
   @IsString()
   stage?: string;
+
+  @IsOptional()
+  @IsString()
+  pipeline?: string;
 }

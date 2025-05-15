@@ -24,15 +24,15 @@ export default class HubspotDealService {
 
   async getDeals(filter: FilterType): Promise<ResponseType> {
     try {
-      const { dealname, amount, stage, ...rest } = filter;
+      const { name, amount, stage, ...rest } = filter;
 
       const filters: Record<string, any>[] = [];
 
-      if (dealname) {
+      if (name) {
         filters.push({
           propertyName: 'dealname',
           operator: 'EQ',
-          value: dealname,
+          value: name,
         });
       }
 
@@ -76,7 +76,7 @@ export default class HubspotDealService {
               },
             );
 
-          if (_contacts.results[0].to.length > 0) {
+          if (_contacts.results[0]?.to.length > 0) {
             for (const _c of _contacts.results[0].to) {
               try {
                 const { data } =
@@ -126,7 +126,7 @@ export default class HubspotDealService {
           },
         );
 
-      if (_contacts.results[0].to.length > 0) {
+      if (_contacts.results[0]?.to.length > 0) {
         for (const _c of _contacts.results[0].to) {
           try {
             const { data } = await this.hubspotContactService.getContactById({
@@ -150,22 +150,41 @@ export default class HubspotDealService {
   }
 
   async createDeal({
-    contactId,
-    ...properties
+    contactIds,
+    ...rest
   }: HubspotDealCreateDto): Promise<ResponseType> {
-    await this.hubspotContactService.getContactById({
-      contactId,
-    });
+    for (const contactId of contactIds)
+      await this.hubspotContactService.getContactById({
+        contactId,
+      });
 
+    (rest as Record<string, any>).dealname = rest.name;
+    delete rest.name;
+
+    (rest as Record<string, any>).dealstage =
+      rest.stage ?? 'appointmentscheduled';
+    delete rest.stage;
+
+    (rest as Record<string, any>).pipeline = rest.pipeline ?? 'default';
+    delete rest.pipeline;
     try {
       const deal = await this.hubspotClient.client.crm.deals.basicApi.create({
-        properties: {
-          ...properties,
-          pipeline: 'default',
-          dealstage: 'appointmentscheduled',
-          amount: properties.amount ? properties.amount.toString() : '0',
-        },
+        properties: await removeEmpty({
+          ...rest,
+          amount: rest.amount ? rest.amount.toString() : '0',
+        }),
       });
+
+      await this.hubspotClient.client.crm.associations.v4.batchApi.createDefault(
+        'Deals',
+        'Contacts',
+        {
+          inputs: contactIds.map((contactId) => ({
+            _from: { id: deal.id },
+            to: { id: contactId },
+          })),
+        },
+      );
 
       const contacts = [];
       const _contacts =
@@ -182,7 +201,7 @@ export default class HubspotDealService {
           },
         );
 
-      if (_contacts.results[0].to.length > 0) {
+      if (_contacts.results[0]?.to.length > 0) {
         for (const _c of _contacts.results[0].to) {
           try {
             const { data } = await this.hubspotContactService.getContactById({
@@ -201,6 +220,8 @@ export default class HubspotDealService {
         },
       };
     } catch (error) {
+      console.log(error);
+
       throw new HttpError(error);
     }
   }
@@ -210,6 +231,16 @@ export default class HubspotDealService {
     ...rest
   }: HubspotDealUpdateDto): Promise<ResponseType> {
     await this.getDealById({ dealId });
+
+    if (rest.name) {
+      (rest as Record<string, any>).dealname = rest.name;
+      delete rest.name;
+    }
+
+    if (rest.stage) {
+      (rest as Record<string, any>).dealstage = rest.stage;
+      delete rest.stage;
+    }
 
     try {
       return {
