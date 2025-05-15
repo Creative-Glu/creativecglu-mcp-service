@@ -1,12 +1,13 @@
 import { Controller, UseGuards } from '@nestjs/common';
 import { ThrottlerGuard } from '@nestjs/throttler';
 import { ExtendedController } from '@yuriyempty/nestjs-extended-controller';
+import { BasicAuthGuard } from 'services/auth/providers/guards';
 
 import AppController from './app.controller';
 
 export { AppController };
 
-@UseGuards(ThrottlerGuard)
+@UseGuards(ThrottlerGuard, BasicAuthGuard)
 @Controller('api')
 class _AppController {}
 

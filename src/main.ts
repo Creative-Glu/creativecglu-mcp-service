@@ -8,10 +8,19 @@ import AppModule from 'services/app';
 import { useContainer } from 'class-validator';
 import CommonModule from 'services/common';
 import { ValidationPipe } from '@nestjs/common';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+
+  if (process.env.APP_ENV === 'DEV') {
+    const config = new DocumentBuilder().build();
+    const documentFactory = () => SwaggerModule.createDocument(app, config);
+    SwaggerModule.setup('api', app, documentFactory);
+  }
+
   app.useGlobalPipes(new ValidationPipe());
+
   useContainer(app.select(CommonModule), { fallbackOnErrors: true });
   await app.listen(process.env.APP_PORT);
 }
