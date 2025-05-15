@@ -175,26 +175,30 @@ export default class HubspotContactService {
 
   async updateContact({
     contactId,
+    companyId,
     ...rest
   }: HubspotContactUpdateDto): Promise<ResponseType> {
     await this.getContactById({ contactId });
 
-    if (rest.companyId)
+    if (companyId)
       await this.hubspotCompanyService.getCompanyById({
-        companyId: rest.companyId,
+        companyId: companyId,
       });
 
     try {
-      if (rest.companyId) {
-        await this.hubspotClient.client.crm.contacts.associationsApi.create(
-          contactId,
-          'company',
-          rest.companyId,
-          'contact_to_company',
+      if (companyId)
+        await this.hubspotClient.client.crm.associations.v4.batchApi.createDefault(
+          'Contacts',
+          'Companies',
+          {
+            inputs: [
+              {
+                _from: { id: contactId },
+                to: { id: companyId },
+              },
+            ],
+          },
         );
-
-        delete rest.companyId;
-      }
 
       return {
         data: await this.hubspotClient.client.crm.contacts.basicApi.update(
