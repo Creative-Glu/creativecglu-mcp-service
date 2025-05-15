@@ -1,4 +1,4 @@
-import { IsOptional, IsPhoneNumber, IsString } from 'class-validator';
+import { IsOptional, IsString } from 'class-validator';
 
 export default class HubspotCompanyUpdateDto {
   @IsOptional()
@@ -14,6 +14,6 @@ export default class HubspotCompanyUpdateDto {
   domain?: string;
 
   @IsOptional()
-  @IsPhoneNumber(null)
+  @IsString()
   phone?: string;
 }
