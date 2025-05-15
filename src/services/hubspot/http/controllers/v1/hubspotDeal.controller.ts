@@ -54,7 +54,7 @@ export default class HubspotDealController {
     summary: 'Create a Hubspot Deal',
     description:
       // eslint-disable-next-line max-len
-      'Create a new Hubspot deal using the provided details, such as `contactId`, `dealname`, `amount`, and other optional fields like `stage`.',
+      'Create a new Hubspot deal with the specified details, including an array of `contactIds`, `dealname`, `amount`, and optional fields such as `stage` and `pipeline`.',
   })
   async createDeal(
     @Body() payload: HubspotDealCreateDto,
@@ -67,7 +67,7 @@ export default class HubspotDealController {
     summary: 'Update a Hubspot Deal',
     description:
       // eslint-disable-next-line max-len
-      'Update an existing Hubspot deal using the provided details, such as `contactId`, `dealname`, `amount`, and other optional fields like `stage` identified by its unique `companyId`.',
+      'Update an existing Hubspot deal with the specified details, including an array of `contactIds`, `dealname`, `amount`, and optional fields such as `stage` and `pipeline`, identified by its unique `dealId`.',
   })
   async updateDeal(
     @Body() payload: HubspotDealUpdateDto,

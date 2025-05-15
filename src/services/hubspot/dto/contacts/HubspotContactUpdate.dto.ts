@@ -1,4 +1,11 @@
-import { IsEmail, IsOptional, IsString } from 'class-validator';
+import {
+  IsEmail,
+  isEmpty,
+  IsOptional,
+  IsPhoneNumber,
+  IsString,
+  ValidateIf,
+} from 'class-validator';
 
 export default class HubspotContactUpdateDto {
   @IsOptional()
@@ -14,11 +21,13 @@ export default class HubspotContactUpdateDto {
   lastname?: string;
 
   @IsOptional()
+  @ValidateIf((p) => !isEmpty(p.email))
   @IsEmail()
   email?: string;
 
   @IsOptional()
-  @IsString()
+  @ValidateIf((p) => !isEmpty(p.phone))
+  @IsPhoneNumber()
   phone?: string;
 
   @IsOptional()

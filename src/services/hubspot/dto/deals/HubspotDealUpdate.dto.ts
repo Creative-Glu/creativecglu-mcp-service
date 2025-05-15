@@ -1,17 +1,30 @@
-import { IsEmail, IsOptional, IsString } from 'class-validator';
+import {
+  IsArray,
+  IsNotEmpty,
+  IsNumber,
+  IsOptional,
+  IsString,
+  Min,
+} from 'class-validator';
 
 export default class HubspotDealUpdateDto {
+  @IsNotEmpty()
+  @IsArray()
+  @IsString({ each: true })
+  contactIds: string[];
+
   @IsOptional()
   @IsString()
   dealId?: string;
 
   @IsOptional()
   @IsString()
-  dealname?: string;
+  name?: string;
 
-  @IsOptional()
-  @IsEmail()
-  amount?: string;
+  @IsNotEmpty()
+  @IsNumber()
+  @Min(1)
+  amount: number;
 
   @IsOptional()
   @IsString()

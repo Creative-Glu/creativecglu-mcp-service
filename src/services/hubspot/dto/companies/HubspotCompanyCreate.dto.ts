@@ -1,4 +1,12 @@
-import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
+import {
+  isEmpty,
+  IsNotEmpty,
+  IsOptional,
+  IsPhoneNumber,
+  IsString,
+  IsUrl,
+  ValidateIf,
+} from 'class-validator';
 
 export default class HubspotCompanyCreateDto {
   @IsNotEmpty()
@@ -6,10 +14,12 @@ export default class HubspotCompanyCreateDto {
   name: string;
 
   @IsOptional()
-  @IsString()
+  @ValidateIf((p) => !isEmpty(p.domain))
+  @IsUrl()
   domain?: string;
 
   @IsOptional()
-  @IsString()
+  @ValidateIf((p) => !isEmpty(p.phone))
+  @IsPhoneNumber(null)
   phone?: string;
 }
