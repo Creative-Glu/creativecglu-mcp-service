@@ -91,12 +91,10 @@ export default class HubspotCompanyService {
     properties: HubspotCompanyCreateDto,
   ): Promise<ResponseType> {
     try {
-      if (!properties.phone) delete properties.phone;
-
       return {
-        data: await this.hubspotClient.client.crm.companies.basicApi.create(
-          properties,
-        ),
+        data: await this.hubspotClient.client.crm.companies.basicApi.create({
+          properties: await removeEmpty(properties),
+        }),
       };
     } catch (error) {
       throw new HttpError(error);
