@@ -1,0 +1,471 @@
+{
+    "name": "MCP Client",
+    "nodes": [
+        {
+            "parameters": {
+                "content": "## Contacts",
+                "height": 260,
+                "width": 960
+            },
+            "type": "n8n-nodes-base.stickyNote",
+            "position": [
+                -700,
+                120
+            ],
+            "typeVersion": 1,
+            "id": "f6f63e0e-6aa5-4173-91ff-fdb5b448cfff",
+            "name": "Sticky Note"
+        },
+        {
+            "parameters": {
+                "content": "## Company",
+                "height": 260,
+                "width": 1160,
+                "color": 2
+            },
+            "type": "n8n-nodes-base.stickyNote",
+            "position": [
+                300,
+                120
+            ],
+            "typeVersion": 1,
+            "id": "77f64308-310e-4cac-aaef-3fa037de2656",
+            "name": "Sticky Note2"
+        },
+        {
+            "parameters": {
+                "toolDescription": "Retrieve a list of HubSpot companies. Optionally, search by `name`, `domain`, or `phone` to filter results.",
+                "url": "http://35.170.240.97/api/v1/hubspot/companies",
+                "sendQuery": true,
+                "queryParameters": {
+                    "parameters": [
+                        {
+                            "name": "name",
+                            "value": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('parameters3_Value', ``, 'string') }}"
+                        },
+                        {
+                            "name": "domain",
+                            "value": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('parameters1_Value', ``, 'string') }}"
+                        },
+                        {
+                            "name": "phone",
+                            "value": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('parameters2_Value', ``, 'string') }}"
+                        },
+                        {
+                            "name": "limit",
+                            "value": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('parameters3_Value', `how many companies to query?`, 'string') }}"
+                        }
+                    ]
+                },
+                "options": {}
+            },
+            "type": "n8n-nodes-base.httpRequestTool",
+            "typeVersion": 4.2,
+            "position": [
+                380,
+                200
+            ],
+            "id": "5bf9d03a-751b-44d3-b873-8c2afc3968d7",
+            "name": "Get Companies"
+        },
+        {
+            "parameters": {
+                "toolDescription": "Retrieve a single HubSpot company by providing `companyId`.",
+                "url": "=http://35.170.240.97/api/v1/hubspot/companies/{{ $fromAI('companyId', 'Id of the company', 'string') }}",
+                "sendQuery": true,
+                "queryParameters": {
+                    "parameters": [
+                        {}
+                    ]
+                },
+                "options": {}
+            },
+            "type": "n8n-nodes-base.httpRequestTool",
+            "typeVersion": 4.2,
+            "position": [
+                560,
+                200
+            ],
+            "id": "a03c3c29-35ac-4cb7-9748-529ed73489bc",
+            "name": "Get Company By Id"
+        },
+        {
+            "parameters": {
+                "toolDescription": "Retrieve a list of HubSpot contacts with optional filters such as `limit`, `email`, `firstname`, `lastname`, and `phone`.",
+                "url": "http://35.170.240.97/api/v1/hubspot/contacts",
+                "sendQuery": true,
+                "queryParameters": {
+                    "parameters": [
+                        {
+                            "name": "firstname",
+                            "value": "={{ $fromAI('firstname', `Provide the first name to filter contacts (optional).`, 'string') }}"
+                        },
+                        {
+                            "name": "lastname",
+                            "value": "={{ $fromAI('lastname', `Provide the last name to filter contacts (optional).`, 'string') }}"
+                        },
+                        {
+                            "name": "email",
+                            "value": "={{ $fromAI('email', `Provide an email address to filter contacts (optional, must be valid).`, 'string') }}"
+                        },
+                        {
+                            "name": "phone",
+                            "value": "={{ $fromAI('phone', `Provide a phone number to filter contacts (optional, must be valid).`, 'string') }}"
+                        },
+                        {
+                            "name": "limit",
+                            "value": "={{ $fromAI('limit', `Specify the maximum number of contacts to retrieve (optional).`, 'number') }}"
+                        }
+                    ]
+                },
+                "sendHeaders": true,
+                "specifyHeaders": "json",
+                "jsonHeaders": "={\n  \"Authorization\": \"Bearer {{ '9a8f70ec2e4e90d3c83c4dd14e7b7281b8c6217a7d48b6a7ce99cd6c1a94f8c2'\n }}\"\n}",
+                "options": {},
+                "optimizeResponse": true
+            },
+            "type": "n8n-nodes-base.httpRequestTool",
+            "typeVersion": 4.2,
+            "position": [
+                -620,
+                200
+            ],
+            "id": "ba711f20-79ea-4d75-aba6-ee9d08cd8d12",
+            "name": "Fetch HubSpot Contacts"
+        },
+        {
+            "parameters": {
+                "toolDescription": "Retrieve a specific Hubspot contact by its unique `contactId`.",
+                "url": "=http://35.170.240.97/api/v1/hubspot/contacts/{{ $fromAI('contactId', 'Id of the contact', 'string') }}",
+                "sendHeaders": true,
+                "specifyHeaders": "json",
+                "jsonHeaders": "={\n  \"Authorization\": \"Bearer {{ '9a8f70ec2e4e90d3c83c4dd14e7b7281b8c6217a7d48b6a7ce99cd6c1a94f8c2'\n }}\"\n}",
+                "options": {}
+            },
+            "type": "n8n-nodes-base.httpRequestTool",
+            "typeVersion": 4.2,
+            "position": [
+                -440,
+                200
+            ],
+            "id": "6f39c26a-6600-47c5-9719-83ed0ac6ee72",
+            "name": "Fetch Hubspot Contact by ID"
+        },
+        {
+            "parameters": {
+                "toolDescription": "Create a new Hubspot contact using the provided details, such as `email`, `firstname`, `lastname`, and other optional fields like `phone` and `companyId`.",
+                "method": "POST",
+                "url": "http://35.170.240.97/api/v1/hubspot/contacts",
+                "sendHeaders": true,
+                "specifyHeaders": "json",
+                "jsonHeaders": "={\n  \"Authorization\": \"Bearer {{ '9a8f70ec2e4e90d3c83c4dd14e7b7281b8c6217a7d48b6a7ce99cd6c1a94f8c2'\n }}\"\n}",
+                "sendBody": true,
+                "bodyParameters": {
+                    "parameters": [
+                        {
+                            "name": "firstname",
+                            "value": "={{ $fromAI('firstname', `This field is required`, 'string') }}"
+                        },
+                        {
+                            "name": "lastname",
+                            "value": "={{ $fromAI('lastname', `This is required`, 'string') }}"
+                        },
+                        {
+                            "name": "email",
+                            "value": "={{ $fromAI('email', `This is required and must be in a valid email format.`, 'string') }}"
+                        },
+                        {
+                            "name": "=phone",
+                            "value": "={{ $fromAI('phone', `This field is optional but must follow a valid phone number format if provided`, 'string') }}"
+                        },
+                        {
+                            "name": "companyId",
+                            "value": "={{ $fromAI('companyId', `This field is optional and indicates the associated company using the provided companyId`, 'string') }}"
+                        }
+                    ]
+                },
+                "options": {}
+            },
+            "type": "n8n-nodes-base.httpRequestTool",
+            "typeVersion": 4.2,
+            "position": [
+                -260,
+                200
+            ],
+            "id": "a7309c55-6b40-4592-8238-edae20203d6a",
+            "name": "Create a Hubspot Contact"
+        },
+        {
+            "parameters": {
+                "toolDescription": "Update an existing Hubspot contact identified by its unique `contactId`. All details such as `email`, `firstname`, `lastname`, `phone`, and `companyId` are optional.",
+                "method": "PUT",
+                "url": "=http://35.170.240.97/api/v1/hubspot/contacts/{{ $fromAI('contactId', 'Provide the unique ID of the contact to update.', 'string') }}",
+                "sendHeaders": true,
+                "specifyHeaders": "json",
+                "jsonHeaders": "={\n  \"Authorization\": \"Bearer {{ '9a8f70ec2e4e90d3c83c4dd14e7b7281b8c6217a7d48b6a7ce99cd6c1a94f8c2'\n }}\"\n}",
+                "sendBody": true,
+                "bodyParameters": {
+                    "parameters": [
+                        {
+                            "name": "firstname",
+                            "value": "={{ $fromAI('firstname', `Provide the updated first name of the contact (optional).`, 'string') }}"
+                        },
+                        {
+                            "name": "lastname",
+                            "value": "={{ $fromAI('lastname', `Provide the updated last name of the contact (optional).`, 'string') }}"
+                        },
+                        {
+                            "name": "email",
+                            "value": "={{ $fromAI('email', `Provide the updated email address of the contact (optional, must be valid).`, 'string') }}"
+                        },
+                        {
+                            "name": "phone",
+                            "value": "={{ $fromAI('phone', `Provide the updated phone number of the contact (optional, must be valid).`, 'string') }}"
+                        },
+                        {
+                            "name": "companyId",
+                            "value": "={{ $fromAI('companyId', `Provide the associated company ID for the contact (optional).`, 'string') }}"
+                        }
+                    ]
+                },
+                "options": {}
+            },
+            "type": "n8n-nodes-base.httpRequestTool",
+            "typeVersion": 4.2,
+            "position": [
+                -80,
+                200
+            ],
+            "id": "82589498-19ab-49f5-a8ba-7e3129ca63cb",
+            "name": "Update a Hubspot Contact"
+        },
+        {
+            "parameters": {
+                "toolDescription": "Delete a HubSpot contact by providing its unique `contactId`. This action permanently removes the contact from the system.",
+                "method": "DELETE",
+                "url": "=http://35.170.240.97/api/v1/hubspot/contacts/{{ $fromAI('contactId', 'Enter the unique ID of the contact to delete.', 'string') }}",
+                "sendHeaders": true,
+                "specifyHeaders": "json",
+                "jsonHeaders": "={\n  \"Authorization\": \"Bearer {{ '9a8f70ec2e4e90d3c83c4dd14e7b7281b8c6217a7d48b6a7ce99cd6c1a94f8c2' }}\"\n}",
+                "options": {}
+            },
+            "type": "n8n-nodes-base.httpRequestTool",
+            "typeVersion": 4.2,
+            "position": [
+                100,
+                200
+            ],
+            "id": "21c6a526-d235-41df-a611-b29edf5be6c1",
+            "name": "Delete HubSpot Contact"
+        },
+        {
+            "parameters": {
+                "path": "1ca57807-5520-4c8e-95d1-36f08dabef07"
+            },
+            "type": "@n8n/n8n-nodes-langchain.mcpTrigger",
+            "typeVersion": 1,
+            "position": [
+                120,
+                -300
+            ],
+            "id": "78b39aca-5454-432f-807c-9937e7ccd9b1",
+            "name": "MCP Server Trigger",
+            "webhookId": "1ca57807-5520-4c8e-95d1-36f08dabef07"
+        },
+        {
+            "parameters": {
+                "options": {
+                    "systemMessage": "** You are a CRM Assistant. **"
+                }
+            },
+            "type": "@n8n/n8n-nodes-langchain.agent",
+            "typeVersion": 1.9,
+            "position": [
+                -1260,
+                -300
+            ],
+            "id": "bd1d4459-5180-4df6-8c82-ac61843dfba6",
+            "name": "AI Agent"
+        },
+        {
+            "parameters": {
+                "model": {
+                    "__rl": true,
+                    "mode": "list",
+                    "value": "gpt-4o-mini"
+                },
+                "options": {}
+            },
+            "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+            "typeVersion": 1.2,
+            "position": [
+                -1380,
+                -60
+            ],
+            "id": "d6f045b9-59b6-4160-a6dd-fdb76dfafcb2",
+            "name": "OpenAI Chat Model",
+            "credentials": {
+                "openAiApi": {
+                    "id": "DLJqYifNhv5adxi8",
+                    "name": "OPENAI_KEY (jcocjin)"
+                }
+            }
+        },
+        {
+            "parameters": {
+                "options": {}
+            },
+            "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+            "typeVersion": 1.1,
+            "position": [
+                -1540,
+                -300
+            ],
+            "id": "a4c97aa8-650a-429e-9358-e43e1b375367",
+            "name": "When chat message received",
+            "webhookId": "d37cc237-86ed-4e0a-aa4a-27ba5070bbdc"
+        },
+        {
+            "parameters": {},
+            "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+            "typeVersion": 1.3,
+            "position": [
+                -1160,
+                -60
+            ],
+            "id": "4c97c8f9-a934-4285-b7b5-43e03eb93c82",
+            "name": "Simple Memory"
+        },
+        {
+            "parameters": {
+                "sseEndpoint": "https://creativeglu.app.n8n.cloud/mcp/1ca57807-5520-4c8e-95d1-36f08dabef07/sse"
+            },
+            "type": "@n8n/n8n-nodes-langchain.mcpClientTool",
+            "typeVersion": 1,
+            "position": [
+                -940,
+                -60
+            ],
+            "id": "eb95d1cf-c6b5-4eb3-98c7-7a2e1ed3d0e8",
+            "name": "MCP Client"
+        },
+        {
+            "parameters": {
+                "content": "## MCP Testing",
+                "height": 500,
+                "width": 860,
+                "color": 7
+            },
+            "type": "n8n-nodes-base.stickyNote",
+            "position": [
+                -1620,
+                -380
+            ],
+            "typeVersion": 1,
+            "id": "9efde00a-9733-42bf-b614-acb9258ea76a",
+            "name": "Sticky Note1"
+        }
+    ],
+    "pinData": {},
+    "connections": {
+        "Fetch Hubspot Contact by ID": {
+            "ai_tool": [
+                [
+                    {
+                        "node": "MCP Server Trigger",
+                        "type": "ai_tool",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Create a Hubspot Contact": {
+            "ai_tool": [
+                [
+                    {
+                        "node": "MCP Server Trigger",
+                        "type": "ai_tool",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Update a Hubspot Contact": {
+            "ai_tool": [
+                [
+                    {
+                        "node": "MCP Server Trigger",
+                        "type": "ai_tool",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Delete a Hubspot Contact": {
+            "ai_tool": [
+                [
+                    {
+                        "node": "MCP Server Trigger",
+                        "type": "ai_tool",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "OpenAI Chat Model": {
+            "ai_languageModel": [
+                [
+                    {
+                        "node": "AI Agent",
+                        "type": "ai_languageModel",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "When chat message received": {
+            "main": [
+                [
+                    {
+                        "node": "AI Agent",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Simple Memory": {
+            "ai_memory": [
+                [
+                    {
+                        "node": "AI Agent",
+                        "type": "ai_memory",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "MCP Client": {
+            "ai_tool": [
+                [
+                    {
+                        "node": "AI Agent",
+                        "type": "ai_tool",
+                        "index": 0
+                    }
+                ]
+            ]
+        }
+    },
+    "active": true,
+    "settings": {
+        "executionOrder": "v1"
+    },
+    "versionId": "509e20e0-ef14-4021-b987-8358323600cf",
+    "meta": {
+        "templateCredsSetupCompleted": true,
+        "instanceId": "0d39019f778e791afbaadc193ebfddb9176008ec8cfebeb3b3f8b35138bc1ea0"
+    },
+    "id": "3YHwBYrdvbZ7xExI",
+    "tags": []
+}
