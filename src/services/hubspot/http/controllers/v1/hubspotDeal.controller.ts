@@ -10,6 +10,7 @@ import {
 import { HubspotDealService } from 'services/hubspot/providers/services';
 
 import { VersionControllers } from './hubspot.controller';
+import { ApiOperation } from '@nestjs/swagger';
 
 @ExtendedController({
   parent: VersionControllers.v1,
@@ -21,6 +22,12 @@ export default class HubspotDealController {
   }
 
   @Get()
+  @ApiOperation({
+    summary: 'Fetch Hubspot Deals',
+    description:
+      // eslint-disable-next-line max-len
+      'Retrieve a list of Hubspot deals with optional filters such as `limit`, `dealname`, and `contactId`.',
+  })
   async getDeals(
     @Query() { limit, ...filter }: HubspotDealSearchDto,
   ): Promise<ResponseType> {
@@ -31,6 +38,11 @@ export default class HubspotDealController {
   }
 
   @Get(':dealId')
+  @ApiOperation({
+    summary: 'Fetch a Hubspot Deal by ID',
+    description:
+      'Retrieve a specific Hubspot deal using its unique identifier `dealId`.',
+  })
   async getDealById(
     @Param() payload: HubspotDealSearchV2Dto,
   ): Promise<ResponseType> {
@@ -38,6 +50,12 @@ export default class HubspotDealController {
   }
 
   @Post()
+  @ApiOperation({
+    summary: 'Create a Hubspot Deal',
+    description:
+      // eslint-disable-next-line max-len
+      'Create a new Hubspot deal using the provided details, such as `contactId`, `dealname`, `amount`, and other optional fields like `stage`.',
+  })
   async createDeal(
     @Body() payload: HubspotDealCreateDto,
   ): Promise<ResponseType> {
@@ -45,6 +63,12 @@ export default class HubspotDealController {
   }
 
   @Put(':dealId')
+  @ApiOperation({
+    summary: 'Update a Hubspot Deal',
+    description:
+      // eslint-disable-next-line max-len
+      'Update an existing Hubspot deal using the provided details, such as `contactId`, `dealname`, `amount`, and other optional fields like `stage` identified by its unique `companyId`.',
+  })
   async updateDeal(
     @Body() payload: HubspotDealUpdateDto,
     @Param() { dealId }: HubspotDealSearchV2Dto,
@@ -53,6 +77,12 @@ export default class HubspotDealController {
   }
 
   @Delete(':dealId')
+  @ApiOperation({
+    summary: 'Delete a Hubspot Deal',
+    description:
+      // eslint-disable-next-line max-len
+      'Delete an existing Hubspot deal identified by its unique `dealId`.',
+  })
   async deleteDeal(
     @Param() { dealId }: HubspotDealSearchV2Dto,
   ): Promise<ResponseType> {
