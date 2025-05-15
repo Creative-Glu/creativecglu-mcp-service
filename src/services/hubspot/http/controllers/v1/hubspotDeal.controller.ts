@@ -1,4 +1,5 @@
 import { Body, Delete, Get, Param, Post, Put, Query } from '@nestjs/common';
+import { ApiOperation } from '@nestjs/swagger';
 import { ExtendedController } from '@yuriyempty/nestjs-extended-controller';
 import { ResponseType } from 'common/models';
 import {
@@ -10,7 +11,6 @@ import {
 import { HubspotDealService } from 'services/hubspot/providers/services';
 
 import { VersionControllers } from './hubspot.controller';
-import { ApiOperation } from '@nestjs/swagger';
 
 @ExtendedController({
   parent: VersionControllers.v1,
