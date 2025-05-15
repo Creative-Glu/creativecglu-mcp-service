@@ -25,7 +25,7 @@ export default class HubspotCompanyController {
     summary: 'Fetch Hubspot Companies',
     description:
       // eslint-disable-next-line max-len
-      'Retrieve a list of Hubspot companies with optional filters like `limit`, `name` and `domain`.',
+      'Retrieve a list of Hubspot companies with optional filters like `limit`, `name` and `domain` and `phone`.',
   })
   async getCompanies(
     @Query() { limit, ...filter }: HubspotCompanySearchDto,
@@ -47,6 +47,7 @@ export default class HubspotCompanyController {
   ): Promise<ResponseType> {
     return await this.hubspotCompanyService.getCompanyById(payload);
   }
+
   @Post()
   @ApiOperation({
     summary: 'Create a Hubspot Company',
