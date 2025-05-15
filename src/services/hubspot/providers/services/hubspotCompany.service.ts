@@ -60,8 +60,8 @@ export default class HubspotCompanyService {
       const data = await Promise.all(response.results);
 
       return { data, meta: { total: data.length } };
-    } catch (error) {
-      throw new HttpError(error);
+    } catch (err) {
+      throw new HttpError(err.message);
     }
   }
 
@@ -83,7 +83,7 @@ export default class HubspotCompanyService {
           id: payload.companyId,
         });
 
-      throw new HttpError(err);
+      throw new HttpError(err.message);
     }
   }
 
@@ -96,8 +96,8 @@ export default class HubspotCompanyService {
           properties: await removeEmpty(properties),
         }),
       };
-    } catch (error) {
-      throw new HttpError(error);
+    } catch (err) {
+      throw new HttpError(err.message);
     }
   }
 
@@ -118,8 +118,8 @@ export default class HubspotCompanyService {
           },
         ),
       };
-    } catch (error) {
-      throw new HttpError(error);
+    } catch (err) {
+      throw new HttpError(err.message);
     }
   }
 
@@ -128,8 +128,8 @@ export default class HubspotCompanyService {
 
     try {
       await this.hubspotClient.client.crm.companies.basicApi.archive(companyId);
-    } catch (error) {
-      throw new HttpError(error);
+    } catch (err) {
+      throw new HttpError(err.message);
     }
   }
 }
