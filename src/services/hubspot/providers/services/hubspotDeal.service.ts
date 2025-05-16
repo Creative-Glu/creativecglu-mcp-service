@@ -31,7 +31,7 @@ export default class HubspotDealService {
       if (name) {
         filters.push({
           propertyName: 'dealname',
-          operator: 'EQ',
+          operator: 'CONTAINS_TOKEN',
           value: name,
         });
       }
@@ -47,7 +47,7 @@ export default class HubspotDealService {
       if (stage) {
         filters.push({
           propertyName: 'dealstage',
-          operator: 'EQ',
+          operator: 'CONTAINS_TOKEN',
           value: stage,
         });
       }
@@ -90,6 +90,7 @@ export default class HubspotDealService {
           }
 
           return {
+            dealId: deal.id,
             ...deal,
             contacts,
           };
@@ -140,6 +141,7 @@ export default class HubspotDealService {
 
       return {
         data: {
+          dealId: deal.id,
           ...deal,
           contacts,
         },
@@ -221,6 +223,7 @@ export default class HubspotDealService {
 
       return {
         data: {
+          dealId: deal.id,
           ...deal,
           contacts,
         },
@@ -268,13 +271,18 @@ export default class HubspotDealService {
       );
 
     try {
+      const deal = await this.hubspotClient.client.crm.deals.basicApi.update(
+        dealId,
+        {
+          properties: await removeEmpty(rest),
+        },
+      );
+
       return {
-        data: await this.hubspotClient.client.crm.deals.basicApi.update(
-          dealId,
-          {
-            properties: await removeEmpty(rest),
-          },
-        ),
+        data: {
+          ...deal,
+          dealId: deal.id,
+        },
       };
     } catch (err) {
       throw new HttpError(err.message);

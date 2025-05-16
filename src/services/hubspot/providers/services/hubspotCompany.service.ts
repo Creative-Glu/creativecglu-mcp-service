@@ -25,7 +25,7 @@ export default class HubspotCompanyService {
       if (name) {
         filters.push({
           propertyName: 'name',
-          operator: 'EQ',
+          operator: 'CONTAINS_TOKEN',
           value: name,
         });
       }
@@ -57,7 +57,12 @@ export default class HubspotCompanyService {
           properties: ['name', 'domain', 'phone'],
         });
 
-      const data = await Promise.all(response.results);
+      const data = await Promise.all(
+        response.results.map(async (company) => ({
+          companyId: company.id,
+          ...company,
+        })),
+      );
 
       return { data, meta: { total: data.length } };
     } catch (err) {
@@ -69,13 +74,18 @@ export default class HubspotCompanyService {
     payload: HubspotCompanySearchV2Dto,
   ): Promise<ResponseType> {
     try {
-      const data =
+      const company =
         await this.hubspotClient.client.crm.companies.basicApi.getById(
           payload.companyId,
           ['name', 'domain', 'phone'],
         );
 
-      return { data };
+      return {
+        data: {
+          companyId: company.id,
+          ...company,
+        },
+      };
     } catch (err) {
       if ([404, 400].includes(err.code))
         throw new NotFoundException({
@@ -91,10 +101,16 @@ export default class HubspotCompanyService {
     properties: HubspotCompanyCreateDto,
   ): Promise<ResponseType> {
     try {
-      return {
-        data: await this.hubspotClient.client.crm.companies.basicApi.create({
+      const company =
+        await this.hubspotClient.client.crm.companies.basicApi.create({
           properties: await removeEmpty(properties),
-        }),
+        });
+
+      return {
+        data: {
+          companyId: company.id,
+          ...company,
+        },
       };
     } catch (err) {
       throw new HttpError(err.message);
@@ -110,13 +126,19 @@ export default class HubspotCompanyService {
     try {
       if (!rest.phone) delete rest.phone;
 
-      return {
-        data: await this.hubspotClient.client.crm.companies.basicApi.update(
+      const company =
+        await this.hubspotClient.client.crm.companies.basicApi.update(
           companyId,
           {
             properties: await removeEmpty(rest),
           },
-        ),
+        );
+
+      return {
+        data: {
+          companyId: company.id,
+          ...company,
+        },
       };
     } catch (err) {
       throw new HttpError(err.message);

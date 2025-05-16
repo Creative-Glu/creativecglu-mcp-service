@@ -31,7 +31,7 @@ export default class HubspotContactService {
       if (firstname) {
         filters.push({
           propertyName: 'firstname',
-          operator: 'EQ',
+          operator: 'CONTAINS_TOKEN',
           value: firstname,
         });
       }
@@ -39,7 +39,7 @@ export default class HubspotContactService {
       if (lastname) {
         filters.push({
           propertyName: 'lastname',
-          operator: 'EQ',
+          operator: 'CONTAINS_TOKEN',
           value: lastname,
         });
       }
@@ -87,7 +87,11 @@ export default class HubspotContactService {
               );
             return { ...contact, company: company.properties };
           }
-          return contact;
+
+          return {
+            contactId: contact.id,
+            ...contact,
+          };
         }),
       );
 
@@ -119,10 +123,16 @@ export default class HubspotContactService {
             contact.properties.associatedcompanyid,
             ['name', 'domain', 'phone'],
           );
-        return { data: { ...contact, company: company.properties } };
+        return {
+          data: {
+            contactId: contact.id,
+            ...contact,
+            company: company.properties,
+          },
+        };
       }
 
-      return { data: contact };
+      return { data: { contactId: contact.id, ...contact } };
     } catch (err) {
       if ([404, 400].includes(err.code))
         throw new NotFoundException({
@@ -147,11 +157,10 @@ export default class HubspotContactService {
         });
       }
 
-      const data = await this.hubspotClient.client.crm.contacts.basicApi.create(
-        {
+      const contact =
+        await this.hubspotClient.client.crm.contacts.basicApi.create({
           properties: await removeEmpty(rest),
-        },
-      );
+        });
 
       if (companyId)
         await this.hubspotClient.client.crm.associations.v4.batchApi.createDefault(
@@ -160,14 +169,14 @@ export default class HubspotContactService {
           {
             inputs: [
               {
-                _from: { id: data.id },
+                _from: { id: contact.id },
                 to: { id: companyId },
               },
             ],
           },
         );
 
-      return { data };
+      return { data: { contactId: contact.id, ...contact } };
     } catch (err) {
       throw new HttpError(err.message);
     }
@@ -200,13 +209,19 @@ export default class HubspotContactService {
           },
         );
 
-      return {
-        data: await this.hubspotClient.client.crm.contacts.basicApi.update(
+      const contact =
+        await this.hubspotClient.client.crm.contacts.basicApi.update(
           contactId,
           {
             properties: await removeEmpty(rest),
           },
-        ),
+        );
+
+      return {
+        data: {
+          contactId: contact.id,
+          ...contact,
+        },
       };
     } catch (err) {
       throw new HttpError(err.message);
