@@ -9,11 +9,11 @@
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        1300,
-        360
+        2640,
+        560
       ],
       "typeVersion": 1,
-      "id": "d8be5aca-b3a7-46b1-83c4-d0f62b517734",
+      "id": "6d46cba8-a846-4506-af29-49fba5260de0",
       "name": "Sticky Note"
     },
     {
@@ -25,11 +25,11 @@
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        2280,
-        360
+        3620,
+        560
       ],
       "typeVersion": 1,
-      "id": "7aecd873-d9e2-4e31-9827-c9e0593dc53e",
+      "id": "44a82bd5-018d-4b62-aacb-60b1f84ae170",
       "name": "Sticky Note2",
       "disabled": true
     },
@@ -71,15 +71,15 @@
       "type": "n8n-nodes-base.httpRequestTool",
       "typeVersion": 4.2,
       "position": [
-        1380,
-        440
+        2720,
+        640
       ],
-      "id": "989235ee-776d-4f73-bfd0-f490798c916e",
+      "id": "b3904d67-4065-40ff-b63e-133ead625d80",
       "name": "Fetch HubSpot Contacts"
     },
     {
       "parameters": {
-        "toolDescription": "Retrieves a specific HubSpot contact by its unique `contactId`.\n\nIf `contactId` is not provided, but the contact's `name`, `email`, or `phone` is specified:\n1. Search for a matching contact using the provided details.\n2. If a match is found, retrieve the associated `contactId` and use it to fetch the contact.\n3. If no match is found, return an error indicating that the contact could not be located.",
+        "toolDescription": "=Retrieves a specific HubSpot contact using its unique `contactId`, `name`, `email`, or contextual information.\n\nIf `contactId` is not provided, but the contact’s `name`, `email`, or `phone` is specified:\n1. Search for a matching contact using the available details.\n2. If a match is found, retrieve the associated `contactId` and use it to fetch the full contact record.\n3. If no match is found, return an error indicating that the contact could not be located.",
         "url": "=http://35.170.240.97/api/v1/hubspot/contacts/{{ $fromAI('contactId', 'Id of the contact', 'string') }}",
         "sendHeaders": true,
         "specifyHeaders": "json",
@@ -89,10 +89,10 @@
       "type": "n8n-nodes-base.httpRequestTool",
       "typeVersion": 4.2,
       "position": [
-        1560,
-        440
+        2900,
+        640
       ],
-      "id": "8dbce689-c268-4fd1-8ddf-5b71b8cce7f7",
+      "id": "c115bf70-e4cc-48a3-85d8-7785222ab4db",
       "name": "Fetch Hubspot Contact by ID"
     },
     {
@@ -133,10 +133,10 @@
       "type": "n8n-nodes-base.httpRequestTool",
       "typeVersion": 4.2,
       "position": [
-        1740,
-        440
+        3080,
+        640
       ],
-      "id": "955779e5-92d4-4ae1-b1da-d1c42050d9a2",
+      "id": "a2c8e572-4481-4ff9-8d1e-a2da5840cfd0",
       "name": "Create a Hubspot Contact"
     },
     {
@@ -177,10 +177,10 @@
       "type": "n8n-nodes-base.httpRequestTool",
       "typeVersion": 4.2,
       "position": [
-        1920,
-        440
+        3260,
+        640
       ],
-      "id": "29367c45-9e0c-4564-a5e5-ff80ee39b317",
+      "id": "54cd4a9d-b025-42c9-8c77-b953db8a1d0a",
       "name": "Update a Hubspot Contact"
     },
     {
@@ -196,10 +196,10 @@
       "type": "n8n-nodes-base.httpRequestTool",
       "typeVersion": 4.2,
       "position": [
-        2100,
-        440
+        3440,
+        640
       ],
-      "id": "d6e6449d-2d13-4a98-809a-205c53eb3e51",
+      "id": "e8f680f7-d1a5-49ce-950f-4bec297b5910",
       "name": "Delete HubSpot Contact"
     },
     {
@@ -211,10 +211,10 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 1.9,
       "position": [
-        2480,
-        -520
+        3820,
+        -320
       ],
-      "id": "4a9672b3-c25b-4d7e-bcc9-725bfda90b69",
+      "id": "6587ba0a-c2aa-4ee4-b684-5ed6d7ce2c62",
       "name": "AI Agent"
     },
     {
@@ -229,10 +229,10 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.2,
       "position": [
-        2420,
-        -360
+        3760,
+        -160
       ],
-      "id": "2585abe6-acd4-481d-9b3c-8f15bb626f11",
+      "id": "e8a0ecb9-2676-4f07-a398-aa237ff19199",
       "name": "OpenAI Chat Model",
       "credentials": {
         "openAiApi": {
@@ -248,10 +248,10 @@
       "type": "@n8n/n8n-nodes-langchain.chatTrigger",
       "typeVersion": 1.1,
       "position": [
-        2280,
-        -520
+        3620,
+        -320
       ],
-      "id": "c23c81e2-078a-4e96-ba07-3f55c035f1e6",
+      "id": "0c319fe6-8597-4371-b964-05be354f879f",
       "name": "When chat message received",
       "webhookId": "d37cc237-86ed-4e0a-aa4a-27ba5070bbdc"
     },
@@ -260,10 +260,10 @@
       "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
       "typeVersion": 1.3,
       "position": [
-        2580,
-        -360
+        3920,
+        -160
       ],
-      "id": "d257ab06-7bdc-4914-9cf1-c5f9364905e2",
+      "id": "1b5ee004-6875-45ac-b1c8-78cbeaa83fb5",
       "name": "Simple Memory"
     },
     {
@@ -273,10 +273,10 @@
       "type": "@n8n/n8n-nodes-langchain.mcpClientTool",
       "typeVersion": 1,
       "position": [
-        2740,
-        -360
+        4080,
+        -160
       ],
-      "id": "6bd80db0-6562-4413-8520-9ca51260e6ce",
+      "id": "cc66b408-2b16-42b3-8b3f-66335c23db6f",
       "name": "MCP Client"
     },
     {
@@ -312,15 +312,15 @@
       "type": "n8n-nodes-base.httpRequestTool",
       "typeVersion": 4.2,
       "position": [
-        2360,
-        440
+        3700,
+        640
       ],
-      "id": "0bafb1c1-2c1d-47e8-bf95-bd2c9d1010c0",
+      "id": "ca4304d4-12ca-471b-8965-f9e5102c8c51",
       "name": "Fetch HubSpot Companies"
     },
     {
       "parameters": {
-        "toolDescription": "Fetch detailed information about a specific HubSpot company using its unique `companyId`.\n\nIf `companyId` is not provided but `companyName` is specified:\n1. Search for a company using the given name.\n2. If a match is found, use its `companyId` to retrieve the company's details.\n3. If no match is found, return an error indicating that the company could not be located.",
+        "toolDescription": "=Fetches detailed information about a specific HubSpot company using its unique `companyId`, `name`, `domain`, or contextual clues.\n\nIf `companyId` is not provided, but `name`, `domain`, or contextual information is available:\n1. Search for a matching company using the provided details.\n2. If a match is found, retrieve the associated `companyId` and use it to fetch the company's full details.\n3. If no match is found, return an error indicating that the company could not be located.",
         "url": "=http://35.170.240.97/api/v1/hubspot/companies/{{ $fromAI('companyId', 'Enter the unique ID of the company to fetch details for. This field is required.', 'string') }}",
         "sendHeaders": true,
         "specifyHeaders": "json",
@@ -330,12 +330,11 @@
       "type": "n8n-nodes-base.httpRequestTool",
       "typeVersion": 4.2,
       "position": [
-        2540,
-        440
+        3880,
+        640
       ],
-      "id": "04122f73-9254-4c70-8283-8bc8894035f2",
-      "name": "Fetch HubSpot Company Details",
-      "disabled": true
+      "id": "76c25b3e-2ad6-488f-88bd-0038bf6e5696",
+      "name": "Fetch HubSpot Company Details"
     },
     {
       "parameters": {
@@ -367,12 +366,11 @@
       "type": "n8n-nodes-base.httpRequestTool",
       "typeVersion": 4.2,
       "position": [
-        2720,
-        440
+        4060,
+        640
       ],
-      "id": "11b18e3f-9877-4480-9e47-ba382d1ae97f",
-      "name": "Create a HubSpot Company",
-      "disabled": true
+      "id": "2ba52960-1fc9-4dea-8556-8400986666ec",
+      "name": "Create a HubSpot Company"
     },
     {
       "parameters": {
@@ -404,12 +402,11 @@
       "type": "n8n-nodes-base.httpRequestTool",
       "typeVersion": 4.2,
       "position": [
-        2900,
-        440
+        4240,
+        640
       ],
-      "id": "5061f8d9-8b6c-445e-b5fe-f57a66640b78",
-      "name": "Update a HubSpot Company",
-      "disabled": true
+      "id": "9f94db02-28cb-487a-867b-958d2c686dec",
+      "name": "Update a HubSpot Company"
     },
     {
       "parameters": {
@@ -424,12 +421,11 @@
       "type": "n8n-nodes-base.httpRequestTool",
       "typeVersion": 4.2,
       "position": [
-        3080,
-        440
+        4420,
+        640
       ],
-      "id": "205e283e-c0e8-476d-a0f5-8287bf4bb58a",
-      "name": "Delete HubSpot Company",
-      "disabled": true
+      "id": "063239fd-9eaf-4e1f-be09-d4d50a257dab",
+      "name": "Delete HubSpot Company"
     },
     {
       "parameters": {
@@ -440,52 +436,12 @@
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        3260,
-        360
+        4600,
+        560
       ],
       "typeVersion": 1,
-      "id": "48f1dc7a-ef57-4d8c-9f63-3ffea13a8fb1",
+      "id": "73546a53-50bb-4154-9534-a7dd067c437a",
       "name": "Sticky Note3",
-      "disabled": true
-    },
-    {
-      "parameters": {
-        "toolDescription": "'Retrieve a list of Hubspot companies with optional filters like `limit`, `name` and `domain` and `phone`.',\n",
-        "url": "http://35.170.240.97/api/v1/hubspot/companies",
-        "sendQuery": true,
-        "queryParameters": {
-          "parameters": [
-            {
-              "name": "name",
-              "value": "={{ $fromAI('name', `Enter the company name to filter the results. This field is optional.`, 'string') }}"
-            },
-            {
-              "name": "domain",
-              "value": "={{ $fromAI('domain', `Enter the company's domain to filter the results. This field is optional and should be a valid URL.`, 'string') }}"
-            },
-            {
-              "name": "phone",
-              "value": "={{ $fromAI('phone', `Enter the company's phone number to filter the results. This field is optional and should be a valid phone number.`, 'string') }}"
-            },
-            {
-              "name": "limit",
-              "value": "={{ $fromAI('limit', `Specify the maximum number of companies to retrieve. This field is optional.`, 'number') }}"
-            }
-          ]
-        },
-        "sendHeaders": true,
-        "specifyHeaders": "json",
-        "jsonHeaders": "={\n  \"Authorization\": \"Bearer {{ '9a8f70ec2e4e90d3c83c4dd14e7b7281b8c6217a7d48b6a7ce99cd6c1a94f8c2' }}\"\n}",
-        "options": {}
-      },
-      "type": "n8n-nodes-base.httpRequestTool",
-      "typeVersion": 4.2,
-      "position": [
-        3340,
-        440
-      ],
-      "id": "feaf45e1-b4a3-438f-b793-538c880c032a",
-      "name": "Fetch HubSpot Companies1",
       "disabled": true
     },
     {
@@ -500,10 +456,10 @@
       "type": "n8n-nodes-base.httpRequestTool",
       "typeVersion": 4.2,
       "position": [
-        3520,
-        440
+        4860,
+        640
       ],
-      "id": "8e6daf03-be58-44ec-b2fc-9da79a227416",
+      "id": "39240956-bf87-4bfb-b688-ebd99158b749",
       "name": "Fetch HubSpot Company Details1",
       "disabled": true
     },
@@ -537,10 +493,10 @@
       "type": "n8n-nodes-base.httpRequestTool",
       "typeVersion": 4.2,
       "position": [
-        3700,
-        440
+        5040,
+        640
       ],
-      "id": "edd8fa87-6eff-4ff3-9939-04a9dae1d5ad",
+      "id": "8dfabb0a-2417-40b5-93c7-ec9ada881c0d",
       "name": "Create a HubSpot Company1",
       "disabled": true
     },
@@ -574,10 +530,10 @@
       "type": "n8n-nodes-base.httpRequestTool",
       "typeVersion": 4.2,
       "position": [
-        3880,
-        440
+        5220,
+        640
       ],
-      "id": "68033b8f-61bd-49d7-b84a-8a7686f77ef0",
+      "id": "38a4cc61-fbde-430f-b544-bdb467fa1708",
       "name": "Update a HubSpot Company1",
       "disabled": true
     },
@@ -594,10 +550,10 @@
       "type": "n8n-nodes-base.httpRequestTool",
       "typeVersion": 4.2,
       "position": [
-        4060,
-        440
+        5400,
+        640
       ],
-      "id": "f62b99fa-5ede-4b8c-b07f-27a0c19b9032",
+      "id": "f6d2d76d-2dbe-4eb0-a9f1-9546b43503c5",
       "name": "Delete HubSpot Company1",
       "disabled": true
     },
@@ -610,11 +566,11 @@
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        4240,
-        360
+        5580,
+        560
       ],
       "typeVersion": 1,
-      "id": "e252c82e-1074-4458-ad33-4d2978c07dfc",
+      "id": "42ddff41-bf3b-4e85-a9c3-3d859ae5cc07",
       "name": "Sticky Note4",
       "disabled": true
     },
@@ -651,10 +607,10 @@
       "type": "n8n-nodes-base.httpRequestTool",
       "typeVersion": 4.2,
       "position": [
-        4320,
-        440
+        5660,
+        640
       ],
-      "id": "94853f15-3aa2-4a1b-8e47-8e333b32eb93",
+      "id": "e6ec3b6d-58a5-4e83-acd5-78e35b36b6f7",
       "name": "Fetch HubSpot Companies2",
       "disabled": true
     },
@@ -670,10 +626,10 @@
       "type": "n8n-nodes-base.httpRequestTool",
       "typeVersion": 4.2,
       "position": [
-        4500,
-        440
+        5840,
+        640
       ],
-      "id": "378602b0-23b9-4793-9e38-56a42051b5f9",
+      "id": "27e9c296-45c7-4293-888b-8e1b92700467",
       "name": "Fetch HubSpot Company Details2",
       "disabled": true
     },
@@ -707,10 +663,10 @@
       "type": "n8n-nodes-base.httpRequestTool",
       "typeVersion": 4.2,
       "position": [
-        4680,
-        440
+        6020,
+        640
       ],
-      "id": "34c3e234-70ef-4586-bff7-e65b6944ff15",
+      "id": "1a5b7a65-30c6-442d-b784-bee02ad84566",
       "name": "Create a HubSpot Company2",
       "disabled": true
     },
@@ -744,10 +700,10 @@
       "type": "n8n-nodes-base.httpRequestTool",
       "typeVersion": 4.2,
       "position": [
-        4860,
-        440
+        6200,
+        640
       ],
-      "id": "ee306170-d195-4ac3-b2ae-39443193b7b6",
+      "id": "84e1c32c-1e68-409f-a819-92d9cbcb07ef",
       "name": "Update a HubSpot Company2",
       "disabled": true
     },
@@ -764,10 +720,10 @@
       "type": "n8n-nodes-base.httpRequestTool",
       "typeVersion": 4.2,
       "position": [
-        5040,
-        440
+        6380,
+        640
       ],
-      "id": "ba097c3c-e78c-416e-8b5d-93ae8fa4981d",
+      "id": "a4b87f31-531e-4c3a-b108-094ba8622990",
       "name": "Delete HubSpot Company2",
       "disabled": true
     },
@@ -780,11 +736,11 @@
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        2220,
-        -600
+        3560,
+        -400
       ],
       "typeVersion": 1,
-      "id": "ce013a84-9450-475e-a209-278042d658b5",
+      "id": "eb326b5f-955e-4276-a787-b8b914030979",
       "name": "Sticky Note1"
     },
     {
@@ -794,41 +750,51 @@
       "type": "@n8n/n8n-nodes-langchain.mcpTrigger",
       "typeVersion": 1,
       "position": [
-        5320,
-        1700
+        4420,
+        -320
       ],
-      "id": "276e4822-3046-4465-9f56-bec38fcdaea2",
-      "name": "MCP Server Trigger1",
-      "webhookId": "1ca57807-5520-4c8e-95d1-36f08dabef07"
-    },
-    {
-      "parameters": {
-        "options": {
-          "systemMessage": "=**You are a CRM Assistant.**\n\nYou are responsible for managing CRM data within the HubSpot platform.\n\nYour role is to interact with and maintain customer relationship data across the following core entities:\n\n- **Contacts** – Individuals with details such as name, email, phone number, and associated companies.\n- **Companies** – Organizations linked to one or more contacts, deals, or tickets.\n- **Deals** – Sales opportunities tied to specific contacts or companies.\n- **Stages** – Pipeline phases that represent the progress of a deal.\n- **Pipelines** – Structured workflows that define the sequence of stages for deals or tickets.\n- **Tickets** – Support or service-related issues associated with contacts, companies, or deals.\n\nYou can retrieve, create, update, delete, or associate records across these entities based on user input.\n\nIf a unique identifier (such as `contactId`, `companyId`, or `dealId`) is not provided, you should perform a lookup using available fields like name, email, domain, or phone.\n\nYour primary goal is to keep CRM data accurate, current, and relationally consistent across all entities within the HubSpot ecosystem."
-        }
-      },
-      "type": "@n8n/n8n-nodes-langchain.agent",
-      "typeVersion": 1.9,
-      "position": [
-        5400,
-        1780
-      ],
-      "id": "0f4b9b9f-bb1a-40ad-8665-5d10dcab96bd",
-      "name": "AI Agent1"
-    },
-    {
-      "parameters": {
-        "path": "1ca57807-5520-4c8e-95d1-36f08dabef07"
-      },
-      "type": "@n8n/n8n-nodes-langchain.mcpTrigger",
-      "typeVersion": 1,
-      "position": [
-        3080,
-        -520
-      ],
-      "id": "fbd38576-a602-4e79-9ac6-36afd4bbad01",
+      "id": "32b5115e-c850-4868-92c7-ae860b1ca472",
       "name": "MCP Server Trigger",
       "webhookId": "1ca57807-5520-4c8e-95d1-36f08dabef07"
+    },
+    {
+      "parameters": {
+        "toolDescription": "Retrieves a list of HubSpot deals using optional filters.\n\n- **Optional filters**: `limit`, array of `contactIds`, `name`, `stage`\n\nFilter Behavior:\n\n- If `name` is provided:  \n  1. Search for deals that match the given name.  \n  2. If no matching deal is found, the filter will be ignored.\n\n- If `contactIds` are provided:  \n  1. Search for deals associated with the specified contact IDs.  \n  2. If no matching deal is found, the filter will be ignored.",
+        "url": "http://35.170.240.97/api/v1/hubspot/deals",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "name",
+              "value": "={{ $fromAI('name', `Enter the company name to filter the results. This field is optional.`, 'string') }}"
+            },
+            {
+              "name": "contactIds",
+              "value": "={{ $fromAI('contactIds', `Enter an array of contactIds to filter the results. This field is optional and should be an array of valid contact ID strings.`, 'string') }}"
+            },
+            {
+              "name": "limit",
+              "value": "={{ $fromAI('limit', `Specify the maximum number of companies to retrieve. This field is optional.`, 'number') }}"
+            },
+            {
+              "name": "stage",
+              "value": "={{ $fromAI('stage', `Provide the stage to filter the results. This field is optional.`, 'string') }}"
+            }
+          ]
+        },
+        "sendHeaders": true,
+        "specifyHeaders": "json",
+        "jsonHeaders": "={\n  \"Authorization\": \"Bearer {{ '9a8f70ec2e4e90d3c83c4dd14e7b7281b8c6217a7d48b6a7ce99cd6c1a94f8c2' }}\"\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequestTool",
+      "typeVersion": 4.2,
+      "position": [
+        4680,
+        640
+      ],
+      "id": "fb8f8e5b-c1ce-4065-8893-d775a83b1538",
+      "name": "Fetch HubSpot Deals"
     }
   ],
   "pinData": {},
@@ -987,17 +953,6 @@
         ]
       ]
     },
-    "Fetch HubSpot Companies1": {
-      "ai_tool": [
-        [
-          {
-            "node": "MCP Server Trigger",
-            "type": "ai_tool",
-            "index": 0
-          }
-        ]
-      ]
-    },
     "Fetch HubSpot Company Details1": {
       "ai_tool": [
         [
@@ -1096,13 +1051,24 @@
           }
         ]
       ]
+    },
+    "Fetch HubSpot Deals": {
+      "ai_tool": [
+        [
+          {
+            "node": "MCP Server Trigger",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "active": true,
   "settings": {
     "executionOrder": "v1"
   },
-  "versionId": "8c84250e-2567-4680-a132-9b899b9b5378",
+  "versionId": "e963d03a-3294-47c9-9e6b-92b87aebcd1d",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "8504ad3bf541c5d16e431f168070b21dcbf61af82ea7bee0c2d833e23192d019"

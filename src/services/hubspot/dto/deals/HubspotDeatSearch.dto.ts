@@ -2,10 +2,12 @@ import { PartialType } from '@nestjs/mapped-types';
 import { Type } from 'class-transformer';
 import {
   IsArray,
+  isEmpty,
   IsNotEmpty,
   IsOptional,
   IsString,
   Min,
+  ValidateIf,
 } from 'class-validator';
 import { FilterType } from 'common/models';
 
@@ -16,6 +18,7 @@ export default class HubspotDeatSearchDto extends PartialType(FilterType) {
   limit?: number = 10;
 
   @IsOptional()
+  @ValidateIf((p) => !isEmpty(p.contactIds))
   @IsArray({ each: true })
   @IsString({ each: true })
   contactIds?: string[];

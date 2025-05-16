@@ -1,14 +1,16 @@
 import {
   IsArray,
-  IsNotEmpty,
+  isEmpty,
   IsNumber,
   IsOptional,
   IsString,
   Min,
+  ValidateIf,
 } from 'class-validator';
 
 export default class HubspotDealUpdateDto {
-  @IsNotEmpty()
+  @IsOptional()
+  @ValidateIf((p) => !isEmpty(p.contactIds))
   @IsArray()
   @IsString({ each: true })
   contactIds: string[];
@@ -21,10 +23,10 @@ export default class HubspotDealUpdateDto {
   @IsString()
   name?: string;
 
-  @IsNotEmpty()
+  @IsOptional()
   @IsNumber()
   @Min(1)
-  amount: number;
+  amount?: number;
 
   @IsOptional()
   @IsString()
