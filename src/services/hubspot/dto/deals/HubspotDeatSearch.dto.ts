@@ -15,10 +15,10 @@ export default class HubspotDeatSearchDto extends PartialType(FilterType) {
   @Type(() => Number)
   limit?: number = 10;
 
-  @IsNotEmpty()
+  @IsOptional()
   @IsArray({ each: true })
   @IsString({ each: true })
-  contactIds: string[];
+  contactIds?: string[];
 
   @IsOptional()
   @IsString()
