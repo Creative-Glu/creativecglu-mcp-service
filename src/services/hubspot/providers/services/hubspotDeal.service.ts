@@ -1,6 +1,6 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import c from 'common/constants';
-import { HttpError } from 'common/exceptions';
+import { HttpError, NotFoundException } from 'common/exceptions';
 import { FilterType, ResponseType } from 'common/models';
 import {
   HubspotDealCreateDto,
@@ -232,9 +232,15 @@ export default class HubspotDealService {
 
   async updateDeal({
     dealId,
+    contactIds,
     ...rest
   }: HubspotDealUpdateDto): Promise<ResponseType> {
     await this.getDealById({ dealId });
+
+    for (const contactId of contactIds)
+      await this.hubspotContactService.getContactById({
+        contactId,
+      });
 
     if (rest.name) {
       (rest as Record<string, any>).dealname = rest.name;
@@ -245,6 +251,21 @@ export default class HubspotDealService {
       (rest as Record<string, any>).dealstage = rest.stage;
       delete rest.stage;
     }
+
+    if (rest.amount)
+      (rest as Record<string, any>).oooooooooamount = rest.amount.toString();
+
+    if (contactIds)
+      await this.hubspotClient.client.crm.associations.v4.batchApi.createDefault(
+        'Deals',
+        'Contacts',
+        {
+          inputs: contactIds.map((contactId) => ({
+            _from: { id: dealId },
+            to: { id: contactId },
+          })),
+        },
+      );
 
     try {
       return {
