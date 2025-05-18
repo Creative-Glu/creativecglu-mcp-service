@@ -1,4 +1,14 @@
-import { Body, Delete, Get, Param, Post, Put, Query } from '@nestjs/common';
+import {
+  Body,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Put,
+  Query,
+  UsePipes,
+  ValidationPipe,
+} from '@nestjs/common';
 import { ApiOperation } from '@nestjs/swagger';
 import { ExtendedController } from '@yuriyempty/nestjs-extended-controller';
 import { ResponseType } from 'common/models';
@@ -9,6 +19,7 @@ import {
   HubspotDealUpdateDto,
 } from 'services/hubspot/dto';
 import { HubspotDealService } from 'services/hubspot/providers/services';
+import { removeEmpty } from 'utils';
 
 import { VersionControllers } from './hubspot.controller';
 
@@ -16,6 +27,7 @@ import { VersionControllers } from './hubspot.controller';
   parent: VersionControllers.v1,
   path: 'deals',
 })
+@UsePipes(new ValidationPipe({ transform: true, whitelist: true }))
 export default class HubspotDealController {
   constructor(private readonly hubspotDealService: HubspotDealService) {
     this.hubspotDealService = hubspotDealService;
@@ -31,10 +43,12 @@ export default class HubspotDealController {
   async getDeals(
     @Query() { limit, ...filter }: HubspotDealSearchDto,
   ): Promise<ResponseType> {
-    return await this.hubspotDealService.getDeals({
-      perPage: limit,
-      ...filter,
-    });
+    return await this.hubspotDealService.getDeals(
+      removeEmpty({
+        perPage: limit,
+        ...filter,
+      }),
+    );
   }
 
   @Get(':dealId')
