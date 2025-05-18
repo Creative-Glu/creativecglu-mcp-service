@@ -7,8 +7,9 @@ import {
   HubspotCompanyUpdateDto,
 } from 'services/hubspot/dto';
 import { HubspotCompanySearchV2Dto } from 'services/hubspot/dto/companies/HubspotCompanySearch.dto';
-import HubspotClient from 'services/hubspot/providers/clients/hubspot.client';
 import { removeEmpty } from 'utils';
+
+import { HubspotClient } from '../clients';
 
 @Injectable()
 export default class HubspotCompanyService {

@@ -1,0 +1,49 @@
+import { Get, Param, Query } from '@nestjs/common';
+import { ApiOperation } from '@nestjs/swagger';
+import { ExtendedController } from '@yuriyempty/nestjs-extended-controller';
+import { ResponseType } from 'common/models';
+import {
+  HubspotPipelineSearchDto,
+  HubspotPipelineSearchV2Dto,
+} from 'services/hubspot/dto';
+import { HubspotPipelineService } from 'services/hubspot/providers/services';
+
+import { VersionControllers } from '../hubspot.controller';
+
+@ExtendedController({
+  parent: VersionControllers.v1,
+  path: 'pipelines',
+})
+export default class HubspotPipelineController {
+  constructor(private readonly hubspotPipelineService: HubspotPipelineService) {
+    this.hubspotPipelineService = hubspotPipelineService;
+  }
+
+  @Get()
+  @ApiOperation({
+    summary: 'Fetch Hubspot Pipelines',
+    description:
+      // eslint-disable-next-line max-len
+      'Retrieve a list of Hubspot pipelines with optional filters such as `limit` and `pipelineName`.',
+  })
+  async getPipelines(
+    @Query() { limit, ...filter }: HubspotPipelineSearchDto,
+  ): Promise<ResponseType> {
+    return await this.hubspotPipelineService.getPipelines({
+      perPage: limit,
+      ...filter,
+    });
+  }
+
+  @Get(':pipelineId')
+  @ApiOperation({
+    summary: 'Fetch a Hubspot Pipeline by ID',
+    description:
+      'Retrieve a specific Hubspot pipeline using its unique identifier `pipelineId`.',
+  })
+  async getPipelineById(
+    @Param() payload: HubspotPipelineSearchV2Dto,
+  ): Promise<ResponseType> {
+    return await this.hubspotPipelineService.getPipelineById(payload);
+  }
+}

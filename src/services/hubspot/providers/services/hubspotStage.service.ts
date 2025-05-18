@@ -1,71 +1,85 @@
 import { Injectable } from '@nestjs/common';
+import { isEmpty } from 'class-validator';
+import { HttpError, NotFoundException } from 'common/exceptions';
+import { ResponseType } from 'common/models';
+import {
+  HubspotStageSearchDto,
+  HubspotStageSearchV2Dto,
+} from 'services/hubspot/dto';
 import HubspotClient from 'services/hubspot/providers/clients/hubspot.client';
 
-import HubspotDealService from './hubspotDeal.service';
+import HubspotPipelineService from './hubspotPipeline.service';
 
 @Injectable()
 export default class HubspotStageService {
   constructor(
     private readonly hubspotClient: HubspotClient,
-    private readonly hubspotDealService: HubspotDealService,
+    private readonly hubspotPipelineService: HubspotPipelineService,
   ) {
+    this.hubspotPipelineService = hubspotPipelineService;
     this.hubspotClient = hubspotClient;
-    this.hubspotDealService = hubspotDealService;
   }
 
-  // async getStages(): Promise<ResponseType> {
-  //   try {
-  //     const response =
-  //       await this.hubspotClient.client.crm.pipelines.pipelinesApi.getAll(
-  //         'deals',
-  //       );
+  async getStages({
+    pipelineId,
+    name,
+  }: HubspotStageSearchDto): Promise<ResponseType> {
+    const { data: pipeline } =
+      await this.hubspotPipelineService.getPipelineById({
+        pipelineId,
+      });
 
-  //     const data: Record<string, any> = await Promise.all(response.results);
+    try {
+      const data = await Promise.all(
+        pipeline.stages
+          .filter((stage: any) => {
+            if (!isEmpty(name))
+              return stage.label.toLowerCase().includes(name.toLowerCase());
 
-  //     return {
-  //       data: data[0]?.stages ?? [],
-  //       meta: { total: data[0]?.stages.length },
-  //     };
-  //   } catch (error) {
-  //     throw new HttpError(error);
-  //   }
-  // }
+            return true;
+          })
+          .map((stage: any) => ({
+            stageId: stage.id,
+            ...stage,
+          })),
+      );
 
-  // async getStageById(payload: HubspotStageSearchDto): Promise<ResponseType> {
-  //   const { data } = await this.getStages();
+      return {
+        data,
+        meta: { total: data.length },
+      };
+    } catch (err) {
+      throw new HttpError(err.message);
+    }
+  }
 
-  //   return { data: data.find((stage) => stage.id === payload.stageId) ?? null };
-  // }
+  async getStageById({
+    pipelineId,
+    stageId,
+  }: HubspotStageSearchV2Dto): Promise<ResponseType> {
+    const { data: pipeline } =
+      await this.hubspotPipelineService.getPipelineById({
+        pipelineId,
+      });
 
-  // async moveDeal(payload: HubspotStageMoveDealDto): Promise<ResponseType> {
-  //   try {
-  //     if (
-  //       (await (await this.getStageById({ stageId: payload.stageId })).data) ===
-  //       null
-  //     )
-  //       return { data: null, message: 'stage not found' };
+    const data: Record<string, any> = await Promise.all(
+      pipeline.stages
+        .map((stage: any) => ({
+          stageId: stage.id,
+          ...stage,
+        }))
+        .filter((stage: any) => stage.id === stageId),
+    );
 
-  //     if (
-  //       (await (
-  //         await this.hubspotDealService.getDealById({
-  //           dealId: payload.dealId,
-  //         })
-  //       ).data) === null
-  //     )
-  //       return { data: null, message: 'Deal not found' };
+    if (!data[0]) {
+      throw new NotFoundException({
+        collection: 'stage',
+        id: stageId,
+      });
+    }
 
-  //     const data = await this.hubspotClient.client.crm.deals.basicApi.update(
-  //       payload.dealId,
-  //       {
-  //         properties: {
-  //           dealstage: payload.stageId,
-  //         },
-  //       },
-  //     );
-
-  //     return { data };
-  //   } catch (error) {
-  //     throw new HttpError(error);
-  //   }
-  // }
+    return {
+      data: data[0],
+    };
+  }
 }

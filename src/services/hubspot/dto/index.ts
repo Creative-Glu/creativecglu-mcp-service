@@ -13,6 +13,12 @@ import HubspotDealUpdateDto from './deals/HubspotDealUpdate.dto';
 import HubspotDealSearchDto, {
   HubspotDealSearchV2Dto,
 } from './deals/HubspotDeatSearch.dto';
+import HubspotPipelineSearchDto, {
+  HubspotPipelineSearchV2Dto,
+} from './pipelines/HubspotPipelineSearch.dto';
+import HubspotStageSearchDto, {
+  HubspotStageSearchV2Dto,
+} from './stages/HubspotStageSearch.dto';
 
 export {
   HubspotCompanyCreateDto,
@@ -27,4 +33,8 @@ export {
   HubspotDealSearchDto,
   HubspotDealSearchV2Dto,
   HubspotDealUpdateDto,
+  HubspotPipelineSearchDto,
+  HubspotPipelineSearchV2Dto,
+  HubspotStageSearchDto,
+  HubspotStageSearchV2Dto,
 };
