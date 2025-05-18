@@ -8,7 +8,7 @@ import {
 } from 'services/hubspot/dto';
 import HubspotClient from 'services/hubspot/providers/clients/hubspot.client';
 
-import HubspotPipelineService from './____hubspotPipeline.service';
+import HubspotPipelineService from './hubspotPipeline.service';
 
 @Injectable()
 export default class HubspotStageService {
