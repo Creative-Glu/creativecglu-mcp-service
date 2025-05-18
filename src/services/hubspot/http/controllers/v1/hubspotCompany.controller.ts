@@ -1,4 +1,14 @@
-import { Body, Delete, Get, Param, Post, Put, Query } from '@nestjs/common';
+import {
+  Body,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Put,
+  Query,
+  UsePipes,
+  ValidationPipe,
+} from '@nestjs/common';
 import { ApiOperation } from '@nestjs/swagger';
 import { ExtendedController } from '@yuriyempty/nestjs-extended-controller';
 import { ResponseType } from 'common/models';
@@ -8,6 +18,7 @@ import {
   HubspotCompanySearchV2Dto,
 } from 'services/hubspot/dto';
 import { HubspotCompanyService } from 'services/hubspot/providers/services';
+import { removeEmpty } from 'utils';
 
 import { VersionControllers } from './hubspot.controller';
 
@@ -15,6 +26,7 @@ import { VersionControllers } from './hubspot.controller';
   parent: VersionControllers.v1,
   path: 'companies',
 })
+@UsePipes(new ValidationPipe({ transform: true, whitelist: true }))
 export default class HubspotCompanyController {
   constructor(private readonly hubspotCompanyService: HubspotCompanyService) {
     this.hubspotCompanyService = hubspotCompanyService;
@@ -30,10 +42,12 @@ export default class HubspotCompanyController {
   async getCompanies(
     @Query() { limit, ...filter }: HubspotCompanySearchDto,
   ): Promise<ResponseType> {
-    return await this.hubspotCompanyService.getCompanies({
-      perPage: limit,
-      ...filter,
-    });
+    return await this.hubspotCompanyService.getCompanies(
+      removeEmpty({
+        perPage: limit,
+        ...filter,
+      }),
+    );
   }
 
   @Get(':companyId')

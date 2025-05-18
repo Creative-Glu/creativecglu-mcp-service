@@ -1,4 +1,4 @@
-import { Get, Param, Query } from '@nestjs/common';
+import { Get, Param, Query, UsePipes, ValidationPipe } from '@nestjs/common';
 import { ApiOperation } from '@nestjs/swagger';
 import { ExtendedController } from '@yuriyempty/nestjs-extended-controller';
 import { ResponseType } from 'common/models';
@@ -8,6 +8,7 @@ import {
   HubspotStageSearchV2Dto,
 } from 'services/hubspot/dto';
 import { HubspotStageService } from 'services/hubspot/providers/services';
+import { removeEmpty } from 'utils';
 
 import HubspotPipelineController from './hubspotPipeline.controller';
 
@@ -21,6 +22,7 @@ export default class HubspotStageController {
   }
 
   @Get()
+  @UsePipes(new ValidationPipe({ transform: true, whitelist: true }))
   @ApiOperation({
     summary: 'Fetch Hubspot Stages',
     description:
@@ -31,14 +33,17 @@ export default class HubspotStageController {
     @Param() { pipelineId }: HubspotPipelineSearchV2Dto,
     @Query() { limit, ...filter }: HubspotStageSearchDto,
   ): Promise<ResponseType> {
-    return await this.hubspotStageService.getStages({
-      perPage: limit,
-      pipelineId,
-      ...filter,
-    });
+    return await this.hubspotStageService.getStages(
+      removeEmpty({
+        perPage: limit,
+        pipelineId,
+        ...filter,
+      }),
+    );
   }
 
   @Get(':stageId')
+  @UsePipes(new ValidationPipe({ transform: true, whitelist: true }))
   @ApiOperation({
     summary: 'Fetch a Hubspot Stage by ID',
     description:
