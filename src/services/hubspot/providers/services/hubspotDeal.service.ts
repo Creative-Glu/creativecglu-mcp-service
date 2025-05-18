@@ -7,9 +7,9 @@ import {
   HubspotDealSearchV2Dto,
   HubspotDealUpdateDto,
 } from 'services/hubspot/dto';
-import HubspotClient from 'services/hubspot/providers/clients/hubspot.client';
 import { removeEmpty } from 'utils';
 
+import { HubspotClient } from '../clients';
 import HubspotContactService from './hubspotContact.service';
 
 @Injectable()

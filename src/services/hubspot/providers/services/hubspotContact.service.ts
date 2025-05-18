@@ -7,9 +7,9 @@ import {
   HubspotContactSearchV2Dto,
   HubspotContactUpdateDto,
 } from 'services/hubspot/dto';
-import HubspotClient from 'services/hubspot/providers/clients/hubspot.client';
 import { removeEmpty } from 'utils';
 
+import { HubspotClient } from '../clients';
 import HubspotCompanyService from './hubspotCompany.service';
 
 @Injectable()
@@ -117,22 +117,19 @@ export default class HubspotContactService {
         );
       }
 
+      let company;
+
       if (contact.properties?.associatedcompanyid) {
-        const company =
+        const _company =
           await this.hubspotClient.client.crm.companies.basicApi.getById(
             contact.properties.associatedcompanyid,
             ['name', 'domain', 'phone'],
           );
-        return {
-          data: {
-            contactId: contact.id,
-            ...contact,
-            company: company.properties,
-          },
-        };
+
+        company = _company.properties;
       }
 
-      return { data: { contactId: contact.id, ...contact } };
+      return { data: { contactId: contact.id, ...contact, company } };
     } catch (err) {
       if ([404, 400].includes(err.code))
         throw new NotFoundException({

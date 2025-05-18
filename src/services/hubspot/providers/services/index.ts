@@ -1,18 +1,21 @@
 import HubspotCompanyService from './hubspotCompany.service';
 import HubspotContactService from './hubspotContact.service';
 import HubspotDealService from './hubspotDeal.service';
+import HubspotPipelineService from './hubspotPipeline.service';
 import HubspotStageService from './hubspotStage.service';
 
 export {
-  HubspotContactService,
-  HubspotStageService,
   HubspotCompanyService,
+  HubspotContactService,
   HubspotDealService,
+  HubspotPipelineService,
+  HubspotStageService,
 };
 
 export default [
-  HubspotContactService,
-  HubspotStageService,
   HubspotCompanyService,
+  HubspotContactService,
   HubspotDealService,
+  HubspotPipelineService,
+  HubspotStageService,
 ];
