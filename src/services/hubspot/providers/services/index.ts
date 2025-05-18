@@ -1,7 +1,7 @@
+import HubspotPipelineService from './____hubspotPipeline.service';
 import HubspotCompanyService from './hubspotCompany.service';
 import HubspotContactService from './hubspotContact.service';
 import HubspotDealService from './hubspotDeal.service';
-import HubspotPipelineService from './hubspotPipeline.service';
 import HubspotStageService from './hubspotStage.service';
 
 export {
