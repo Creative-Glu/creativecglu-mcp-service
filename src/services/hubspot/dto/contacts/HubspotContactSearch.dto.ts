@@ -33,7 +33,7 @@ export default class HubspotContactSearchDto extends PartialType(FilterType) {
 
   @IsOptional()
   @ValidateIf((p) => !isEmpty(p.phone))
-  @IsPhoneNumber()
+  @IsPhoneNumber(null)
   phone?: string;
 }
 
