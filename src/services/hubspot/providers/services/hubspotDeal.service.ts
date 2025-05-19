@@ -98,7 +98,7 @@ export default class HubspotDealService {
 
   async getDeals(filter: FilterType): Promise<ResponseType> {
     try {
-      const { name, amount, stage, contactId, companyId, ...rest } = filter;
+      const { name, amount, stageId, contactId, companyId, ...rest } = filter;
 
       const filters: Record<string, any>[] = [];
 
@@ -118,11 +118,11 @@ export default class HubspotDealService {
         });
       }
 
-      if (stage) {
+      if (stageId) {
         filters.push({
           propertyName: 'dealstage',
           operator: 'CONTAINS_TOKEN',
-          value: stage,
+          value: stageId,
         });
       }
 
