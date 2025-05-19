@@ -26,6 +26,14 @@ export default class HubspotDeatSearchDto extends PartialType(FilterType) {
   @IsOptional()
   @IsString()
   stage?: string;
+
+  @IsOptional()
+  @IsString()
+  contactId?: string;
+
+  @IsOptional()
+  @IsString()
+  companyId?: string;
 }
 
 export class HubspotDealSearchV2Dto extends PartialType(HubspotDeatSearchDto) {

@@ -9,6 +9,8 @@ import {
 
 import { HubspotClient } from '../clients';
 
+export const DEFAULT_PIPELINE_ID = 'default';
+
 @Injectable()
 export default class HubspotPipelineService {
   constructor(private readonly hubspotClient: HubspotClient) {

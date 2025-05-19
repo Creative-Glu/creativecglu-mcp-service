@@ -3,6 +3,7 @@ import {
   Delete,
   Get,
   Param,
+  Patch,
   Post,
   Put,
   Query,
@@ -17,6 +18,7 @@ import {
   HubspotDealSearchDto,
   HubspotDealSearchV2Dto,
   HubspotDealUpdateDto,
+  HubspotDealUpdateV2Dto,
 } from 'services/hubspot/dto';
 import { HubspotDealService } from 'services/hubspot/providers/services';
 import { removeEmpty } from 'utils';
@@ -105,5 +107,22 @@ export default class HubspotDealController {
     return {
       message: 'Deal deleted successfully',
     };
+  }
+
+  @Patch(':dealId')
+  @ApiOperation({
+    summary: 'Update Hubspot Deal Stage',
+    description:
+      // eslint-disable-next-line max-len
+      'Update the stage of an existing Hubspot deal by its unique `dealId`. Only stage-related fields should be provided in the request payload.',
+  })
+  async changeDealStage(
+    @Body() payload: HubspotDealUpdateV2Dto,
+    @Param() { dealId }: HubspotDealSearchV2Dto,
+  ): Promise<ResponseType> {
+    return await this.hubspotDealService.changeDealStage({
+      ...payload,
+      dealId,
+    });
   }
 }
