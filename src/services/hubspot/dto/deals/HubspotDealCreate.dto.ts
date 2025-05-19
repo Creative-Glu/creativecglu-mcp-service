@@ -33,9 +33,9 @@ export default class HubspotDealCreateDto {
 
   @IsOptional()
   @IsString()
-  stage?: string;
+  stageId?: string;
 
   @IsOptional()
   @IsString()
-  pipeline?: string;
+  pipelineId?: string;
 }
