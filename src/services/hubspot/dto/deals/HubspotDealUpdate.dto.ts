@@ -1,6 +1,7 @@
 import {
   IsArray,
   isEmpty,
+  IsNotEmpty,
   IsNumber,
   IsOptional,
   IsString,
@@ -13,7 +14,13 @@ export default class HubspotDealUpdateDto {
   @ValidateIf((p) => !isEmpty(p.contactIds))
   @IsArray()
   @IsString({ each: true })
-  contactIds: string[];
+  contactIds?: string[];
+
+  @IsOptional()
+  @ValidateIf((p) => !isEmpty(p.contactIds))
+  @IsArray()
+  @IsString({ each: true })
+  companyIds?: string[];
 
   @IsOptional()
   @IsString()
@@ -30,5 +37,15 @@ export default class HubspotDealUpdateDto {
 
   @IsOptional()
   @IsString()
-  stage?: string;
+  stageId?: string;
+}
+
+export class HubspotDealUpdateV2Dto {
+  @IsOptional()
+  @IsString()
+  dealId?: string;
+
+  @IsNotEmpty()
+  @IsString()
+  stageId: string;
 }

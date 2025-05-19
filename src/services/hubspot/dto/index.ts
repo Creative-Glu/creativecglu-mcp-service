@@ -9,7 +9,9 @@ import HubspotContactSearchDto, {
 } from './contacts/HubspotContactSearch.dto';
 import HubspotContactUpdateDto from './contacts/HubspotContactUpdate.dto';
 import HubspotDealCreateDto from './deals/HubspotDealCreate.dto';
-import HubspotDealUpdateDto from './deals/HubspotDealUpdate.dto';
+import HubspotDealUpdateDto, {
+  HubspotDealUpdateV2Dto,
+} from './deals/HubspotDealUpdate.dto';
 import HubspotDealSearchDto, {
   HubspotDealSearchV2Dto,
 } from './deals/HubspotDeatSearch.dto';
@@ -33,6 +35,7 @@ export {
   HubspotDealSearchDto,
   HubspotDealSearchV2Dto,
   HubspotDealUpdateDto,
+  HubspotDealUpdateV2Dto,
   HubspotPipelineSearchDto,
   HubspotPipelineSearchV2Dto,
   HubspotStageSearchDto,
