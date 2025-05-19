@@ -20,20 +20,18 @@ export default class HubspotDeatSearchDto extends PartialType(FilterType) {
   contactIds?: string[];
 
   @IsOptional()
+  @ValidateIf((p) => !isEmpty(p.companyIds))
+  @IsArray({ each: true })
+  @IsString({ each: true })
+  companyIds?: string[];
+
+  @IsOptional()
   @IsString()
   name?: string;
 
   @IsOptional()
   @IsString()
-  stage?: string;
-
-  @IsOptional()
-  @IsString()
-  contactId?: string;
-
-  @IsOptional()
-  @IsString()
-  companyId?: string;
+  stageId?: string;
 }
 
 export class HubspotDealSearchV2Dto extends PartialType(HubspotDeatSearchDto) {
