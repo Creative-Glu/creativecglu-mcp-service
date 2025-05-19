@@ -1,17 +1,26 @@
 import {
   IsArray,
+  isEmpty,
   IsNotEmpty,
   IsNumber,
   IsOptional,
   IsString,
   Min,
+  ValidateIf,
 } from 'class-validator';
 
 export default class HubspotDealCreateDto {
-  @IsNotEmpty()
+  @IsOptional()
+  @ValidateIf((p) => !isEmpty(p.contactIds))
   @IsArray()
   @IsString({ each: true })
-  contactIds: string[];
+  contactIds?: string[];
+
+  @IsOptional()
+  @ValidateIf((p) => !isEmpty(p.contactIds))
+  @IsArray()
+  @IsString({ each: true })
+  companyIds?: string[];
 
   @IsNotEmpty()
   @IsString()

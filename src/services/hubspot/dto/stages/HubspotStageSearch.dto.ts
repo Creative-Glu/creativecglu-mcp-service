@@ -20,7 +20,7 @@ export class HubspotStageSearchV2Dto extends PartialType(
 ) {
   @IsOptional()
   @IsString()
-  pipelineId?: string = 'default';
+  pipelineId?: string;
 
   @IsNotEmpty()
   @IsString()

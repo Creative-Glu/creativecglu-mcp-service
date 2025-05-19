@@ -6,18 +6,15 @@ import {
   HubspotStageSearchDto,
   HubspotStageSearchV2Dto,
 } from 'services/hubspot/dto';
-import HubspotClient from 'services/hubspot/providers/clients/hubspot.client';
 
-import HubspotPipelineService from './hubspotPipeline.service';
+import HubspotPipelineService, {
+  DEFAULT_PIPELINE_ID,
+} from './hubspotPipeline.service';
 
 @Injectable()
 export default class HubspotStageService {
-  constructor(
-    private readonly hubspotClient: HubspotClient,
-    private readonly hubspotPipelineService: HubspotPipelineService,
-  ) {
+  constructor(private readonly hubspotPipelineService: HubspotPipelineService) {
     this.hubspotPipelineService = hubspotPipelineService;
-    this.hubspotClient = hubspotClient;
   }
 
   async getStages({
@@ -26,7 +23,7 @@ export default class HubspotStageService {
   }: HubspotStageSearchDto): Promise<ResponseType> {
     const { data: pipeline } =
       await this.hubspotPipelineService.getPipelineById({
-        pipelineId,
+        pipelineId: pipelineId ?? DEFAULT_PIPELINE_ID,
       });
 
     try {
@@ -59,7 +56,7 @@ export default class HubspotStageService {
   }: HubspotStageSearchV2Dto): Promise<ResponseType> {
     const { data: pipeline } =
       await this.hubspotPipelineService.getPipelineById({
-        pipelineId,
+        pipelineId: pipelineId ?? DEFAULT_PIPELINE_ID,
       });
 
     const data: Record<string, any> = await Promise.all(

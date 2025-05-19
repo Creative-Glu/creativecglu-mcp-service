@@ -22,6 +22,26 @@ export default class HubspotContactService {
     this.hubspotCompanyService = hubspotCompanyService;
   }
 
+  async getCompanyByContactId(
+    contact: Record<string, any>,
+  ): Promise<Record<string, any>[]> {
+    let company = null;
+
+    if (contact.properties.associatedcompanyid) {
+      company = await this.hubspotClient.client.crm.companies.basicApi.getById(
+        contact.properties.associatedcompanyid,
+        ['name', 'domain', 'phone'],
+      );
+
+      company = {
+        companyId: company.id,
+        ...company.properties,
+      };
+    }
+
+    return company;
+  }
+
   async getContacts(filter: FilterType): Promise<ResponseType> {
     try {
       const { firstname, lastname, email, phone, ...rest } = filter;
@@ -78,21 +98,11 @@ export default class HubspotContactService {
         });
 
       const data = await Promise.all(
-        response.results.map(async (contact: any) => {
-          if (contact.properties.associatedcompanyid) {
-            const company =
-              await this.hubspotClient.client.crm.companies.basicApi.getById(
-                contact.properties.associatedcompanyid,
-                ['name', 'domain', 'phone'],
-              );
-            return { ...contact, company: company.properties };
-          }
-
-          return {
-            contactId: contact.id,
-            ...contact,
-          };
-        }),
+        response.results.map(async (contact: any) => ({
+          contactId: contact.id,
+          ...contact,
+          company: await this.getCompanyByContactId(contact),
+        })),
       );
 
       return { data, meta: { total: data.length } };
@@ -117,19 +127,13 @@ export default class HubspotContactService {
         );
       }
 
-      let company;
-
-      if (contact.properties?.associatedcompanyid) {
-        const _company =
-          await this.hubspotClient.client.crm.companies.basicApi.getById(
-            contact.properties.associatedcompanyid,
-            ['name', 'domain', 'phone'],
-          );
-
-        company = _company.properties;
-      }
-
-      return { data: { contactId: contact.id, ...contact, company } };
+      return {
+        data: {
+          contactId: contact.id,
+          ...contact,
+          company: await this.getCompanyByContactId(contact),
+        },
+      };
     } catch (err) {
       if ([404, 400].includes(err.code))
         throw new NotFoundException({
@@ -173,7 +177,13 @@ export default class HubspotContactService {
           },
         );
 
-      return { data: { contactId: contact.id, ...contact } };
+      return {
+        data: {
+          contactId: contact.id,
+          ...contact,
+          company: await this.getCompanyByContactId(contact),
+        },
+      };
     } catch (err) {
       throw new HttpError(err.message);
     }
@@ -218,6 +228,7 @@ export default class HubspotContactService {
         data: {
           contactId: contact.id,
           ...contact,
+          company: await this.getCompanyByContactId(contact),
         },
       };
     } catch (err) {
