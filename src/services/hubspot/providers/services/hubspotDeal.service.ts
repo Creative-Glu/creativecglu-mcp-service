@@ -214,11 +214,11 @@ export default class HubspotDealService {
     delete rest.name;
 
     (rest as Record<string, any>).dealstage =
-      rest.stage ?? 'appointmentscheduled';
-    delete rest.stage;
+      rest.stageId ?? 'appointmentscheduled';
+    delete rest.stageId;
 
-    (rest as Record<string, any>).pipeline = rest.pipeline ?? 'default';
-    delete rest.pipeline;
+    (rest as Record<string, any>).pipeline = rest.pipelineId ?? 'default';
+    delete rest.pipelineId;
 
     try {
       const deal = await this.hubspotClient.client.crm.deals.basicApi.create({
