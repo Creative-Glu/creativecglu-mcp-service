@@ -10,11 +10,11 @@
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        5560,
-        620
+        10340,
+        1660
       ],
       "typeVersion": 1,
-      "id": "d8526e60-4cc2-464c-8935-b57ea1919dd4",
+      "id": "b0e5b603-19d0-4285-822e-ff08824bcff0",
       "name": "Sticky Note2",
       "disabled": true
     },
@@ -27,11 +27,11 @@
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        6540,
-        620
+        11320,
+        1660
       ],
       "typeVersion": 1,
-      "id": "de52be8d-1bfb-44c7-8174-03bbfc04096c",
+      "id": "c8449327-de92-4b1c-a433-4d684de97700",
       "name": "Sticky Note3",
       "disabled": true
     },
@@ -65,10 +65,10 @@
       "type": "n8n-nodes-base.httpRequestTool",
       "typeVersion": 4.2,
       "position": [
-        7160,
-        700
+        11940,
+        1740
       ],
-      "id": "589750e1-198b-4742-b8d5-5cdddaa08d10",
+      "id": "f6cdf36a-1dfa-4b5f-a595-018748a00d7d",
       "name": "Update a HubSpot Company1",
       "disabled": true
     },
@@ -85,10 +85,10 @@
       "type": "n8n-nodes-base.httpRequestTool",
       "typeVersion": 4.2,
       "position": [
-        7340,
-        700
+        12120,
+        1740
       ],
-      "id": "a1abd161-c9b6-4abd-a1ec-2b6d399b883c",
+      "id": "56ca1749-b816-4a3e-ac37-1247aa37fe1b",
       "name": "Delete HubSpot Company1",
       "disabled": true
     },
@@ -101,11 +101,11 @@
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        7960,
-        620
+        12740,
+        1660
       ],
       "typeVersion": 1,
-      "id": "b9c4c018-e94d-4234-88c0-cbd89aba9de6",
+      "id": "04a64d8c-7aaf-4090-afd3-402aa216a76e",
       "name": "Sticky Note4",
       "disabled": true
     },
@@ -142,10 +142,10 @@
       "type": "n8n-nodes-base.httpRequestTool",
       "typeVersion": 4.2,
       "position": [
-        6620,
-        700
+        11400,
+        1740
       ],
-      "id": "1812bce6-2feb-4f61-8548-df04191f265c",
+      "id": "8e7b299c-188b-4a69-8dc3-12c6e40f3426",
       "name": "Fetch HubSpot Deals",
       "disabled": true,
       "onError": "continueRegularOutput"
@@ -180,10 +180,10 @@
       "type": "n8n-nodes-base.httpRequestTool",
       "typeVersion": 4.2,
       "position": [
-        6980,
-        700
+        11760,
+        1740
       ],
-      "id": "c377013c-b666-49ca-9734-348d54c44552",
+      "id": "1c23da5b-b0c8-47cb-a9bc-aea5d5faf7c3",
       "name": "Create a HubSpot Deal",
       "disabled": true,
       "onError": "continueRegularOutput"
@@ -200,27 +200,13 @@
       "type": "n8n-nodes-base.httpRequestTool",
       "typeVersion": 4.2,
       "position": [
-        6800,
-        700
+        11580,
+        1740
       ],
-      "id": "5c3b363c-5bda-4239-83ab-759ae4abae34",
+      "id": "aeb58712-a416-4e4a-8960-41a29441f8bc",
       "name": "Fetch HubSpot Deal by dealId",
       "disabled": true,
       "onError": "continueRegularOutput"
-    },
-    {
-      "parameters": {
-        "path": "1ca57807-5520-4c8e-95d1-36f08dabef07"
-      },
-      "type": "@n8n/n8n-nodes-langchain.mcpTrigger",
-      "typeVersion": 1,
-      "position": [
-        6360,
-        -260
-      ],
-      "id": "a274187b-22eb-49e8-847b-93ea982d2d17",
-      "name": "MCP Server Trigger",
-      "webhookId": "1ca57807-5520-4c8e-95d1-36f08dabef07"
     },
     {
       "parameters": {
@@ -230,11 +216,11 @@
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        4580,
-        620
+        9360,
+        1660
       ],
       "typeVersion": 1,
-      "id": "9497be15-adee-46fc-8404-e2b4d05f5da6",
+      "id": "0dfe2078-696f-4960-be3f-a4f59ee30965",
       "name": "Sticky Note"
     },
     {
@@ -274,14 +260,13 @@
       "type": "n8n-nodes-base.httpRequestTool",
       "typeVersion": 4.2,
       "position": [
-        4660,
-        700
+        9440,
+        1740
       ],
-      "id": "fdcb828a-45d6-437b-9d26-ecb6540428a9",
+      "id": "92a8e08e-8058-4fdf-adc6-7690fba2d412",
       "name": "Get Contacts",
       "retryOnFail": false,
-      "alwaysOutputData": false,
-      "onError": "continueRegularOutput"
+      "alwaysOutputData": false
     },
     {
       "parameters": {
@@ -296,10 +281,10 @@
       "type": "n8n-nodes-base.httpRequestTool",
       "typeVersion": 4.2,
       "position": [
-        4840,
-        700
+        9620,
+        1740
       ],
-      "id": "cbeedfac-1ada-4eb0-a65b-41e88519b870",
+      "id": "6129d457-ca84-4e58-943d-f14e0af207ec",
       "name": "Get Contact",
       "onError": "continueRegularOutput"
     },
@@ -342,10 +327,10 @@
       "type": "n8n-nodes-base.httpRequestTool",
       "typeVersion": 4.2,
       "position": [
-        5020,
-        700
+        9800,
+        1740
       ],
-      "id": "dc9e7c29-ab54-4a77-82d0-450a74f830fe",
+      "id": "3cdbe877-03e1-49b3-b753-08bbb16af8a1",
       "name": "Create Contact",
       "onError": "continueRegularOutput"
     },
@@ -389,10 +374,10 @@
       "type": "n8n-nodes-base.httpRequestTool",
       "typeVersion": 4.2,
       "position": [
-        5200,
-        700
+        9980,
+        1740
       ],
-      "id": "7e78e8c1-e6c6-45c5-bdf8-247496850bbb",
+      "id": "7a6c07b7-f5ce-42c1-9840-30ca38929b00",
       "name": "Update Contact",
       "onError": "continueRegularOutput"
     },
@@ -410,10 +395,10 @@
       "type": "n8n-nodes-base.httpRequestTool",
       "typeVersion": 4.2,
       "position": [
-        5380,
-        700
+        10160,
+        1740
       ],
-      "id": "954a1821-fd9c-4fa5-ad7a-a8c48982b4a3",
+      "id": "07340104-5c3a-4e2a-b40b-87a017f85369",
       "name": "Delete Contact",
       "onError": "continueRegularOutput"
     },
@@ -451,10 +436,10 @@
       "type": "n8n-nodes-base.httpRequestTool",
       "typeVersion": 4.2,
       "position": [
-        5640,
-        700
+        10420,
+        1740
       ],
-      "id": "1270d7b4-390f-441a-b357-3a1b4530a561",
+      "id": "059adec6-ee5e-4243-b6f4-e107dbab6ea6",
       "name": "Get Companies",
       "executeOnce": false,
       "retryOnFail": false,
@@ -473,10 +458,10 @@
       "type": "n8n-nodes-base.httpRequestTool",
       "typeVersion": 4.2,
       "position": [
-        5820,
-        700
+        10600,
+        1740
       ],
-      "id": "bd267523-4809-4507-9ce9-507734e668f1",
+      "id": "bbc44316-b499-49d4-8893-c198e8cbf70a",
       "name": "Get Company",
       "onError": "continueRegularOutput"
     },
@@ -511,10 +496,10 @@
       "type": "n8n-nodes-base.httpRequestTool",
       "typeVersion": 4.2,
       "position": [
-        6000,
-        700
+        10780,
+        1740
       ],
-      "id": "110c096b-e44b-4f23-810b-595fb8bd6ba2",
+      "id": "b2c5324c-36a2-49fa-8e98-d0302656ddc5",
       "name": "Create Company",
       "onError": "continueRegularOutput"
     },
@@ -549,10 +534,10 @@
       "type": "n8n-nodes-base.httpRequestTool",
       "typeVersion": 4.2,
       "position": [
-        6180,
-        700
+        10960,
+        1740
       ],
-      "id": "5958e35c-2974-4915-b952-d963302cca11",
+      "id": "f3b59a8c-292f-4d33-811b-d03d362129b0",
       "name": "Update Company",
       "onError": "continueRegularOutput"
     },
@@ -570,10 +555,10 @@
       "type": "n8n-nodes-base.httpRequestTool",
       "typeVersion": 4.2,
       "position": [
-        6360,
-        700
+        11140,
+        1740
       ],
-      "id": "d8f28b67-7c57-405a-be72-6209ee0054ee",
+      "id": "4c44eaa1-c0c1-4013-921a-482e382f2153",
       "name": "Delete Company",
       "notesInFlow": false,
       "onError": "continueRegularOutput"
@@ -587,11 +572,11 @@
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        7520,
-        620
+        12300,
+        1660
       ],
       "typeVersion": 1,
-      "id": "f083585f-c927-4a1a-a773-10d6a4436b10",
+      "id": "03c5c234-b93b-4599-8183-23b1f896316c",
       "name": "Sticky Note5",
       "disabled": true
     },
@@ -621,10 +606,10 @@
       "type": "n8n-nodes-base.httpRequestTool",
       "typeVersion": 4.2,
       "position": [
-        7600,
-        700
+        12380,
+        1740
       ],
-      "id": "f1f9dbc6-075b-44ca-afaa-fbc7c9cc28c1",
+      "id": "d5e931f5-35b0-423d-bd9c-1e69cddccbe0",
       "name": "Get Pipelines",
       "onError": "continueRegularOutput"
     },
@@ -641,10 +626,10 @@
       "type": "n8n-nodes-base.httpRequestTool",
       "typeVersion": 4.2,
       "position": [
-        7780,
-        700
+        12560,
+        1740
       ],
-      "id": "2ce582a6-7dcf-40d2-aafc-6a9461bf868a",
+      "id": "31500aa0-8634-439b-8afc-878cf12f974c",
       "name": "Get Pipeline",
       "retryOnFail": false,
       "onError": "continueRegularOutput"
@@ -675,10 +660,10 @@
       "type": "n8n-nodes-base.httpRequestTool",
       "typeVersion": 4.2,
       "position": [
-        8040,
-        700
+        12820,
+        1740
       ],
-      "id": "483e44f1-3181-4d75-98c9-9991c6c07e08",
+      "id": "d091a043-9821-4407-9962-b7556f32a904",
       "name": "Get Stages",
       "retryOnFail": false,
       "onError": "continueRegularOutput"
@@ -695,14 +680,175 @@
       "type": "n8n-nodes-base.httpRequestTool",
       "typeVersion": 4.2,
       "position": [
-        8220,
-        700
+        13000,
+        1740
       ],
-      "id": "31ba80b5-9d64-4183-b5dc-72ff2a2895d9",
+      "id": "5a90e40b-0bf5-4790-8c53-a624aae1c8ed",
       "name": "Get Stage"
     },
     {
       "parameters": {
+        "options": {
+          "systemMessage": "=### 🤖 **You are a friendly and professional CRM Assistant powered by an MCP Server and AI Agent**\n\nYou manage customer relationship records by interpreting user intent and interacting with the following core entities:\n\n- **📇 Contacts** — *(leads, prospects, customers, individuals, users, assets)*  \n  Individuals with attributes such as name, email address, phone number, and associated companies.\n\n- **🏢 Companies** — *(organizations, businesses, agencies, firms, entities, vendors, clients)*  \n  Business entities linked to contacts, deals, or tickets.\n\n- **💼 Deals** — *(sales, opportunities, transactions, offers, negotiations, quotes, contracts)*  \n  Sales opportunities associated with contacts or companies.\n\n- **📶 Stages** — *(steps, milestones, phases, checkpoints)*  \n  Defined progress points within a pipeline.\n\n- **📋 Pipelines** — *(workflows, funnels, processes, sales tracks)*  \n  Structured workflows outlining the progression of deals or tickets through various stages.\n\n- **🎫 Tickets** — *(support cases, inquiries, service requests, issues, helpdesk items)*  \n  Support-related records tied to contacts, companies, or deals.\n\n---\n\n### 📌 **Behavior Notes**\n\n- Do **not** mention \"HubSpot CRM\" — this system is presented as a **white-label** platform.\n- If a user enters an unknown command, respond with a list of available commands and their descriptions.\n- If a user request is ambiguous or outside CRM scope:\n  - Ask for clarification politely.\n  - Suggest using the `/help` command.\n- If a workflow encounters an error:\n  - Invoke the `error-log` tool and provide relevant context.\n  - Respond with a clear and courteous message.\n  - Recommend using an appropriate command from `/help`.\n\n---\n\n### 🧭 **Commands**\n\n| Command              | Alias  | Description                                                                                           | Action                                                           |\n|----------------------|--------|-------------------------------------------------------------------------------------------------------|------------------------------------------------------------------|\n| `/start`             | `/b`   | Begin the session with a warm welcome, introduce assistant capabilities, and explain how you can help display commands like `/help`, `/info` | Start session with friendly interaction                         |\n| `/stop`              | `/s`   | End the conversation and terminate the session                                                        | Stop session                                                     |\n| `/restart`, `/reset` | `/r`   | Reset the assistant’s memory, invoke the `restart-session` tool, and begin a new session              | Clear session memory                                             |\n| `/tools`             | `/t`   | Display a list of tools available to the assistant                                                    | Show available tools                                             |\n| `/help`              | `/h`   | Show all available commands and their descriptions                                                    | Display command reference                                        |\n| `/info`              | `/i`   | Display assistant capabilities, scope, platform behavior, limitations, and tools                      | Show assistant overview                                          |\n\n---\n\n### ⚙️ **Supported Operations**\n\nYou support the following operations across all entities:\n\n- **🔍 Get** — *(retrieve, fetch, find, list, search, view)*  \n- **➕ Create** — *(add, register, open, generate, start)*  \n- **✏️ Update** — *(edit, modify, change, rename, replace)*  \n- **🗑️ Delete** — *(remove, erase, drop, archive)*  \n- **🔗 Associate** — *(link, connect, relate, join, assign, attach)*\n\n> 🎯 Your role is to interpret each user message and match it to the correct **operation** and **entity**.  \n> If unclear, ask politely and suggest using the `/help` command.\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.9,
+      "position": [
+        10080,
+        500
+      ],
+      "id": "a3963986-685f-449f-b586-8480502b6bc0",
+      "name": "MCP Client - AI Chat Agent",
+      "retryOnFail": false
+    },
+    {
+      "parameters": {
+        "content": "## MCP Client - Workflow",
+        "height": 740,
+        "width": 1240,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        9360,
+        420
+      ],
+      "typeVersion": 1,
+      "id": "c9bf4080-03e1-435d-bef1-3748e53b9ad4",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "jsCode": "return [{\n  chatInput: $input.first().json.chatInput ?? $input.first().json.message.text,\n  sessionId: $input.first().json.sessionId ?? $input.first().json.message.chat.id\n}]"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        9720,
+        720
+      ],
+      "id": "1016b86b-e354-41f8-853e-4cf5d13ac1c3",
+      "name": "Input Transformer"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        9960,
+        700
+      ],
+      "id": "b97ca8ad-dc8c-4f73-aac8-7bd483ab3297",
+      "name": "OpenAI MCP Client Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "L5UoHZfkBt6nb3Ad",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "contextWindowLength": 10
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
+      "typeVersion": 1.3,
+      "position": [
+        10080,
+        820
+      ],
+      "id": "3be4df4e-50a1-489e-ab78-51a7f578023f",
+      "name": "Postgres MCP Client - Chat Memory",
+      "credentials": {
+        "postgres": {
+          "id": "kS35e9jQpjf0T0s4",
+          "name": "Postgres Account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "path": "1ca57807-5520-4c8e-95d1-36f08dabef07"
+      },
+      "type": "@n8n/n8n-nodes-langchain.mcpTrigger",
+      "typeVersion": 1,
+      "position": [
+        11140,
+        780
+      ],
+      "id": "4203f499-510c-47a0-8379-4c54252831d9",
+      "name": "MCP Client - Hubspot Tools Client",
+      "webhookId": "1ca57807-5520-4c8e-95d1-36f08dabef07"
+    },
+    {
+      "parameters": {
+        "sseEndpoint": "=https://gluagents.xyz/mcp/1ca57807-5520-4c8e-95d1-36f08dabef07/sse"
+      },
+      "type": "@n8n/n8n-nodes-langchain.mcpClientTool",
+      "typeVersion": 1,
+      "position": [
+        10440,
+        700
+      ],
+      "id": "9266c603-cf16-41dc-8a46-e9d4d166dea0",
+      "name": "MCP Client - Hubspot Tools"
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "### 🐞 **Tool Name:** `error-log`\n\n---\n\n### 📋 **Description**\n\nLogs error messages encountered during a workflow, tool execution, or user interaction.  \nThis tool is used to capture and persist failures, unexpected behavior, or debugging information across assistant sessions.\n\n---\n\n### 📝 **Required Fields**\n\n- `message` — The error message(s) to log.  \n  📌 *Type:* `object` or `array of objects` (required)  \n  🧾 *Description:* Can be a single error object or an array of error entries. Each object should contain at least an `error` field, and may optionally include `source` and `details`.\n\n---\n\n### ⚙️ **Behavior**\n\n- Captures and stores:\n  - `error` — A brief message or summary of what went wrong\n  - `source` *(optional)* — The originating tool or workflow\n  - `details` *(optional)* — Any additional metadata or context\n- Can be invoked manually for testing or automatically on tool failure\n- Supports structured JSON logging for better traceability\n",
+        "operation": "deleteTable",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "n8n_chat_histories",
+          "mode": "list",
+          "cachedResultName": "n8n_chat_histories"
+        },
+        "deleteCommand": "delete",
+        "where": {
+          "values": [
+            {
+              "column": "session_id",
+              "value": "={{ $json.sessionId }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgresTool",
+      "typeVersion": 2.6,
+      "position": [
+        10320,
+        820
+      ],
+      "id": "a846eb0d-16c9-424a-a19b-ca5577a050f4",
+      "name": "Reset Session",
+      "credentials": {
+        "postgres": {
+          "id": "kS35e9jQpjf0T0s4",
+          "name": "Postgres Account"
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "### 🐞 **Tool Name:** `error-log`\n\n---\n\n### 📋 **Description**\n\nLogs an error message encountered during a workflow, tool execution, or user interaction.  \nThis tool helps track failures, unexpected behavior, and troubleshooting events across assistant sessions.\n\n---\n\n### 📝 **Required Fields**\n\n- `message` — The error message(s) to log. Must be in valid JSON format.  \n  📌 *Type:* `object` or `array of objects` (required)",
         "schema": {
           "__rl": true,
           "mode": "list",
@@ -717,8 +863,8 @@
         "columns": {
           "mappingMode": "defineBelow",
           "value": {
-            "sessionId": "={{ $('When chat message received').item.json.sessionId }}",
-            "message": "={{ {\n chatInput: $json.chatInput ?? $('Telegram Trigger').item.json.message.text,\n error: $json.error\n} }}"
+            "message": "={{ $fromAI('message', `The error message or array of error messages to be logged. Can include source and details.`, 'string') }}",
+            "session_id": "={{ $json.sessionId }}"
           },
           "matchingColumns": [
             "id"
@@ -735,22 +881,14 @@
               "removed": true
             },
             {
-              "id": "created_at",
-              "displayName": "created_at",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "dateTime",
-              "canBeUsedToMatch": true
-            },
-            {
-              "id": "sessionId",
-              "displayName": "sessionId",
+              "id": "session_id",
+              "displayName": "session_id",
               "required": false,
               "defaultMatch": false,
               "display": true,
               "type": "string",
-              "canBeUsedToMatch": true
+              "canBeUsedToMatch": true,
+              "removed": false
             },
             {
               "id": "message",
@@ -758,7 +896,7 @@
               "required": false,
               "defaultMatch": false,
               "display": true,
-              "type": "object",
+              "type": "string",
               "canBeUsedToMatch": true
             }
           ],
@@ -767,132 +905,48 @@
         },
         "options": {}
       },
-      "type": "n8n-nodes-base.postgres",
+      "type": "n8n-nodes-base.postgresTool",
       "typeVersion": 2.6,
       "position": [
-        5920,
-        -220
+        10200,
+        960
       ],
-      "id": "49147b0e-2f0c-45cb-a8fa-458b3550da37",
-      "name": "Postgres",
+      "id": "9f9b7135-c61e-4562-b353-0767b75e3fae",
+      "name": "Error Log",
       "credentials": {
         "postgres": {
           "id": "kS35e9jQpjf0T0s4",
-          "name": "Postgres account"
+          "name": "Postgres Account"
         }
-      },
-      "disabled": true,
-      "onError": "continueRegularOutput"
+      }
     },
     {
       "parameters": {
-        "contextWindowLength": 10
+        "inputSource": "passthrough"
       },
-      "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
-      "typeVersion": 1.3,
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
       "position": [
-        5580,
-        -100
+        9460,
+        500
       ],
-      "id": "726ffd3d-8b4f-436a-bcf4-c957a3c88157",
-      "name": "Postgres Chat Memory",
-      "credentials": {
-        "postgres": {
-          "id": "kS35e9jQpjf0T0s4",
-          "name": "Postgres account"
-        }
-      },
-      "disabled": true
+      "id": "52d7da78-7c32-48da-a53a-40430342b415",
+      "name": "MCP Client - Sub-Workflow"
     },
     {
       "parameters": {
-        "sseEndpoint": "=https://gluagents.xyz/mcp/1ca57807-5520-4c8e-95d1-36f08dabef07/sse"
-      },
-      "type": "@n8n/n8n-nodes-langchain.mcpClientTool",
-      "typeVersion": 1,
-      "position": [
-        5760,
-        -100
-      ],
-      "id": "ff1a948c-d2ba-4a75-a9c8-9b8c2288e0d2",
-      "name": "MCP Chat Client",
-      "disabled": true
-    },
-    {
-      "parameters": {
-        "options": {
-          "systemMessage": "### 🤖 **You are a friendly and professional CRM Assistant powered by an MCP Server and AI Agent**\n\nYou manage customer relationship records in **HubSpot CRM** by interpreting user intent and interacting with the following core entities:\n\n- **📇 Contacts** — *(leads, prospects, customers, individuals, users, assets)*  \n  People with attributes such as name, email, phone number, and associated companies.\n\n- **🏢 Companies** — *(organizations, businesses, agencies, firms, entities, vendors, clients)*  \n  Entities linked to contacts, deals, or tickets.\n\n- **💼 Deals** — *(sales, opportunities, transactions, offers, negotiations, quotes, contracts)*  \n  Sales opportunities associated with contacts or companies.\n\n- **📶 Stages** — *(steps, milestones, phases, checkpoints)*  \n  Defined progress points within a pipeline.\n\n- **📋 Pipelines** — *(workflows, funnels, processes, sales tracks)*  \n  Structured workflows outlining the progression of deals or tickets through stages.\n\n- **🎫 Tickets** — *(support cases, inquiries, service requests, issues, helpdesk items)*  \n  Support-related entries tied to contacts, companies, or deals.\n\n---\n\n### ⚙️ **Supported Operations**\n\nYou support the following actions across all entities:\n\n- **🔍 Get** — *(retrieve, fetch, find, list, search, view)*  \n- **➕ Create** — *(add, register, open, generate, start)*  \n- **✏️ Update** — *(edit, modify, change, rename, replace)*  \n- **🗑️ Delete** — *(remove, erase, drop, archive)*  \n- **🔗 Associate** — *(link, connect, relate, join, assign, attach)*\n\n> 🎯 Your goal is to match each user message to the appropriate **operation** and **entity**.  \n> If the request is unclear or outside CRM scope, respond politely and ask for clarification.\n\n---\n\n### 🧾 **Data Schema**\n\n#### 📇 Contacts\n\n**Contact Name:** `{firstname} {lastname}`  \n- **Contact ID:** `{contactId}`  \n- **Email Address:** `{email}`  \n- **Phone Number:** `{phone}` — *omit if not provided*  \n- **Company:**  \n  - Use the format defined in **🏢 Companies**\n\n---\n\n#### 🏢 Companies\n\n**Company Name:** `{name}`  \n- **Company ID:** `{companyId}`  \n- **Phone Number:** `{phone}` — *omit if not provided*  \n- **Website URL:** `{domain}` — *omit if not provided*\n\n---\n\n#### 📋 Pipelines\n\n**Pipeline Name:** `{label}`  \n- **Pipeline ID:** `{pipelineId}`  \n- **Order:** `{displayOrder}`  \n- **Stages:**  \n  - For each stage, follow the format in **📶 Stages**\n\n---\n\n#### 📶 Stages\n\n**Stage Name:** `{label}`  \n- **Stage ID:** `{id}`  \n- **Order:** `{displayOrder}`\n\n---\n\n#### 💼 Deals\n\n**Deal Name:** `{name}`  \n- **Deal ID:** `{dealId}`  \n- **Amount:** `{amount}` — *omit if not provided*  \n- **Stage:** `{stage.label}` — *omit if not provided*  \n- **Associated Contacts:** `{contact names}` — *omit if none*  \n- **Associated Companies:** `{company names}` — *omit if none*"
-        }
-      },
-      "type": "@n8n/n8n-nodes-langchain.agent",
-      "typeVersion": 1.9,
-      "position": [
-        5500,
-        -300
-      ],
-      "id": "2b46b906-503f-441a-8d69-4d3c83431839",
-      "name": "MCP Client - AI Chat Agent",
-      "retryOnFail": false,
-      "disabled": true,
-      "onError": "continueErrorOutput"
-    },
-    {
-      "parameters": {
-        "model": {
-          "__rl": true,
-          "value": "gpt-4o-mini",
-          "mode": "list",
-          "cachedResultName": "gpt-4o-mini"
-        },
-        "options": {}
-      },
-      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
-      "typeVersion": 1.2,
-      "position": [
-        5400,
-        -100
-      ],
-      "id": "7fb87ff3-98c0-424d-8d10-c65d9acf6b37",
-      "name": "OpenAI Chat Model",
-      "credentials": {
-        "openAiApi": {
-          "id": "L5UoHZfkBt6nb3Ad",
-          "name": "OpenAi account"
-        }
-      },
-      "disabled": true
-    },
-    {
-      "parameters": {
+        "public": true,
         "options": {}
       },
       "type": "@n8n/n8n-nodes-langchain.chatTrigger",
       "typeVersion": 1.1,
       "position": [
-        5240,
-        -300
+        9460,
+        940
       ],
-      "id": "7fe575c3-2c1d-42f3-b25c-bac556a55ec2",
-      "name": "When chat message received",
-      "webhookId": "583a9b22-7c4a-44ab-a60c-59745e10e481",
-      "disabled": true
-    },
-    {
-      "parameters": {
-        "content": "## MCP Client Testing",
-        "height": 480,
-        "width": 1020,
-        "color": 4
-      },
-      "type": "n8n-nodes-base.stickyNote",
-      "position": [
-        5160,
-        -400
-      ],
-      "typeVersion": 1,
-      "id": "4f1907e6-fa13-4c71-9b6d-2f4abd0226fb",
-      "name": "Sticky Note1",
-      "disabled": true
+      "id": "9d825350-9d19-46bf-9174-3aeacd09ad07",
+      "name": "MCP Client - Chat",
+      "webhookId": "583a9b22-7c4a-44ab-a60c-59745e10e481"
     }
   ],
   "pinData": {},
@@ -901,7 +955,7 @@
       "ai_tool": [
         [
           {
-            "node": "MCP Server Trigger",
+            "node": "MCP Client - Hubspot Tools Client",
             "type": "ai_tool",
             "index": 0
           }
@@ -912,7 +966,7 @@
       "ai_tool": [
         [
           {
-            "node": "MCP Server Trigger",
+            "node": "MCP Client - Hubspot Tools Client",
             "type": "ai_tool",
             "index": 0
           }
@@ -923,7 +977,7 @@
       "ai_tool": [
         [
           {
-            "node": "MCP Server Trigger",
+            "node": "MCP Client - Hubspot Tools Client",
             "type": "ai_tool",
             "index": 0
           }
@@ -934,7 +988,7 @@
       "ai_tool": [
         [
           {
-            "node": "MCP Server Trigger",
+            "node": "MCP Client - Hubspot Tools Client",
             "type": "ai_tool",
             "index": 0
           }
@@ -945,7 +999,7 @@
       "ai_tool": [
         [
           {
-            "node": "MCP Server Trigger",
+            "node": "MCP Client - Hubspot Tools Client",
             "type": "ai_tool",
             "index": 0
           }
@@ -956,7 +1010,7 @@
       "ai_tool": [
         [
           {
-            "node": "MCP Server Trigger",
+            "node": "MCP Client - Hubspot Tools Client",
             "type": "ai_tool",
             "index": 0
           }
@@ -967,7 +1021,7 @@
       "ai_tool": [
         [
           {
-            "node": "MCP Server Trigger",
+            "node": "MCP Client - Hubspot Tools Client",
             "type": "ai_tool",
             "index": 0
           }
@@ -978,7 +1032,7 @@
       "ai_tool": [
         [
           {
-            "node": "MCP Server Trigger",
+            "node": "MCP Client - Hubspot Tools Client",
             "type": "ai_tool",
             "index": 0
           }
@@ -989,7 +1043,7 @@
       "ai_tool": [
         [
           {
-            "node": "MCP Server Trigger",
+            "node": "MCP Client - Hubspot Tools Client",
             "type": "ai_tool",
             "index": 0
           }
@@ -1000,7 +1054,7 @@
       "ai_tool": [
         [
           {
-            "node": "MCP Server Trigger",
+            "node": "MCP Client - Hubspot Tools Client",
             "type": "ai_tool",
             "index": 0
           }
@@ -1011,7 +1065,7 @@
       "ai_tool": [
         [
           {
-            "node": "MCP Server Trigger",
+            "node": "MCP Client - Hubspot Tools Client",
             "type": "ai_tool",
             "index": 0
           }
@@ -1022,7 +1076,7 @@
       "ai_tool": [
         [
           {
-            "node": "MCP Server Trigger",
+            "node": "MCP Client - Hubspot Tools Client",
             "type": "ai_tool",
             "index": 0
           }
@@ -1033,7 +1087,7 @@
       "ai_tool": [
         [
           {
-            "node": "MCP Server Trigger",
+            "node": "MCP Client - Hubspot Tools Client",
             "type": "ai_tool",
             "index": 0
           }
@@ -1044,7 +1098,7 @@
       "ai_tool": [
         [
           {
-            "node": "MCP Server Trigger",
+            "node": "MCP Client - Hubspot Tools Client",
             "type": "ai_tool",
             "index": 0
           }
@@ -1055,7 +1109,7 @@
       "ai_tool": [
         [
           {
-            "node": "MCP Server Trigger",
+            "node": "MCP Client - Hubspot Tools Client",
             "type": "ai_tool",
             "index": 0
           }
@@ -1066,7 +1120,7 @@
       "ai_tool": [
         [
           {
-            "node": "MCP Server Trigger",
+            "node": "MCP Client - Hubspot Tools Client",
             "type": "ai_tool",
             "index": 0
           }
@@ -1077,7 +1131,7 @@
       "ai_tool": [
         [
           {
-            "node": "MCP Server Trigger",
+            "node": "MCP Client - Hubspot Tools Client",
             "type": "ai_tool",
             "index": 0
           }
@@ -1088,7 +1142,7 @@
       "ai_tool": [
         [
           {
-            "node": "MCP Server Trigger",
+            "node": "MCP Client - Hubspot Tools Client",
             "type": "ai_tool",
             "index": 0
           }
@@ -1099,53 +1153,25 @@
       "ai_tool": [
         [
           {
-            "node": "MCP Server Trigger",
+            "node": "MCP Client - Hubspot Tools Client",
             "type": "ai_tool",
             "index": 0
           }
         ]
       ]
     },
-    "Postgres": {
+    "Input Transformer": {
       "main": [
-        []
-      ]
-    },
-    "Postgres Chat Memory": {
-      "ai_memory": [
         [
           {
             "node": "MCP Client - AI Chat Agent",
-            "type": "ai_memory",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "MCP Chat Client": {
-      "ai_tool": [
-        [
-          {
-            "node": "MCP Client - AI Chat Agent",
-            "type": "ai_tool",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "MCP Client - AI Chat Agent": {
-      "main": [
-        [],
-        [
-          {
-            "node": "Postgres",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "OpenAI Chat Model": {
+    "OpenAI MCP Client Model": {
       "ai_languageModel": [
         [
           {
@@ -1156,11 +1182,66 @@
         ]
       ]
     },
-    "When chat message received": {
-      "main": [
+    "Postgres MCP Client - Chat Memory": {
+      "ai_memory": [
         [
           {
             "node": "MCP Client - AI Chat Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "MCP Client - Hubspot Tools": {
+      "ai_tool": [
+        [
+          {
+            "node": "MCP Client - AI Chat Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Reset Session": {
+      "ai_tool": [
+        [
+          {
+            "node": "MCP Client - AI Chat Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Error Log": {
+      "ai_tool": [
+        [
+          {
+            "node": "MCP Client - AI Chat Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "MCP Client - Sub-Workflow": {
+      "main": [
+        [
+          {
+            "node": "Input Transformer",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "MCP Client - Chat": {
+      "main": [
+        [
+          {
+            "node": "Input Transformer",
             "type": "main",
             "index": 0
           }
@@ -1172,7 +1253,7 @@
   "settings": {
     "executionOrder": "v1"
   },
-  "versionId": "f001ade5-c13f-4dd1-8afc-7aac959e50df",
+  "versionId": "95fe1c43-efa5-43ea-9df3-112f2b3df689",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "8504ad3bf541c5d16e431f168070b21dcbf61af82ea7bee0c2d833e23192d019"
