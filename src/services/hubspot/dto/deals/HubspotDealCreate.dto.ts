@@ -22,6 +22,14 @@ export default class HubspotDealCreateDto {
   @IsString({ each: true })
   companyIds?: string[];
 
+  @IsOptional()
+  @IsString()
+  contactId?: string;
+
+  @IsOptional()
+  @IsString()
+  companyId?: string;
+
   @IsNotEmpty()
   @IsString()
   name: string;
