@@ -94,7 +94,16 @@ export default class HubspotDealService {
 
   async getDeals(filter: FilterType): Promise<ResponseType> {
     try {
-      const { name, amount, stageId, contactId, companyId, ...rest } = filter;
+      const {
+        name,
+        amount,
+        stageId,
+        contactIds,
+        companyIds,
+        contactId,
+        companyId,
+        ...rest
+      } = filter;
 
       const filters: Record<string, any>[] = [];
 
@@ -144,8 +153,18 @@ export default class HubspotDealService {
               );
 
             if (companyId)
-              return deal.contacts.some(
+              return deal.companies.some(
                 (contact) => contact.companyId === companyId,
+              );
+
+            if (contactIds)
+              return deal.contacts.some((contact) =>
+                contactIds.includes(contact.id),
+              );
+
+            if (companyIds)
+              return deal.companies.some((contact) =>
+                contactIds.includes(contact.id),
               );
 
             return true;
@@ -189,18 +208,25 @@ export default class HubspotDealService {
   async createDeal({
     contactIds,
     companyIds,
+    contactId,
+    companyId,
     ...rest
   }: HubspotDealCreateDto): Promise<ResponseType> {
     if (!isEmpty(contactIds))
-      for (const contactId of contactIds)
+      for (const _contactId of contactIds)
         await this.hubspotContactService.getContactById({
-          contactId,
+          contactId: _contactId,
         });
 
+    if (!isEmpty(contactId))
+      await this.hubspotContactService.getContactById({
+        contactId,
+      });
+
     if (!isEmpty(companyIds))
-      for (const companyId of companyIds)
+      for (const _companyId of companyIds)
         await this.hubspotCompanyService.getCompanyById({
-          companyId,
+          companyId: _companyId,
         });
 
     (rest as Record<string, any>).dealname = rest.name;
@@ -226,10 +252,24 @@ export default class HubspotDealService {
           'Deals',
           'Contacts',
           {
-            inputs: contactIds.map((contactId) => ({
+            inputs: contactIds.map((_contactId) => ({
               _from: { id: deal.id },
-              to: { id: contactId },
+              to: { id: _contactId },
             })),
+          },
+        );
+
+      if (!isEmpty(contactId))
+        await this.hubspotClient.client.crm.associations.v4.batchApi.createDefault(
+          'Deals',
+          'Contacts',
+          {
+            inputs: [
+              {
+                _from: { id: deal.id },
+                to: { id: contactId },
+              },
+            ],
           },
         );
 
@@ -238,10 +278,24 @@ export default class HubspotDealService {
           'Deals',
           'Companies',
           {
-            inputs: companyIds.map((companyId) => ({
+            inputs: companyIds.map((_companyId) => ({
               _from: { id: deal.id },
-              to: { id: companyId },
+              to: { id: _companyId },
             })),
+          },
+        );
+
+      if (!isEmpty(companyId))
+        await this.hubspotClient.client.crm.associations.v4.batchApi.createDefault(
+          'Deals',
+          'Companies',
+          {
+            inputs: [
+              {
+                _from: { id: deal.id },
+                to: { id: companyId },
+              },
+            ],
           },
         );
 
@@ -262,21 +316,33 @@ export default class HubspotDealService {
     dealId,
     contactIds,
     companyIds,
+    contactId,
+    companyId,
     ...rest
   }: HubspotDealUpdateDto): Promise<ResponseType> {
     await this.getDealById({ dealId });
 
     if (!isEmpty(contactIds))
-      for (const contactId of contactIds)
+      for (const _contactId of contactIds)
         await this.hubspotContactService.getContactById({
-          contactId,
+          contactId: _contactId,
         });
 
+    if (!isEmpty(contactId))
+      await this.hubspotContactService.getContactById({
+        contactId,
+      });
+
     if (!isEmpty(companyIds))
-      for (const companyId of companyIds)
+      for (const _companyId of companyIds)
         await this.hubspotCompanyService.getCompanyById({
-          companyId,
+          companyId: _companyId,
         });
+
+    if (!isEmpty(companyId))
+      await this.hubspotCompanyService.getCompanyById({
+        companyId,
+      });
 
     if (rest.name) {
       (rest as Record<string, any>).dealname = rest.name;
@@ -306,10 +372,24 @@ export default class HubspotDealService {
           'Deals',
           'Contacts',
           {
-            inputs: contactIds.map((contactId) => ({
+            inputs: contactIds.map((_contactId) => ({
               _from: { id: deal.id },
-              to: { id: contactId },
+              to: { id: _contactId },
             })),
+          },
+        );
+
+      if (!isEmpty(contactId))
+        await this.hubspotClient.client.crm.associations.v4.batchApi.createDefault(
+          'Deals',
+          'Contacts',
+          {
+            inputs: [
+              {
+                _from: { id: deal.id },
+                to: { id: contactId },
+              },
+            ],
           },
         );
 
@@ -318,10 +398,24 @@ export default class HubspotDealService {
           'Deals',
           'Companies',
           {
-            inputs: companyIds.map((companyId) => ({
+            inputs: companyIds.map((_companyId) => ({
               _from: { id: deal.id },
-              to: { id: companyId },
+              to: { id: _companyId },
             })),
+          },
+        );
+
+      if (!isEmpty(companyId))
+        await this.hubspotClient.client.crm.associations.v4.batchApi.createDefault(
+          'Deals',
+          'Companies',
+          {
+            inputs: [
+              {
+                _from: { id: deal.id },
+                to: { id: companyId },
+              },
+            ],
           },
         );
 

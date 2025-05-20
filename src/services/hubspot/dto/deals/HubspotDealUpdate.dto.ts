@@ -24,6 +24,14 @@ export default class HubspotDealUpdateDto {
 
   @IsOptional()
   @IsString()
+  contactId?: string;
+
+  @IsOptional()
+  @IsString()
+  companyId?: string;
+
+  @IsOptional()
+  @IsString()
   dealId?: string;
 
   @IsOptional()
