@@ -41,14 +41,9 @@ export default class HubspotContactController {
       'Retrieve a list of Hubspot contacts with optional filters like `limit`, `email`, `firstname`, `lastname`, and `phone`.',
   })
   async getContacts(
-    @Query() { limit, ...filter }: HubspotContactSearchDto,
+    @Query() filter: HubspotContactSearchDto,
   ): Promise<ResponseType> {
-    return await this.hubspotContactService.getContacts(
-      removeEmpty({
-        perPage: limit,
-        ...filter,
-      }),
-    );
+    return await this.hubspotContactService.getContacts(removeEmpty(filter));
   }
 
   @Get(':contactId')
