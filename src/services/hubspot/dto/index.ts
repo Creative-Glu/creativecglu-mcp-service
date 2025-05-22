@@ -18,6 +18,9 @@ import HubspotDealSearchDto, {
 import HubspotPipelineSearchDto, {
   HubspotPipelineSearchV2Dto,
 } from './pipelines/HubspotPipelineSearch.dto';
+import HubspotProductSearchDto, {
+  HubspotProductSearchV2Dto,
+} from './products/HubspotProductSearch.dto';
 import HubspotStageSearchDto, {
   HubspotStageSearchV2Dto,
 } from './stages/HubspotStageSearch.dto';
@@ -40,4 +43,6 @@ export {
   HubspotPipelineSearchV2Dto,
   HubspotStageSearchDto,
   HubspotStageSearchV2Dto,
+  HubspotProductSearchDto,
+  HubspotProductSearchV2Dto,
 };

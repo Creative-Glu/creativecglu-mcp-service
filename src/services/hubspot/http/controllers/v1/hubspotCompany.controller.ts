@@ -37,7 +37,7 @@ export default class HubspotCompanyController {
     summary: 'Fetch Hubspot Companies',
     description:
       // eslint-disable-next-line max-len
-      'Retrieve a list of Hubspot companies with optional filters like `limit`, `name` and `domain` and `phone`.',
+      'Retrieve a list of Hubspot companies with optional filters like `perPage`, `name` and `domain` and `phone`.',
   })
   async getCompanies(
     @Query() filter: HubspotCompanySearchDto,

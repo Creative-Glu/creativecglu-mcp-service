@@ -51,37 +51,33 @@ export default class HubspotContactService {
 
       const filters: Record<string, any>[] = [];
 
-      if (firstname) {
+      if (firstname)
         filters.push({
           propertyName: 'firstname',
           operator: 'CONTAINS_TOKEN',
           value: firstname,
         });
-      }
 
-      if (lastname) {
+      if (lastname)
         filters.push({
           propertyName: 'lastname',
           operator: 'CONTAINS_TOKEN',
           value: lastname,
         });
-      }
 
-      if (email) {
+      if (email)
         filters.push({
           propertyName: 'email',
           operator: 'EQ',
           value: email,
         });
-      }
 
-      if (phone) {
+      if (phone)
         filters.push({
           propertyName: 'phone',
           operator: 'EQ',
           value: phone,
         });
-      }
 
       const response =
         await this.hubspotClient.client.crm.contacts.searchApi.doSearch({

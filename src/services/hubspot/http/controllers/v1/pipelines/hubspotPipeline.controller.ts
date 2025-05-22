@@ -26,7 +26,7 @@ export default class HubspotPipelineController {
     summary: 'Fetch Hubspot Pipelines',
     description:
       // eslint-disable-next-line max-len
-      'Retrieve a list of Hubspot pipelines with optional filters such as `limit` and `pipelineName`.',
+      'Retrieve a list of Hubspot pipelines with optional filters such as `perPage` and `pipelineName`.',
   })
   async getPipelines(
     @Query() filter: HubspotPipelineSearchDto,

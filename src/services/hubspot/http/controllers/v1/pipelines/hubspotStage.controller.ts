@@ -27,7 +27,7 @@ export default class HubspotStageController {
     summary: 'Fetch Hubspot Stages',
     description:
       // eslint-disable-next-line max-len
-      'Retrieve a list of Hubspot stages with optional filters such as `limit`, `stagename`, and `pipelineId`.',
+      'Retrieve a list of Hubspot stages with optional filters such as `perPage`, `stagename`, and `pipelineId`.',
   })
   async getStages(
     @Param() { pipelineId }: HubspotPipelineSearchV2Dto,
