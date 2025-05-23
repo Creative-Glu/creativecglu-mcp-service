@@ -4,9 +4,6 @@ import { FilterType } from 'common/models';
 
 export default class HubspotPipelineSearchDto extends PartialType(FilterType) {
   @IsOptional()
-  limit?: number;
-
-  @IsOptional()
   @IsString()
   name?: string;
 }

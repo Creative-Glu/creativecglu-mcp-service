@@ -23,7 +23,7 @@ import HubspotProductSearchDto, {
 } from './products/HubspotProductSearch.dto';
 import HubspotStageSearchDto, {
   HubspotStageSearchV2Dto,
-} from './stages/HubspotStageSearch.dto';
+} from './pipelines/stages/HubspotStageSearch.dto';
 
 export {
   HubspotCompanyCreateDto,
