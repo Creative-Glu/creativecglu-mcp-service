@@ -19,7 +19,7 @@ export default class HubspotPipelineService {
 
   async getPipelines(filter: HubspotPipelineSearchDto): Promise<ResponseType> {
     try {
-      const { name, limit } = filter;
+      const { name, perPage } = filter;
 
       const response =
         await this.hubspotClient.client.crm.pipelines.pipelinesApi.getAll(
@@ -40,8 +40,8 @@ export default class HubspotPipelineService {
           })),
       );
 
-      if (limit && Number.isInteger(limit) && limit > 0)
-        data = data.slice(0, limit);
+      if (perPage && Number.isInteger(perPage) && perPage > 0)
+        data = data.slice(0, perPage);
 
       return {
         data,
