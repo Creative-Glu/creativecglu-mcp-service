@@ -12,9 +12,6 @@ import { FilterType } from 'common/models';
 
 export default class HubspotContactSearchDto extends PartialType(FilterType) {
   @IsOptional()
-  limit?: number;
-
-  @IsOptional()
   @IsString()
   lastname?: string;
 

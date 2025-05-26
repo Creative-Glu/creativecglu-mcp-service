@@ -31,13 +31,12 @@ export default class HubspotStageController {
   })
   async getStages(
     @Param() { pipelineId }: HubspotPipelineSearchV2Dto,
-    @Query() { limit, ...filter }: HubspotStageSearchDto,
+    @Query() filter: HubspotStageSearchDto,
   ): Promise<ResponseType> {
     return await this.hubspotStageService.getStages(
       removeEmpty({
-        perPage: limit,
-        pipelineId,
         ...filter,
+        pipelineId,
       }),
     );
   }
