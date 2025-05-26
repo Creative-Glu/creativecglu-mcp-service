@@ -1,11 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { isEmpty } from 'class-validator';
 import c from 'common/constants';
-import {
-  HttpError,
-  NotFoundException,
-  UnprocessableEntryException,
-} from 'common/exceptions';
+import { HttpError, NotFoundException } from 'common/exceptions';
 import { FilterType, ResponseType } from 'common/models';
 import {
   HubspotDealCreateDto,
@@ -206,9 +202,6 @@ export default class HubspotDealService {
         await this.hubspotCompanyService.getCompanyById({
           companyId,
         });
-
-    if (isEmpty(contactIds) && isEmpty(companyIds))
-      throw new UnprocessableEntryException('contact or company not found');
 
     (rest as Record<string, any>).dealname = rest.name;
     delete rest.name;
