@@ -29,14 +29,9 @@ export default class HubspotPipelineController {
       'Retrieve a list of Hubspot pipelines with optional filters such as `limit` and `pipelineName`.',
   })
   async getPipelines(
-    @Query() { limit, ...filter }: HubspotPipelineSearchDto,
+    @Query() filter: HubspotPipelineSearchDto,
   ): Promise<ResponseType> {
-    return await this.hubspotPipelineService.getPipelines(
-      removeEmpty({
-        perPage: limit,
-        ...filter,
-      }),
-    );
+    return await this.hubspotPipelineService.getPipelines(removeEmpty(filter));
   }
 
   @Get(':pipelineId')

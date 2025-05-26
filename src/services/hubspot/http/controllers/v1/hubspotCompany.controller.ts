@@ -40,14 +40,9 @@ export default class HubspotCompanyController {
       'Retrieve a list of Hubspot companies with optional filters like `limit`, `name` and `domain` and `phone`.',
   })
   async getCompanies(
-    @Query() { limit, ...filter }: HubspotCompanySearchDto,
+    @Query() filter: HubspotCompanySearchDto,
   ): Promise<ResponseType> {
-    return await this.hubspotCompanyService.getCompanies(
-      removeEmpty({
-        perPage: limit,
-        ...filter,
-      }),
-    );
+    return await this.hubspotCompanyService.getCompanies(removeEmpty(filter));
   }
 
   @Get(':companyId')
