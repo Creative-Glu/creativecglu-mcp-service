@@ -22,9 +22,10 @@ async function bootstrap() {
   app.useGlobalPipes(
     new ValidationPipe({
       exceptionFactory: (errors) => ({
-        statusCode: HttpStatus.UNPROCESSABLE_ENTITY,
+        statusCode: HttpStatus.ACCEPTED,
         message: errors.map((err) => Object.values(err.constraints)).flat(),
-        error: 'ValidationError',
+        errors: errors,
+        error: 'CustomValidationError',
       }),
     }),
   );

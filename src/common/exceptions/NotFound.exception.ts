@@ -8,7 +8,7 @@ export default class NotFoundException extends HttpException {
 
     let errorMessage = '';
 
-    errorMessage += `Data ${id ? `${id} ` : ''}`;
+    errorMessage += `Data ${id ? `'${id}' ` : ''}`;
 
     if (collection)
       errorMessage += collection
@@ -19,6 +19,12 @@ export default class NotFoundException extends HttpException {
 
     if (message) errorMessage = message;
 
-    super(errorMessage, HttpStatus.NOT_FOUND);
+    super(
+      {
+        statusCode: HttpStatus.NOT_FOUND,
+        message: errorMessage,
+      },
+      HttpStatus.ACCEPTED,
+    );
   }
 }
