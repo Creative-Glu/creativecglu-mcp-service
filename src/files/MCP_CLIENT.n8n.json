@@ -3,733 +3,36 @@
   "nodes": [
     {
       "parameters": {
-        "content": "## Companies Nodes",
-        "height": 260,
-        "width": 960,
-        "color": 2
-      },
-      "type": "n8n-nodes-base.stickyNote",
-      "position": [
-        10340,
-        1660
-      ],
-      "typeVersion": 1,
-      "id": "b0e5b603-19d0-4285-822e-ff08824bcff0",
-      "name": "Sticky Note2",
-      "disabled": true
-    },
-    {
-      "parameters": {
-        "content": "## Deals Nodes **(WIP)**",
-        "height": 260,
-        "width": 960,
-        "color": 5
-      },
-      "type": "n8n-nodes-base.stickyNote",
-      "position": [
-        11320,
-        1660
-      ],
-      "typeVersion": 1,
-      "id": "c8449327-de92-4b1c-a433-4d684de97700",
-      "name": "Sticky Note3",
-      "disabled": true
-    },
-    {
-      "parameters": {
-        "toolDescription": "Update an existing HubSpot company by providing its unique `companyId`. All fields such as `name`, `domain`, and `phone` are optional.",
-        "method": "POST",
-        "url": "=http://35.170.240.97/api/v1/hubspot/companies/{{ $fromAI('companyId', 'Enter the unique ID of the company to update. This field is required.', 'string') }}",
-        "sendHeaders": true,
-        "specifyHeaders": "json",
-        "jsonHeaders": "={\n  \"Authorization\": \"Bearer {{ '9a8f70ec2e4e90d3c83c4dd14e7b7281b8c6217a7d48b6a7ce99cd6c1a94f8c2' }}\"\n}",
-        "sendBody": true,
-        "bodyParameters": {
-          "parameters": [
-            {
-              "name": "name",
-              "value": "={{ $fromAI('name', `Enter the updated name of the company. This field is optional.`, 'string') }}"
-            },
-            {
-              "name": "domain",
-              "value": "={{ $fromAI('domain', `Enter the updated domain of the company. This field is optional but must be a valid URL.`, 'string') }}"
-            },
-            {
-              "name": "phone",
-              "value": "={{ $fromAI('phone', `Enter the updated phone number of the company. This field is optional but must be a valid phone number.`, 'string') }}"
-            }
-          ]
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.httpRequestTool",
-      "typeVersion": 4.2,
-      "position": [
-        11940,
-        1740
-      ],
-      "id": "f6cdf36a-1dfa-4b5f-a595-018748a00d7d",
-      "name": "Update a HubSpot Company1",
-      "disabled": true
-    },
-    {
-      "parameters": {
-        "toolDescription": "Permanently delete an existing HubSpot company by providing its unique `companyId`. This action cannot be undone.",
-        "method": "DELETE",
-        "url": "=http://35.170.240.97/api/v1/hubspot/companies/{{ $fromAI('companyId', 'Enter the unique ID of the company to delete. This field is required.', 'string') }}",
-        "sendHeaders": true,
-        "specifyHeaders": "json",
-        "jsonHeaders": "={\n  \"Authorization\": \"Bearer {{ '9a8f70ec2e4e90d3c83c4dd14e7b7281b8c6217a7d48b6a7ce99cd6c1a94f8c2' }}\"\n}",
-        "options": {}
-      },
-      "type": "n8n-nodes-base.httpRequestTool",
-      "typeVersion": 4.2,
-      "position": [
-        12120,
-        1740
-      ],
-      "id": "56ca1749-b816-4a3e-ac37-1247aa37fe1b",
-      "name": "Delete HubSpot Company1",
-      "disabled": true
-    },
-    {
-      "parameters": {
-        "content": "## Stages Nodes",
-        "height": 260,
-        "width": 420,
-        "color": 6
-      },
-      "type": "n8n-nodes-base.stickyNote",
-      "position": [
-        12740,
-        1660
-      ],
-      "typeVersion": 1,
-      "id": "04a64d8c-7aaf-4090-afd3-402aa216a76e",
-      "name": "Sticky Note4",
-      "disabled": true
-    },
-    {
-      "parameters": {
-        "toolDescription": "=Retrieves a list of HubSpot deals using optional filters.\n\n- **Optional filters**: `limit`, array of `contactIds`, `name`, `stage`, `contactName`\n\nFilter Behavior:\n\n- If `name` is provided:  \n  1. Search for deals that match the given name.  \n  2. If no matching deal is found, the filter will be ignored.\n\n- If `contactIds` are provided:  \n  1. Search for deals associated with the specified contact IDs.  \n  2. If no matching deal is found, the filter will be ignored.\n\n- If `contactName` is provided:  \n  1. Search for contacts matching the provided name.  \n  2. Retrieve deals associated with those contacts.  \n  3. If no matching deals are found, the filter will be ignored.",
-        "url": "http://35.170.240.97/api/v1/hubspot/deals",
-        "sendQuery": true,
-        "queryParameters": {
-          "parameters": [
-            {
-              "name": "name",
-              "value": "={{ $fromAI('name', `Enter the company name to filter the results. This field is optional.`, 'string') }}"
-            },
-            {
-              "name": "contactIds",
-              "value": "={{ $fromAI('contactIds', `Enter an array of contactIds to filter the results. This field is optional and should be an array of valid contact ID strings.`, 'string') }}"
-            },
-            {
-              "name": "limit",
-              "value": "={{ $fromAI('limit', `Specify the maximum number of companies to retrieve. This field is optional.`, 'number') }}"
-            },
-            {
-              "name": "stage",
-              "value": "={{ $fromAI('stage', `Provide the stage to filter the results. This field is optional.`, 'string') }}"
-            }
-          ]
-        },
-        "sendHeaders": true,
-        "specifyHeaders": "json",
-        "jsonHeaders": "={\n  \"Authorization\": \"Bearer {{ '9a8f70ec2e4e90d3c83c4dd14e7b7281b8c6217a7d48b6a7ce99cd6c1a94f8c2' }}\"\n}",
-        "options": {}
-      },
-      "type": "n8n-nodes-base.httpRequestTool",
-      "typeVersion": 4.2,
-      "position": [
-        11400,
-        1740
-      ],
-      "id": "8e7b299c-188b-4a69-8dc3-12c6e40f3426",
-      "name": "Fetch HubSpot Deals",
-      "disabled": true,
-      "onError": "continueRegularOutput"
-    },
-    {
-      "parameters": {
-        "toolDescription": "=Creates a new deal in your HubSpot account by providing the required details.\n\n- **Required fields**: `amount`, array of `contactIds`  \n- **Optional fields**: `stage`, `name`\n\nIf a `name` is not provided, a deal name will be automatically generated based on the context and associated contact(s).\n\nThe deal will be associated with the specified contacts. Ensure that all provided information is accurate to maintain CRM data integrity.\n\nIf a contact's name is provided instead of a `contactId`:\n1. Search for the contact using the provided name.\n2. If a match is found, retrieve the associated `contactId`.\n\nAll `contactIds` must be passed as an array of strings, even if only one contact is specified.\n\nIf `stage` is not provided, the deal will be created without an assigned stage.\n\n**Before submitting, display the populated fields to the user and validate all values for correctness.**",
-        "method": "POST",
-        "url": "http://35.170.240.97/api/v1/hubspot/deals",
-        "sendHeaders": true,
-        "specifyHeaders": "json",
-        "jsonHeaders": "={\n  \"Authorization\": \"Bearer {{ '9a8f70ec2e4e90d3c83c4dd14e7b7281b8c6217a7d48b6a7ce99cd6c1a94f8c2' }}\"\n}",
-        "sendBody": true,
-        "bodyParameters": {
-          "parameters": [
-            {
-              "name": "name",
-              "value": "={{ $fromAI('name', `This field is optional.`, 'string') }}"
-            },
-            {
-              "name": "amount",
-              "value": "={{ $fromAI('amount', `This field is required and must be a number with a minimum value of 1.`, 'number') }}"
-            },
-            {
-              "name": "stage",
-              "value": "={{ $fromAI('stage', `This field is optional.`, 'string') }}"
-            }
-          ]
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.httpRequestTool",
-      "typeVersion": 4.2,
-      "position": [
-        11760,
-        1740
-      ],
-      "id": "1c23da5b-b0c8-47cb-a9bc-aea5d5faf7c3",
-      "name": "Create a HubSpot Deal",
-      "disabled": true,
-      "onError": "continueRegularOutput"
-    },
-    {
-      "parameters": {
-        "toolDescription": "=Fetches detailed information about a specific HubSpot deal using its unique `dealId`, `name`, or contextual clues.\n\nIf `dealId` is not provided, but `name` or other contextual information is available:\n1. Search for a matching deal using the provided details.\n2. If a match is found, retrieve the associated `dealId` and use it to fetch the deal's full details.\n  3. If no match is found, return an error indicating that the deal could not be located.",
-        "url": "=http://35.170.240.97/api/v1/hubspot/deals/{{ $fromAI('dealId', 'This field is required. Use only the dealId, which should be the unique identifier of the deal.',  'string') }}",
-        "sendHeaders": true,
-        "specifyHeaders": "json",
-        "jsonHeaders": "={\n  \"Authorization\": \"Bearer {{ '9a8f70ec2e4e90d3c83c4dd14e7b7281b8c6217a7d48b6a7ce99cd6c1a94f8c2' }}\"\n}",
-        "options": {}
-      },
-      "type": "n8n-nodes-base.httpRequestTool",
-      "typeVersion": 4.2,
-      "position": [
-        11580,
-        1740
-      ],
-      "id": "aeb58712-a416-4e4a-8960-41a29441f8bc",
-      "name": "Fetch HubSpot Deal by dealId",
-      "disabled": true,
-      "onError": "continueRegularOutput"
-    },
-    {
-      "parameters": {
-        "content": "## Contacts Nodes",
-        "height": 260,
-        "width": 960
-      },
-      "type": "n8n-nodes-base.stickyNote",
-      "position": [
-        9360,
-        1660
-      ],
-      "typeVersion": 1,
-      "id": "0dfe2078-696f-4960-be3f-a4f59ee30965",
-      "name": "Sticky Note"
-    },
-    {
-      "parameters": {
-        "toolDescription": "### 📇 **Tool Name:** `get-contacts`\n\n---\n\n### 🛠️ **Instructions**\n\nCall this tool to **retrieve contacts from HubSpot CRM**, either as a full list or filtered by specific fields.\n\n- All fields are optional and used for filtering.  \n- If no filters are provided, return a paginated list of all contacts (subject to default or specified `limit`).  \n- On the filter payload, **remove all empty values**.  \n- Ensure contacts are **deduplicated** and **clearly formatted** before displaying them to the user.\n\n---\n\n### 📝 **Description**\n\nRetrieves a list of contacts from your **HubSpot CRM**, optionally filtered by first name, last name, phone number, or email address.\n\n---\n\n### 🔍 **Optional Fields**\n\n- `limit` — Maximum number of contacts to retrieve (`number`)  \n- `firstname` — Filter by first name (partial match, `string`)  \n- `lastname` — Filter by last name (partial match, `string`)  \n- `phone` — Filter by phone number (must be valid format, `string`)  \n- `email` — Filter by email address (must be valid format, `string`)\n\n---\n\n### ⚙️ **Behavior Notes**\n\n- Filters use **AND** logic — results must match **all** specified conditions.  \n- If no filters are set, return all contacts using pagination (`limit` applies).  \n- This tool is typically used to:\n  - 🔍 Search for a specific contact  \n  - ✅ Validate if a contact exists before update or delete  \n  - 📋 Display contacts for user selection  \n- If `phone` or `email` is provided, make sure to **URL-encode** the values before sending.\n\n---\n\n### 📦 **Example Payload**\n\n```json\n{\n  \"limit\": 10,\n  \"firstname\": \"John\",\n  \"lastname\": \"Doe\",\n  \"phone\": \"+12125554321\",\n  \"email\": \"john.doe@example.com\"\n}",
-        "url": "http://35.170.240.97/api/v1/hubspot/contacts",
-        "sendQuery": true,
-        "queryParameters": {
-          "parameters": [
-            {
-              "name": "firstname",
-              "value": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('parameters0_Value', `Filter by first name. Performs a partial (like) match. Optional.`, 'string') }}"
-            },
-            {
-              "name": "=lastname",
-              "value": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('parameters1_Value', `Filter by last name. Performs a partial (like) match. Optional.`, 'string') }}"
-            },
-            {
-              "name": "email",
-              "value": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('parameters2_Value', `Filter by email address. Must be a valid email format. Optional.`, 'string') }}"
-            },
-            {
-              "name": "phone",
-              "value": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('parameters3_Value', `Filter by phone number. Must be a valid phone format (e.g., +12125551234). Optional.`, 'string') }}"
-            },
-            {
-              "name": "limit",
-              "value": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('parameters4_Value', `Maximum number of contacts to retrieve. Optional. Must be a number.`, 'string') }}"
-            }
-          ]
-        },
-        "sendHeaders": true,
-        "specifyHeaders": "json",
-        "jsonHeaders": "={\n  \"Authorization\": \"Bearer {{ '9a8f70ec2e4e90d3c83c4dd14e7b7281b8c6217a7d48b6a7ce99cd6c1a94f8c2' }}\"\n}",
-        "options": {}
-      },
-      "type": "n8n-nodes-base.httpRequestTool",
-      "typeVersion": 4.2,
-      "position": [
-        9440,
-        1740
-      ],
-      "id": "92a8e08e-8058-4fdf-adc6-7690fba2d412",
-      "name": "Get Contacts",
-      "retryOnFail": false,
-      "alwaysOutputData": false
-    },
-    {
-      "parameters": {
-        "toolDescription": "### 📇 **Tool Name:** `get-contact`\n\n---\n\n### 🛠️ **Instructions**\n\nCall this tool to **retrieve a specific contact from HubSpot CRM**.\n\n- Use `contactId` internally — do **not** include it in the request payload.  \n- If `contactId` is not available, resolve the contact using `firstname`, `lastname`, `email`, or `phone` via the `get-contacts` tool.  \n  - If multiple matches are found, prompt the user to select one and use the chosen contact’s `contactId`.  \n- Do **not** include any fields in the request body — this tool does not require a JSON payload.  \n- Once retrieved, display the contact’s details clearly.\n\n---\n\n### 📝 **Description**\n\nFetches a single contact from your **HubSpot CRM**, using either a unique identifier (`contactId`) or identifying fields such as name, email, or phone.\n\n---\n\n### 🔐 **Required Field**\n\n- `contactId` — Unique identifier of the contact to retrieve (`string`)\n\n---\n\n### 🔍 **Optional Lookup Fields**\n\nUsed only if `contactId` is not provided:\n\n- `firstname` — Partial match (`string`)  \n- `lastname` — Partial match (`string`)  \n- `email` — Valid email format (`string`)  \n- `phone` — Valid international phone format (`string`)\n\n---\n\n### ⚙️ **Behavior Notes**\n\n- Prefer `contactId` for direct lookup when available.  \n- If using identifying fields and multiple matches are found, prompt the user to select the correct contact.  \n- Return a clear error message if no match is found.  \n- Handle possible API errors:\n  - ❌ `400 Bad Request` — Invalid or missing input  \n  - 🚫 `404 Not Found` — No contact found with the provided information  \n  - 🛑 `500 Internal Server Error` — Unexpected issue with the HubSpot API\n\n---\n\n### 📦 **Example Payload**\n\n_No JSON body required. All inputs are resolved internally and passed via query parameters._",
-        "url": "=http://35.170.240.97/api/v1/hubspot/contacts/{{ $fromAI('contactId', 'Required. Provide the contactId of the selected contact. This is the unique identifier used to get the contact.', 'string') }}",
-        "sendHeaders": true,
-        "specifyHeaders": "json",
-        "jsonHeaders": "={\n  \"Authorization\": \"Bearer {{ '9a8f70ec2e4e90d3c83c4dd14e7b7281b8c6217a7d48b6a7ce99cd6c1a94f8c2'\n }}\"\n}",
-        "options": {},
-        "optimizeResponse": true
-      },
-      "type": "n8n-nodes-base.httpRequestTool",
-      "typeVersion": 4.2,
-      "position": [
-        9620,
-        1740
-      ],
-      "id": "6129d457-ca84-4e58-943d-f14e0af207ec",
-      "name": "Get Contact",
-      "onError": "continueRegularOutput"
-    },
-    {
-      "parameters": {
-        "toolDescription": "=### ➕ **Tool Name:** `create-contact`\n\n---\n\n### 🛠️ **Instructions**\n\nCall this tool to **create a new contact in HubSpot CRM**.\n\n- Validate all required and optional fields.  \n- Use the `get-contacts` tool to search by `email`, `firstname`, and `lastname` to check for duplicates.  \n- If a contact with the same email exists, offer the user options:\n  - ❌ Skip creation  \n  - ✏️ Update the existing contact (via `update-contact`)  \n  - ➕ Proceed with creation anyway  \n- Show a **preview of the payload** before submission.  \n- Request **explicit confirmation** (e.g., \"create\", \"yes\", \"confirm\") before proceeding.\n\n---\n\n### 📝 **Description**\n\nCreates a new contact in your **HubSpot CRM** using the provided details.\n\n---\n\n### 🔐 **Required Fields**\n\n- `firstname` — First name (`string`)  \n- `lastname` — Last name (`string`)  \n- `email` — Email address (valid format)\n\n---\n\n### 🧩 **Optional Fields**\n\n- `phone` — Phone number (valid international format, e.g., `+12125551234`)  \n- `companyId` — ID of the associated company (`string`)\n\n---\n\n### ⚙️ **Behavior Notes**\n\n- If `companyId` is provided, associate the contact with that company.  \n- If only a **company name** is given:\n  1. Search for the company.\n  2. If found, use its `companyId`.\n  3. If not found, ask:  \n     > *\"Company not found. Would you like to create it?\"*  \n     - If confirmed, create the company and use the new `companyId`.\n\n- Only provided fields will be included.  \n- Validate all inputs.  \n- Confirm with the user before executing the request.\n\n---\n\n### ❗ **Possible API Errors**\n\n- `400 Bad Request` — Invalid or missing input  \n- `500 Internal Server Error` — HubSpot service failure\n\n---\n\n### 📦 **Example Payload**\n\n```json\n{\n  \"firstname\": \"John\",\n  \"lastname\": \"Doe\",\n  \"email\": \"john.doe@example.com\",\n  \"phone\": \"+12125551234\",\n  \"companyId\": \"123456789\"\n}",
-        "method": "POST",
-        "url": "http://35.170.240.97/api/v1/hubspot/contacts",
-        "sendHeaders": true,
-        "specifyHeaders": "json",
-        "jsonHeaders": "={\n  \"Authorization\": \"Bearer {{ '9a8f70ec2e4e90d3c83c4dd14e7b7281b8c6217a7d48b6a7ce99cd6c1a94f8c2'\n }}\"\n}",
-        "sendBody": true,
-        "bodyParameters": {
-          "parameters": [
-            {
-              "name": "firstname",
-              "value": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('parameters0_Value', `Provide the contact's first name. This is required.`, 'string') }}"
-            },
-            {
-              "name": "lastname",
-              "value": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('parameters1_Value', `Provide the contact's last name. This is required.`, 'string') }}"
-            },
-            {
-              "name": "email",
-              "value": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('parameters2_Value', `Provide a valid email address for the contact. This is required and must be unique in HubSpot.`, 'string') }}"
-            },
-            {
-              "name": "=phone",
-              "value": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('parameters3_Value', `Provide the contact's phone number in international format (e.g., +12125551234). This is optional.`, 'string') }}"
-            },
-            {
-              "name": "companyId",
-              "value": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('parameters4_Value', `Provide the associated company ID for the contact. If only the company name is available, perform a lookup. This is optional.`, 'string') }}"
-            }
-          ]
-        },
-        "options": {},
-        "optimizeResponse": true
-      },
-      "type": "n8n-nodes-base.httpRequestTool",
-      "typeVersion": 4.2,
-      "position": [
-        9800,
-        1740
-      ],
-      "id": "3cdbe877-03e1-49b3-b753-08bbb16af8a1",
-      "name": "Create Contact",
-      "onError": "continueRegularOutput"
-    },
-    {
-      "parameters": {
-        "toolDescription": "=### ✏️ **Tool Name:** `update-contact`\n\n---\n\n### 🛠️ **Instructions**\n\nCall this tool to **update an existing contact in HubSpot CRM**.\n\n- If `contactId` is not provided, resolve it using the `get-contacts` tool via the contact’s name or email.  \n- `contactId` is used internally and should **not** be included in the request payload.  \n- Validate all fields and build the update payload.  \n- If **no changes** were made, do **not** proceed.  \n- If updating the `email`:\n  - Check for duplicates using `get-contacts`.\n  - If another contact uses the same email, prompt the user to:\n    - ❌ Skip the update  \n    - ✏️ Update the existing contact (via `update-contact`)  \n- If no matching contact is found, offer to ➕ **create a new contact** (via `create-contact`).  \n- If a `companyId` is provided but the contact is **already associated** with it, notify the user and **omit `companyId` from the payload**.  \n- Show a **preview** before submission.  \n- Request **explicit confirmation** (e.g., “confirm”, “yes”, “update”) before proceeding.\n\n---\n\n### 📝 **Description**\n\nUpdates an existing contact in your **HubSpot CRM** using the provided fields.\n\n---\n\n### 🔐 **Required Field**\n\n- `contactId` — Internal ID of the contact *(used internally only)*\n\n---\n\n### 🧩 **Optional Fields**\n\n- `firstname` — First name (`string`)  \n- `lastname` — Last name (`string`)  \n- `email` — Email address (valid format)  \n- `phone` — Phone number (valid international format, e.g., `+12125551234`)  \n- `companyId` — HubSpot company ID to associate (`string`)\n\n---\n\n### ⚙️ **Behavior Notes**\n\n- If a **company name** is provided instead of `companyId`:\n  1. Search for the company by name.\n  2. If not found, ask:  \n     > *\"The specified company was not found. Would you like to create it?\"*  \n     - If confirmed, create the company and use its ID.\n\n- If the contact is already associated with the given `companyId`, exclude `companyId` from the payload.  \n- Only the provided fields will be updated — others remain unchanged.  \n- Validate all inputs and await user confirmation before execution.\n\n---\n\n### ❗ **Possible API Errors**\n\n- `400 Bad Request` — Invalid or missing input  \n- `404 Not Found` — Contact not found with the provided `contactId`  \n- `500 Internal Server Error` — Unexpected error from HubSpot\n\n---\n\n### 📦 **Example Payload**\n\n```json\n{\n  \"firstname\": \"Jane\",\n  \"lastname\": \"Smith\",\n  \"email\": \"jane.smith@example.com\",\n  \"phone\": \"+12125554321\",\n  \"companyId\": \"987654321\"\n}",
-        "method": "PUT",
-        "url": "=http://35.170.240.97/api/v1/hubspot/contacts/{{ $fromAI('contactId', 'Provide the unique HubSpot contact ID to update. If not available, search using contact name.', 'string') }}",
-        "sendHeaders": true,
-        "specifyHeaders": "json",
-        "jsonHeaders": "={\n  \"Authorization\": \"Bearer {{ '9a8f70ec2e4e90d3c83c4dd14e7b7281b8c6217a7d48b6a7ce99cd6c1a94f8c2'\n }}\"\n}",
-        "sendBody": true,
-        "bodyParameters": {
-          "parameters": [
-            {
-              "name": "firstname",
-              "value": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('parameters0_Value', `New first name for the contact. Optional.`, 'string') }}"
-            },
-            {
-              "name": "lastname",
-              "value": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('parameters1_Value', `New last name for the contact. Optional.`, 'string') }}"
-            },
-            {
-              "name": "email",
-              "value": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('parameters2_Value', `New email address for the contact. Must be valid and unique. Optional.`, 'string') }}"
-            },
-            {
-              "name": "phone",
-              "value": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('parameters3_Value', `Updated phone number in international format (e.g., +12125554321). Optional.`, 'string') }}"
-            },
-            {
-              "name": "companyId",
-              "value": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('parameters4_Value', `Provide the associated company ID to link the contact. If a company name is given, perform a lookup. Optional.`, 'string') }}"
-            }
-          ]
-        },
-        "options": {},
-        "optimizeResponse": true,
-        "dataField": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Field_Containing_Data', ``, 'string') }}"
-      },
-      "type": "n8n-nodes-base.httpRequestTool",
-      "typeVersion": 4.2,
-      "position": [
-        9980,
-        1740
-      ],
-      "id": "7a6c07b7-f5ce-42c1-9840-30ca38929b00",
-      "name": "Update Contact",
-      "onError": "continueRegularOutput"
-    },
-    {
-      "parameters": {
-        "toolDescription": "=### 🗑️ **Tool Name:** `delete-contact`\n\n---\n\n### 🛠️ **Instructions**\n\nCall this tool to **permanently delete a contact from HubSpot CRM**.\n\n- Use `contactId` internally — do **not** include it in the request payload.  \n- If `contactId` is not available, use the `get-contacts` tool to find the contact by `firstname`, `lastname`, `email`, or `phone`.  \n  - If multiple matches are found, prompt the user to select one and use that contact’s `contactId`.  \n- Always show a **contact preview** before proceeding.  \n- Request **explicit confirmation** (e.g., “delete”, “confirm”, “yes”) before continuing.  \n- Clearly warn the user that this action is **permanent** and **cannot be undone**.\n\n---\n\n### 📝 **Description**\n\nPermanently deletes a contact from your **HubSpot CRM** account.  \nThis action is irreversible and requires a valid `contactId` (resolved internally).\n\n---\n\n### 🔐 **Required Field**\n\n- `contactId` — Unique identifier of the contact to delete (`string`)\n\n---\n\n### 🔍 **Optional Lookup Fields**\n\nIf `contactId` is not provided:\n\n- `firstname` — Partial match (`string`)  \n- `lastname` — Partial match (`string`)  \n- `email` — Valid email address (`string`)  \n- `phone` — Valid international phone number (`string`)\n\n---\n\n### ⚙️ **Behavior Notes**\n\n- Use **AND logic** when filtering contacts via optional fields.\n- If multiple results are found, allow the user to select the correct contact.\n- Do **not** proceed with deletion until:\n  1. The contact is previewed.\n  2. The user explicitly confirms the deletion.\n\n---\n\n### ❗ **Possible API Responses**\n\n- `400 Bad Request` — Invalid or missing `contactId`  \n- `404 Not Found` — Contact does not exist  \n- `500 Internal Server Error` — Failed to delete the contact\n\n---\n\n### 📦 **Example Payload**\n\n_No JSON payload required. The `contactId` is resolved and handled internally._",
-        "method": "DELETE",
-        "url": "=http://35.170.240.97/api/v1/hubspot/contacts/{{ $fromAI('contactId', 'Required. Provide the contactId of the selected contact. This is the unique identifier used to delete the contact.', 'string') }}",
-        "sendHeaders": true,
-        "specifyHeaders": "json",
-        "jsonHeaders": "={\n  \"Authorization\": \"Bearer {{ '9a8f70ec2e4e90d3c83c4dd14e7b7281b8c6217a7d48b6a7ce99cd6c1a94f8c2' }}\"\n}",
-        "options": {},
-        "optimizeResponse": true
-      },
-      "type": "n8n-nodes-base.httpRequestTool",
-      "typeVersion": 4.2,
-      "position": [
-        10160,
-        1740
-      ],
-      "id": "07340104-5c3a-4e2a-b40b-87a017f85369",
-      "name": "Delete Contact",
-      "onError": "continueRegularOutput"
-    },
-    {
-      "parameters": {
-        "toolDescription": "=### 🏢 **Tool Name:** `get-companies`\n\n---\n\n### 🛠️ **Instructions**\n\nCall this tool to **retrieve companies from HubSpot CRM**, either as a full list or filtered by specific fields.\n\n- All fields are optional and used for filtering.  \n- If no filters are provided, return a **paginated list** of all companies (based on default or specified `limit`).  \n- On the filter payload, **remove all empty values**.  \n- Ensure the results are **deduplicated** and **clearly formatted** before presenting them to the user.\n\n---\n\n### 📝 **Description**\n\nRetrieves a list of companies from your **HubSpot CRM**, optionally filtered by name, domain, or phone number.\n\n---\n\n### 🔍 **Optional Fields**\n\n- `limit` — Maximum number of companies to retrieve (`number`)  \n- `name` — Filter by company name (partial match, `string`)  \n- `domain` — Filter by company domain (e.g., `example.com`, `string`)  \n- `phone` — Filter by phone number (valid international format, e.g., `+14155552671`, `string`)\n\n---\n\n### ⚙️ **Behavior Notes**\n\n- Filters use **AND logic** — all conditions must be met.  \n- If no filters are provided, return all companies using pagination (with a default or user-defined `limit`).  \n- This tool is typically used to:\n  - 🔍 Search for a specific company  \n  - ✅ Verify whether a company exists before associating it with a contact or deal  \n  - 📋 Display a list of companies for user selection  \n- If `domain` or `phone` is provided, make sure to **URL-encode** the values before sending.\n\n---\n\n### 📦 **Example Payload**\n\n```json\n{\n  \"limit\": 10,\n  \"name\": \"Acme Corp\",\n  \"domain\": \"acmecorp.com\",\n  \"phone\": \"+14155552671\"\n}",
-        "url": "http://35.170.240.97/api/v1/hubspot/companies",
-        "sendQuery": true,
-        "queryParameters": {
-          "parameters": [
-            {
-              "name": "name",
-              "value": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('parameters0_Value', `Filter by company name. Partial match. Optional.`, 'string') }}"
-            },
-            {
-              "name": "domain",
-              "value": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('parameters1_Value', `Filter by company domain (e.g., example.com). Optional.`, 'string') }}"
-            },
-            {
-              "name": "phone",
-              "value": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('parameters2_Value', `Filter by company phone number. Must be a valid international format (e.g., +14155552671). Optional.`, 'string') }}"
-            },
-            {
-              "name": "limit",
-              "value": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('parameters3_Value', `Maximum number of companies to retrieve. Optional.`, 'string') }}"
-            }
-          ]
-        },
-        "sendHeaders": true,
-        "specifyHeaders": "json",
-        "jsonHeaders": "={\n  \"Authorization\": \"Bearer {{ '9a8f70ec2e4e90d3c83c4dd14e7b7281b8c6217a7d48b6a7ce99cd6c1a94f8c2' }}\"\n}",
-        "options": {},
-        "optimizeResponse": true
-      },
-      "type": "n8n-nodes-base.httpRequestTool",
-      "typeVersion": 4.2,
-      "position": [
-        10420,
-        1740
-      ],
-      "id": "059adec6-ee5e-4243-b6f4-e107dbab6ea6",
-      "name": "Get Companies",
-      "executeOnce": false,
-      "retryOnFail": false,
-      "onError": "continueRegularOutput"
-    },
-    {
-      "parameters": {
-        "toolDescription": "=### 🏢 **Tool Name:** `get-company`\n\n---\n\n### 🛠️ **Instructions**\n\nCall this tool to **retrieve a specific company from HubSpot CRM**.\n\n- Use `companyId` internally — do **not** include it in the request payload.  \n- If `companyId` is not available, use the `get-companies` tool to find the company by `name`, `domain`, or `phone`.  \n  - If multiple matches are found, prompt the user to select one and use the chosen company’s `companyId`.  \n- This tool does **not** require a request body — all inputs are handled internally.  \n- Once retrieved, display the company details clearly.\n\n---\n\n### 📝 **Description**\n\nFetches a single company from your **HubSpot CRM** using a unique `companyId` or lookup fields like `name`, `domain`, or `phone`.\n\n---\n\n### 🔐 **Required Field**\n\n- `companyId` — Unique identifier of the company (`string`)  \n  *(used internally — not sent in the payload)*\n\n---\n\n### 🔍 **Optional Lookup Fields**\n\nUsed only if `companyId` is not provided:\n\n- `name` — Partial match (`string`)  \n- `domain` — Fully qualified domain name (`string`)  \n- `phone` — Valid international format (`string`, e.g., `+14155552671`)\n\n---\n\n### ⚙️ **Behavior Notes**\n\n- Prefer `companyId` for direct lookup.  \n- If using lookup fields:\n  - Use **AND logic** for filtering.\n  - If multiple companies are found, prompt the user to choose one.\n  - If no match is found, return an error.  \n- Do not proceed unless a valid `companyId` is resolved.\n\n---\n\n### ❗ **Possible API Errors**\n\n- `400 Bad Request` — Invalid or missing input  \n- `404 Not Found` — No company found matching the criteria  \n- `500 Internal Server Error` — Unexpected issue with the HubSpot API\n\n---\n\n### 📦 **Example Payload**\n\n_No JSON payload required. All inputs are resolved internally and passed via query parameters._",
-        "url": "=http://35.170.240.97/api/v1/hubspot/companies/{{ $fromAI('companyId', 'This field is required. Use only the companyId, which should be the unique identifier of the comopany', 'string') }}",
-        "sendHeaders": true,
-        "specifyHeaders": "json",
-        "jsonHeaders": "={\n  \"Authorization\": \"Bearer {{ '9a8f70ec2e4e90d3c83c4dd14e7b7281b8c6217a7d48b6a7ce99cd6c1a94f8c2' }}\"\n}",
-        "options": {},
-        "optimizeResponse": true
-      },
-      "type": "n8n-nodes-base.httpRequestTool",
-      "typeVersion": 4.2,
-      "position": [
-        10600,
-        1740
-      ],
-      "id": "bbc44316-b499-49d4-8893-c198e8cbf70a",
-      "name": "Get Company",
-      "onError": "continueRegularOutput"
-    },
-    {
-      "parameters": {
-        "toolDescription": "=### 🏢 **Tool Name:** `create-company`\n\n---\n\n### 🛠️ **Instructions**\n\nCall this tool to **create a new company record in HubSpot CRM**.\n\n- Validate all required and optional fields.  \n- Use the `get-company` tool to check for an existing match by `name` or `domain`.  \n- If a match is found, present options:\n  - ❌ Skip creation  \n  - ✏️ Update the existing company (via `update-company`)  \n  - ➕ Proceed with creating a new one anyway  \n- Show a **preview of the payload** before submission.  \n- Request **explicit confirmation** (e.g., “create”, “confirm”, “yes”) before proceeding.\n\n---\n\n### 📝 **Description**\n\nCreates a new company in your **HubSpot CRM** account using the provided details.\n\n---\n\n### 🔐 **Required Field**\n\n- `name` — Company name (`string`)\n\n---\n\n### 🧩 **Optional Fields**\n\n- `domain` — Website domain (e.g., `example.com`, `string`)  \n- `phone` — Phone number (valid international format, e.g., `+12125551234`)  \n- `email` — General contact email (`string`, valid format)\n\n---\n\n### ⚙️ **Behavior Notes**\n\n- If a company with the same `name` or `domain` already exists:\n  - Prompt the user to skip, update, or proceed with creation.\n- Only the provided fields will be included; all others remain empty.\n- Validate inputs before execution.\n- Always wait for user confirmation before sending the request.\n\n---\n\n### ❗ **Possible API Errors**\n\n- `400 Bad Request` — Missing or invalid input  \n- `500 Internal Server Error` — HubSpot API failure\n\n---\n\n### 📦 **Example Payload**\n\n```json\n{\n  \"name\": \"Acme Corporation\",\n  \"domain\": \"acme.com\",\n  \"phone\": \"+12125551234\",\n  \"email\": \"info@acme.com\"\n}",
-        "method": "POST",
-        "url": "http://35.170.240.97/api/v1/hubspot/companies",
-        "sendHeaders": true,
-        "specifyHeaders": "json",
-        "jsonHeaders": "={\n  \"Authorization\": \"Bearer {{ '9a8f70ec2e4e90d3c83c4dd14e7b7281b8c6217a7d48b6a7ce99cd6c1a94f8c2' }}\"\n}",
-        "sendBody": true,
-        "bodyParameters": {
-          "parameters": [
-            {
-              "name": "name",
-              "value": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('parameters0_Value', `The name of the company (required).`, 'string') }}"
-            },
-            {
-              "name": "domain",
-              "value": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('parameters1_Value', `The company’s website domain (e.g., example.com). Optional.`, 'string') }}"
-            },
-            {
-              "name": "phone",
-              "value": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('parameters2_Value', `The company’s main phone number (e.g., +12125551234). Optional.`, 'string') }}"
-            }
-          ]
-        },
-        "options": {},
-        "optimizeResponse": true
-      },
-      "type": "n8n-nodes-base.httpRequestTool",
-      "typeVersion": 4.2,
-      "position": [
-        10780,
-        1740
-      ],
-      "id": "b2c5324c-36a2-49fa-8e98-d0302656ddc5",
-      "name": "Create Company",
-      "onError": "continueRegularOutput"
-    },
-    {
-      "parameters": {
-        "toolDescription": "=### ✏️ **Tool Name:** `update-company`\n\n---\n\n### 🛠️ **Instructions**\n\nCall this tool to **update an existing company in HubSpot CRM**.\n\n- If `companyId` is not provided, use the `get-companies` tool to resolve it using the company name.  \n- `companyId` is **required internally**, but should **not** be included in the request payload.  \n- Validate fields and construct the update payload.  \n- If **no changes** were made, do **not** proceed.  \n- If updating `domain` or `email`:\n  - Use `get-companies` to check for duplicates.\n  - If found, offer options:\n    - ❌ Skip the update  \n    - ✏️ Update the existing company (via `update-company`)  \n- If no company is found, offer to ➕ **create a new one** (via `create-company`).  \n- Show a **preview** of the payload before submission.  \n- Wait for user confirmation (e.g., “accept”, “yes”, “proceed”).\n\n---\n\n### 📝 **Description**\n\nUpdates an existing company in your **HubSpot CRM** account using the provided fields.\n\n---\n\n### 🔐 **Required Field**\n\n- `companyId` — Internal ID of the company *(not sent in the payload)*\n\n---\n\n### 🧩 **Optional Fields**\n\n- `name` — Company name (`string`)  \n- `domain` — Website domain (e.g., `example.com`, `string`)  \n- `phone` — Phone number (valid international format, e.g., `+12125554321`)  \n- `email` — Company email address (valid format)\n\n---\n\n### ⚙️ **Behavior Notes**\n\n- If a **company name** is provided instead of `companyId`:\n  1. Search for the company.\n  2. If not found, ask:  \n     > *\"Company not found. Would you like to create a new one?\"*  \n     - If yes, create the company and use the new `companyId`.\n\n- Only provided fields are updated; others remain unchanged.  \n- Validate all inputs.  \n- Always confirm with the user before proceeding.\n\n---\n\n### ❗ **Possible API Errors**\n\n- `400 Bad Request` — Invalid or missing input  \n- `404 Not Found` — Company not found with the given `companyId`  \n- `500 Internal Server Error` — Unexpected failure from the HubSpot API\n\n---\n\n### 📦 **Example Payload**\n\n```json\n{\n  \"name\": \"Acme Corporation\",\n  \"domain\": \"acme.co\",\n  \"phone\": \"+14155552671\",\n  \"email\": \"support@acme.co\"\n}",
-        "method": "PUT",
-        "url": "=http://35.170.240.97/api/v1/hubspot/companies/{{ $fromAI('companyId', 'Enter the unique Company ID (required but will not be included in the payload).', 'string')",
-        "sendHeaders": true,
-        "specifyHeaders": "json",
-        "jsonHeaders": "={\n  \"Authorization\": \"Bearer {{ '9a8f70ec2e4e90d3c83c4dd14e7b7281b8c6217a7d48b6a7ce99cd6c1a94f8c2' }}\"\n}",
-        "sendBody": true,
-        "bodyParameters": {
-          "parameters": [
-            {
-              "name": "name",
-              "value": "={{ $fromAI('parameters0_Value', `Enter the new company name (optional).`, 'string') }}"
-            },
-            {
-              "name": "domain",
-              "value": "={{ $fromAI('parameters1_Value', `Enter the updated company domain (optional, e.g., acme.com).', 'string')`, 'string') }}"
-            },
-            {
-              "name": "phone",
-              "value": "={{ $fromAI('parameters2_Value', `Enter the updated phone number (optional, valid international format, e.g., +12125554321).`, 'string') }}"
-            }
-          ]
-        },
-        "options": {},
-        "optimizeResponse": true
-      },
-      "type": "n8n-nodes-base.httpRequestTool",
-      "typeVersion": 4.2,
-      "position": [
-        10960,
-        1740
-      ],
-      "id": "f3b59a8c-292f-4d33-811b-d03d362129b0",
-      "name": "Update Company",
-      "onError": "continueRegularOutput"
-    },
-    {
-      "parameters": {
-        "toolDescription": "=### **Tool Name:** `delete-company`\n\n---\n\n### **Instructions**\n\nCall this tool to **permanently delete a company from HubSpot CRM**.\n\n- Use `companyId` internally — do **not** include it in the request payload.  \n- If `companyId` is not available, resolve the company using `name`, `domain`, or `phone` via the `get-companies` tool.  \n  - If multiple matches are found, prompt the user to choose one and use the selected company’s `companyId`.  \n- Always show a company preview before proceeding.  \n- Request explicit confirmation (e.g., “delete”, “confirm”, “yes”).  \n- Clearly inform the user this action is **permanent** and cannot be undone.\n\n---\n\n### **Description**\n\nDeletes a company from your **HubSpot CRM** account. The operation is irreversible and requires a valid `companyId`, resolved internally.\n\n---\n\n### **Required Field**\n\n- `companyId` — Unique identifier of the company to delete (string)\n\n---\n\n### **Optional Lookup Fields**\n\nIf `companyId` is not provided:\n\n- `name` — Partial match (string)  \n- `domain` — Company domain (e.g., `example.com`, string)  \n- `phone` — Valid international format (e.g., `+12125551234`, string)\n\n---\n\n### **Behavior Notes**\n\n- Use `get companies` to locate the company based on provided fields using **AND** logic.  \n- If multiple companies are found, let the user select the correct one.  \n- Do not proceed with deletion until the user reviews and confirms the company preview.\n\n---\n\n### **Possible API Responses**\n\n- `400 Bad Request` — Invalid or missing `companyId`  \n- `404 Not Found` — Company not found  \n- `500 Internal Server Error` — Deletion failed\n\n---\n\n### **Example Payload**\n\n_No JSON payload required. The `companyId` is handled internally._",
-        "method": "DELETE",
-        "url": "=http://35.170.240.97/api/v1/hubspot/companies/{{ $fromAI('companyId', 'Provide the unique identifier of the company to delete. This is required and should be handled internally.', 'string') }}",
-        "sendHeaders": true,
-        "specifyHeaders": "json",
-        "jsonHeaders": "={\n  \"Authorization\": \"Bearer {{ '9a8f70ec2e4e90d3c83c4dd14e7b7281b8c6217a7d48b6a7ce99cd6c1a94f8c2' }}\"\n}",
-        "options": {},
-        "optimizeResponse": true
-      },
-      "type": "n8n-nodes-base.httpRequestTool",
-      "typeVersion": 4.2,
-      "position": [
-        11140,
-        1740
-      ],
-      "id": "4c44eaa1-c0c1-4013-921a-482e382f2153",
-      "name": "Delete Company",
-      "notesInFlow": false,
-      "onError": "continueRegularOutput"
-    },
-    {
-      "parameters": {
-        "content": "## Pipelines Nodes",
-        "height": 260,
-        "width": 420,
-        "color": 3
-      },
-      "type": "n8n-nodes-base.stickyNote",
-      "position": [
-        12300,
-        1660
-      ],
-      "typeVersion": 1,
-      "id": "03c5c234-b93b-4599-8183-23b1f896316c",
-      "name": "Sticky Note5",
-      "disabled": true
-    },
-    {
-      "parameters": {
-        "toolDescription": "### 🛠️ **Tool Name:** `get-pipelines`\n\n---\n\n### 📌 **Instructions**\n\nCall this tool to **retrieve a list of pipelines** from HubSpot CRM, either as a full list or filtered by specific fields.\n\n- All fields are optional and used for filtering.  \n- If no filters are provided, return a **paginated list** of all pipelines (based on default or specified `limit`).  \n- On the filter payload, **remove all empty values**.  \n- Ensure the results are **deduplicated** and **clearly formatted** before presenting them to the user.\n\n---\n\n### 📄 **Description**\n\nRetrieves a list of pipelines from your **HubSpot CRM**, optionally filtered by name.\n\n---\n\n### 🔍 **Optional Fields**\n\n- `limit` — Maximum number of pipelines to retrieve (`number`)  \n- `name` — Filter pipelines by name (partial match, `string`)  \n\n---\n\n### ⚙️ **Behavior Notes**\n\n- Filters use **AND logic** — all specified conditions must be met.  \n- If no filters are provided, return all pipelines using pagination (with a default or user-defined `limit`).  \n- This tool is typically used to:\n  - 🔍 Search for a specific pipeline  \n  - 📋 Display a list of pipelines for user selection  \n- ❗ Do **not** include the list of stages in the output.\n\n---\n\n### 📦 **Example Payload**\n\n```json\n{\n  \"limit\": 10,\n  \"name\": \"Sales Pipeline\"\n}",
-        "url": "http://35.170.240.97/api/v1/hubspot/pipelines",
-        "sendQuery": true,
-        "queryParameters": {
-          "parameters": [
-            {
-              "name": "name",
-              "value": "={{ $fromAI('parameters0_Value', `Filter pipelines by name. Performs a partial match. This field is optional.`, 'string') }}"
-            },
-            {
-              "name": "limit",
-              "value": "={{ $fromAI('parameters1_Value', `Maximum number of pipelines to retrieve. This field is optional.`, 'string') }}"
-            }
-          ]
-        },
-        "sendHeaders": true,
-        "specifyHeaders": "json",
-        "jsonHeaders": "={\n  \"Authorization\": \"Bearer {{ '9a8f70ec2e4e90d3c83c4dd14e7b7281b8c6217a7d48b6a7ce99cd6c1a94f8c2' }}\"\n}",
-        "options": {},
-        "optimizeResponse": true
-      },
-      "type": "n8n-nodes-base.httpRequestTool",
-      "typeVersion": 4.2,
-      "position": [
-        12380,
-        1740
-      ],
-      "id": "d5e931f5-35b0-423d-bd9c-1e69cddccbe0",
-      "name": "Get Pipelines",
-      "onError": "continueRegularOutput"
-    },
-    {
-      "parameters": {
-        "toolDescription": "### 🏢 **Tool Name:** `get-pipeline`\n\n---\n\n### 🛠️ **Instructions**\n\nCall this tool to **retrieve a specific pipeline from HubSpot CRM**.\n\n- Use `pipelineId` internally — do **not** include it in the request payload.  \n- If `pipelineId` is not available, use the `get-pipelines` tool to find the pipeline by `name`.  \n  - If multiple matches are found, prompt the user to select one and use the chosen pipeline's `pipelineId`.  \n- This tool does **not** require a request body — all inputs are handled internally.  \n- Once retrieved, display the pipeline details clearly.\n\n---\n\n### 📝 **Description**\n\nFetches a single pipeline from your **HubSpot CRM** account using a unique identifier or by searching with lookup fields such as `name`.\n\n---\n\n### 🔐 **Required Field**\n\n- `pipelineId` — Unique identifier of the pipeline to retrieve (`string`)  \n  *(used internally — not sent in the payload)*\n\n---\n\n### 🔍 **Optional Lookup Fields**\n\nUsed only if `pipelineId` is not provided:\n\n- `name` — Partial match (`string`)  \n\n---\n\n### ⚙️ **Behavior Notes**\n\n- Prefer `pipelineId` for direct lookup.  \n- If using lookup fields:\n  - Apply **AND logic** when filtering.\n  - If multiple pipelines are found, prompt the user to choose one.\n  - If no match is found, return an informative error.\n- Do not proceed unless a valid `pipelineId` is resolved.\n\n---\n\n### ❗ **Possible API Errors**\n\n- `400 Bad Request` — Invalid or missing input  \n- `404 Not Found` — No pipeline found matching the criteria  \n- `500 Internal Server Error` — Unexpected issue with the HubSpot API\n\n---\n\n### 📦 **Example Payload**\n\n_No JSON payload required. All inputs are resolved internally and passed via query parameters._",
-        "url": "=http://35.170.240.97/api/v1/hubspot/pipelines/{{ $fromAI('pipelineId', 'Enter the unique ID of the pipeline to fetch details for. This field is required.', 'string') }}",
-        "sendHeaders": true,
-        "specifyHeaders": "json",
-        "jsonHeaders": "={\n  \"Authorization\": \"Bearer {{ '9a8f70ec2e4e90d3c83c4dd14e7b7281b8c6217a7d48b6a7ce99cd6c1a94f8c2' }}\"\n}",
-        "options": {},
-        "optimizeResponse": true
-      },
-      "type": "n8n-nodes-base.httpRequestTool",
-      "typeVersion": 4.2,
-      "position": [
-        12560,
-        1740
-      ],
-      "id": "31500aa0-8634-439b-8afc-878cf12f974c",
-      "name": "Get Pipeline",
-      "retryOnFail": false,
-      "onError": "continueRegularOutput"
-    },
-    {
-      "parameters": {
-        "toolDescription": "### 📶 **Tool Name:** `get-stage`\n\n---\n\n### 📌 **Instructions**\n\nCall this tool to **retrieve a specific stage** from HubSpot CRM using its unique identifier.\n\n- If `pipelineId` is not provided, resolve it using the `get-pipeline` tool via the pipeline `name`.  \n- If neither is provided, default to `\"default\"` as the `pipelineId`.  \n- `pipelineId` is required internally but should **not** be included in the request payload.  \n- Use `stageId` internally — do **not** include it in the request payload.  \n- If `stageId` is not available, use the `get-stages` tool with `name` and `pipelineId` to resolve it.  \n  - If multiple matches are found, prompt the user to select one and use the selected `stageId`.  \n- This tool does **not** require a request body — all inputs are handled internally.  \n- Once retrieved, display the stage details clearly.\n\n---\n\n### 📝 **Description**\n\nFetches a single **stage** from your **HubSpot CRM** using its unique `stageId`, or by resolving from pipeline and stage name if `stageId` is not available.\n\n---\n\n### 🔐 **Required Field**\n\n- `pipelineId` — Resolved internally from pipeline name or defaulted to `\"default\"`  \n  *(This value must not appear in the request payload.)*\n- `stageId` — Unique identifier of the stage to retrieve (`string`)  \n  *(Used internally — not sent in the payload)*\n\n---\n\n### ⚙️ **Behavior Notes**\n\n- Prefer `stageId` for direct lookup.  \n- If using lookup fields:\n  - Use **AND logic** for filtering.\n  - If multiple matches are found, prompt the user to choose one.\n  - If no matches are found, return a descriptive error.\n- Do **not proceed** unless a valid `stageId` is resolved.\n\n---\n\n### ❗ **Possible API Errors**\n\n- `400 Bad Request` — Invalid or missing input  \n- `404 Not Found` — No stage found matching the criteria  \n- `500 Internal Server Error` — HubSpot API failed to respond\n\n---\n\n### 📦 **Example Payload**\n\n_No JSON payload required. All inputs are resolved internally and passed via query parameters._",
-        "url": "=http://35.170.240.97/api/v1/hubspot/pipelines/{{ $fromAI('pipelineId', `Enter the unique ID of the pipeline to fetch details for. This field is required. Default value is 'default'.`, 'string') }}/stages",
-        "sendQuery": true,
-        "queryParameters": {
-          "parameters": [
-            {
-              "name": "name",
-              "value": "={{ $fromAI('name', `Enter the stage name to filter the results. This field is optional.`, 'string') }}"
-            },
-            {
-              "name": "limit",
-              "value": "={{ $fromAI('limit', `Specify the maximum number of stages to retrieve. This field is optional.`, 'number') }}"
-            }
-          ]
-        },
-        "sendHeaders": true,
-        "specifyHeaders": "json",
-        "jsonHeaders": "={\n  \"Authorization\": \"Bearer {{ '9a8f70ec2e4e90d3c83c4dd14e7b7281b8c6217a7d48b6a7ce99cd6c1a94f8c2' }}\"\n}",
-        "options": {},
-        "optimizeResponse": true
-      },
-      "type": "n8n-nodes-base.httpRequestTool",
-      "typeVersion": 4.2,
-      "position": [
-        12820,
-        1740
-      ],
-      "id": "d091a043-9821-4407-9962-b7556f32a904",
-      "name": "Get Stages",
-      "retryOnFail": false,
-      "onError": "continueRegularOutput"
-    },
-    {
-      "parameters": {
-        "toolDescription": "### 📶 **Tool Name:** `get-stage`\n\n---\n\n### 📌 **Instructions**\n\nCall this tool to **retrieve a specific stage** from HubSpot CRM using its unique identifier.\n\n- If `pipelineId` is not provided, default to `\"default\"`.  \n- `pipelineId` is required internally but should **not** be included in the request payload.  \n- Use `stageId` internally — do **not** include it in the request payload.  \n- If `stageId` is not available, use the `get-stages` tool with `name` and `pipelineId` to resolve it.  \n- This tool does **not** require a request body — all inputs are handled internally.  \n- Once retrieved, display the stage details clearly.\n\n---\n\n### 📝 **Description**\n\nFetches a single **stage** from your **HubSpot CRM** using its unique `stageId`, or by resolving from pipeline and stage name if `stageId` is not available.\n\n---\n\n### 🔐 **Required Field**\n\n- `pipelineId` — Resolved internally from pipeline name or defaulted to `\"default\"`  \n  *(This value must not appear in the request payload.)*  \n- `stageId` — Unique identifier of the stage to retrieve (`string`)  \n  *(Used internally — not sent in the payload)*\n\n---\n\n### ⚙️ **Behavior Notes**\n\n- Prefer `stageId` for direct lookup.  \n- If using lookup fields:\n  - Use **AND logic** for filtering.\n  - If multiple matches are found, prompt the user to choose one.\n  - If no matches are found, return a descriptive error.\n- Do **not proceed** unless a valid `stageId` is resolved.\n\n---\n\n### ❗ **Possible API Errors**\n\n- `400 Bad Request` — Invalid or missing input  \n- `404 Not Found` — No stage found matching the criteria  \n- `500 Internal Server Error` — HubSpot API failed to respond\n\n---\n\n### 📦 **Example Payload**\n\n_No JSON payload required. All inputs are resolved internally and passed via query parameters._",
-        "url": "=http://35.170.240.97/api/v1/hubspot/pipelines/{{ $fromAI('pipelineId', `Enter the unique ID of the pipeline to fetch details for. This field is required. Default value is 'default'.`, 'string') }}/stages/{{ $fromAI('stageId', 'This field is required. Use only the stageId, which should be the unique identifier of the stage', 'string') }}",
-        "sendHeaders": true,
-        "specifyHeaders": "json",
-        "jsonHeaders": "={\n  \"Authorization\": \"Bearer {{ '9a8f70ec2e4e90d3c83c4dd14e7b7281b8c6217a7d48b6a7ce99cd6c1a94f8c2' }}\"\n}",
-        "options": {}
-      },
-      "type": "n8n-nodes-base.httpRequestTool",
-      "typeVersion": 4.2,
-      "position": [
-        13000,
-        1740
-      ],
-      "id": "5a90e40b-0bf5-4790-8c53-a624aae1c8ed",
-      "name": "Get Stage"
-    },
-    {
-      "parameters": {
         "options": {
-          "systemMessage": "=### 🤖 **You are a friendly and professional CRM Assistant powered by an MCP Server and AI Agent**\n\nYou manage customer relationship records by interpreting user intent and interacting with the following core entities:\n\n- **📇 Contacts** — *(leads, prospects, customers, individuals, users, assets)*  \n  Individuals with attributes such as name, email address, phone number, and associated companies.\n\n- **🏢 Companies** — *(organizations, businesses, agencies, firms, entities, vendors, clients)*  \n  Business entities linked to contacts, deals, or tickets.\n\n- **💼 Deals** — *(sales, opportunities, transactions, offers, negotiations, quotes, contracts)*  \n  Sales opportunities associated with contacts or companies.\n\n- **📶 Stages** — *(steps, milestones, phases, checkpoints)*  \n  Defined progress points within a pipeline.\n\n- **📋 Pipelines** — *(workflows, funnels, processes, sales tracks)*  \n  Structured workflows outlining the progression of deals or tickets through various stages.\n\n- **🎫 Tickets** — *(support cases, inquiries, service requests, issues, helpdesk items)*  \n  Support-related records tied to contacts, companies, or deals.\n\n---\n\n### 📌 **Behavior Notes**\n\n- Do **not** mention \"HubSpot CRM\" — this system is presented as a **white-label** platform.\n- If a user enters an unknown command, respond with a list of available commands and their descriptions.\n- If a user request is ambiguous or outside CRM scope:\n  - Ask for clarification politely.\n  - Suggest using the `/help` command.\n- If a workflow encounters an error:\n  - Invoke the `error-log` tool and provide relevant context.\n  - Respond with a clear and courteous message.\n  - Recommend using an appropriate command from `/help`.\n\n---\n\n### 🧭 **Commands**\n\n| Command              | Alias  | Description                                                                                           | Action                                                           |\n|----------------------|--------|-------------------------------------------------------------------------------------------------------|------------------------------------------------------------------|\n| `/start`             | `/b`   | Begin the session with a warm welcome, introduce assistant capabilities, and explain how you can help display commands like `/help`, `/info` | Start session with friendly interaction                         |\n| `/stop`              | `/s`   | End the conversation and terminate the session                                                        | Stop session                                                     |\n| `/restart`, `/reset` | `/r`   | Reset the assistant’s memory, invoke the `restart-session` tool, and begin a new session              | Clear session memory                                             |\n| `/tools`             | `/t`   | Display a list of tools available to the assistant                                                    | Show available tools                                             |\n| `/help`              | `/h`   | Show all available commands and their descriptions                                                    | Display command reference                                        |\n| `/info`              | `/i`   | Display assistant capabilities, scope, platform behavior, limitations, and tools                      | Show assistant overview                                          |\n\n---\n\n### ⚙️ **Supported Operations**\n\nYou support the following operations across all entities:\n\n- **🔍 Get** — *(retrieve, fetch, find, list, search, view)*  \n- **➕ Create** — *(add, register, open, generate, start)*  \n- **✏️ Update** — *(edit, modify, change, rename, replace)*  \n- **🗑️ Delete** — *(remove, erase, drop, archive)*  \n- **🔗 Associate** — *(link, connect, relate, join, assign, attach)*\n\n> 🎯 Your role is to interpret each user message and match it to the correct **operation** and **entity**.  \n> If unclear, ask politely and suggest using the `/help` command.\n"
+          "systemMessage": "## Helen — CRM Assistant (Creativeglu AI)\n\nFriendly, professional helper for CRM tasks.\n\n---\n\n### Core Entities  \n**Contacts · Companies · Deals · Stages · Pipelines**\n\n---\n\n### Operations (with synonyms)  \nGet · Create · Update · Delete · Associate\n\n---\n\n### Compound & Flow Support  \n1. Resolve missing IDs (contact, stage, pipeline).  \n2. Build the final payload.  \n3. **Confirm** before any destructive or high-value action.\n\n---\n\n### Defaults & Safety  \n* Apply sensible defaults when optional fields are missing and tell the user.  \n* Always confirm before deleting, overwriting, or handling large amounts.\n\n---\n\n### Communication Rules  \n* Replies ≤ 100 words; short sentences.  \n* Use Markdown for bullets, lists, and code blocks where helpful.  \n* Understand both spoken and typed input via NLP.  \n* If the user asks for a numeric result (e.g., “sum”, “how much”, “total”), give the figure directly—no extra explanation unless requested.\n\n---\n\n### Built-in Commands  \n`/start` · `/stop` · `/reset` · `/tool` · `/help` · `/info`\n\n---\n\n### Quick Examples  \n\n| User Says                               | Interpreted Action                  |\n|-----------------------------------------|-------------------------------------|\n| “Add John Smith john@example.com”       | **create-contact**                  |\n| “Create $1,000 deal for Acme”           | lookup company → **create-deal**    |\n| “Move Spring deal to Demo”              | **move-deal-stage**                 |\n| “Delete Jane Doe contact”               | confirm → **delete-contact**        |\n\n---\n\n### Reference Schemas (minimal)\n\n*Contacts* `{contactId, name, email, phone, companyId}`  \n*Companies* `{companyId, name, phone, domain}`  \n*Deals* `{dealId, name, amount, stageId, contactIds, companyIds}`  \n*Stages* `{stageId, label, pipelineId}`  \n*Pipelines* `{pipelineId, label, stageIds}`\n"
         }
       },
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 1.9,
       "position": [
-        10080,
-        500
+        7900,
+        380
       ],
       "id": "a3963986-685f-449f-b586-8480502b6bc0",
       "name": "MCP Client - AI Chat Agent",
-      "retryOnFail": false
+      "retryOnFail": false,
+      "onError": "continueRegularOutput"
     },
     {
       "parameters": {
         "content": "## MCP Client - Workflow",
-        "height": 740,
-        "width": 1240,
+        "height": 720,
+        "width": 1060,
         "color": 4
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        9360,
-        420
+        7360,
+        300
       ],
       "typeVersion": 1,
       "id": "c9bf4080-03e1-435d-bef1-3748e53b9ad4",
       "name": "Sticky Note1"
-    },
-    {
-      "parameters": {
-        "jsCode": "return [{\n  chatInput: $input.first().json.chatInput ?? $input.first().json.message.text,\n  sessionId: $input.first().json.sessionId ?? $input.first().json.message.chat.id\n}]"
-      },
-      "type": "n8n-nodes-base.code",
-      "typeVersion": 2,
-      "position": [
-        9720,
-        720
-      ],
-      "id": "1016b86b-e354-41f8-853e-4cf5d13ac1c3",
-      "name": "Input Transformer"
     },
     {
       "parameters": {
@@ -744,27 +47,27 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.2,
       "position": [
-        9960,
-        700
+        7780,
+        580
       ],
       "id": "b97ca8ad-dc8c-4f73-aac8-7bd483ab3297",
       "name": "OpenAI MCP Client Model",
       "credentials": {
         "openAiApi": {
           "id": "L5UoHZfkBt6nb3Ad",
-          "name": "OpenAi account"
+          "name": "OpenAi Account"
         }
       }
     },
     {
       "parameters": {
-        "contextWindowLength": 10
+        "contextWindowLength": 15
       },
       "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
       "typeVersion": 1.3,
       "position": [
-        10080,
-        820
+        7900,
+        700
       ],
       "id": "3be4df4e-50a1-489e-ab78-51a7f578023f",
       "name": "Postgres MCP Client - Chat Memory",
@@ -777,35 +80,8 @@
     },
     {
       "parameters": {
-        "path": "1ca57807-5520-4c8e-95d1-36f08dabef07"
-      },
-      "type": "@n8n/n8n-nodes-langchain.mcpTrigger",
-      "typeVersion": 1,
-      "position": [
-        11140,
-        780
-      ],
-      "id": "4203f499-510c-47a0-8379-4c54252831d9",
-      "name": "MCP Client - Hubspot Tools Client",
-      "webhookId": "1ca57807-5520-4c8e-95d1-36f08dabef07"
-    },
-    {
-      "parameters": {
-        "sseEndpoint": "=https://gluagents.xyz/mcp/1ca57807-5520-4c8e-95d1-36f08dabef07/sse"
-      },
-      "type": "@n8n/n8n-nodes-langchain.mcpClientTool",
-      "typeVersion": 1,
-      "position": [
-        10440,
-        700
-      ],
-      "id": "9266c603-cf16-41dc-8a46-e9d4d166dea0",
-      "name": "MCP Client - Hubspot Tools"
-    },
-    {
-      "parameters": {
         "descriptionType": "manual",
-        "toolDescription": "### 🐞 **Tool Name:** `error-log`\n\n---\n\n### 📋 **Description**\n\nLogs error messages encountered during a workflow, tool execution, or user interaction.  \nThis tool is used to capture and persist failures, unexpected behavior, or debugging information across assistant sessions.\n\n---\n\n### 📝 **Required Fields**\n\n- `message` — The error message(s) to log.  \n  📌 *Type:* `object` or `array of objects` (required)  \n  🧾 *Description:* Can be a single error object or an array of error entries. Each object should contain at least an `error` field, and may optionally include `source` and `details`.\n\n---\n\n### ⚙️ **Behavior**\n\n- Captures and stores:\n  - `error` — A brief message or summary of what went wrong\n  - `source` *(optional)* — The originating tool or workflow\n  - `details` *(optional)* — Any additional metadata or context\n- Can be invoked manually for testing or automatically on tool failure\n- Supports structured JSON logging for better traceability\n",
+        "toolDescription": "### reset-session\n\n- **Purpose:** Clear all memory, context, and active flows to start fresh.  \n- **Required:** `reason` — string explaining why the reset is needed.  \n- **Behavior:** Wipes stored data, ends multi-step processes, logs the reason, and returns the assistant to a clean state.\n",
         "operation": "deleteTable",
         "schema": {
           "__rl": true,
@@ -832,8 +108,8 @@
       "type": "n8n-nodes-base.postgresTool",
       "typeVersion": 2.6,
       "position": [
-        10320,
-        820
+        8140,
+        700
       ],
       "id": "a846eb0d-16c9-424a-a19b-ca5577a050f4",
       "name": "Reset Session",
@@ -848,7 +124,7 @@
     {
       "parameters": {
         "descriptionType": "manual",
-        "toolDescription": "### 🐞 **Tool Name:** `error-log`\n\n---\n\n### 📋 **Description**\n\nLogs an error message encountered during a workflow, tool execution, or user interaction.  \nThis tool helps track failures, unexpected behavior, and troubleshooting events across assistant sessions.\n\n---\n\n### 📝 **Required Fields**\n\n- `message` — The error message(s) to log. Must be in valid JSON format.  \n  📌 *Type:* `object` or `array of objects` (required)",
+        "toolDescription": "### `error-log`\n\n- **Purpose:** record any workflow or tool error for later troubleshooting.  \n- **Required:** `message` — JSON object or array describing the error.",
         "schema": {
           "__rl": true,
           "mode": "list",
@@ -908,8 +184,8 @@
       "type": "n8n-nodes-base.postgresTool",
       "typeVersion": 2.6,
       "position": [
-        10200,
-        960
+        8020,
+        840
       ],
       "id": "9f9b7135-c61e-4562-b353-0767b75e3fae",
       "name": "Error Log",
@@ -927,8 +203,8 @@
       "type": "n8n-nodes-base.executeWorkflowTrigger",
       "typeVersion": 1.1,
       "position": [
-        9460,
-        500
+        7460,
+        380
       ],
       "id": "52d7da78-7c32-48da-a53a-40430342b415",
       "name": "MCP Client - Sub-Workflow"
@@ -941,236 +217,29 @@
       "type": "@n8n/n8n-nodes-langchain.chatTrigger",
       "typeVersion": 1.1,
       "position": [
-        9460,
-        940
+        7460,
+        640
       ],
       "id": "9d825350-9d19-46bf-9174-3aeacd09ad07",
       "name": "MCP Client - Chat",
       "webhookId": "583a9b22-7c4a-44ab-a60c-59745e10e481"
+    },
+    {
+      "parameters": {
+        "sseEndpoint": "https://gluagents.xyz/mcp/1ca57807-5520-4c8e-95d1-36f08dabef07/sse"
+      },
+      "type": "@n8n/n8n-nodes-langchain.mcpClientTool",
+      "typeVersion": 1,
+      "position": [
+        8260,
+        580
+      ],
+      "id": "9266c603-cf16-41dc-8a46-e9d4d166dea0",
+      "name": "MCP Client - Hubspot"
     }
   ],
   "pinData": {},
   "connections": {
-    "Update a HubSpot Company1": {
-      "ai_tool": [
-        [
-          {
-            "node": "MCP Client - Hubspot Tools Client",
-            "type": "ai_tool",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Delete HubSpot Company1": {
-      "ai_tool": [
-        [
-          {
-            "node": "MCP Client - Hubspot Tools Client",
-            "type": "ai_tool",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Fetch HubSpot Deals": {
-      "ai_tool": [
-        [
-          {
-            "node": "MCP Client - Hubspot Tools Client",
-            "type": "ai_tool",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Create a HubSpot Deal": {
-      "ai_tool": [
-        [
-          {
-            "node": "MCP Client - Hubspot Tools Client",
-            "type": "ai_tool",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Fetch HubSpot Deal by dealId": {
-      "ai_tool": [
-        [
-          {
-            "node": "MCP Client - Hubspot Tools Client",
-            "type": "ai_tool",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Get Contacts": {
-      "ai_tool": [
-        [
-          {
-            "node": "MCP Client - Hubspot Tools Client",
-            "type": "ai_tool",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Get Contact": {
-      "ai_tool": [
-        [
-          {
-            "node": "MCP Client - Hubspot Tools Client",
-            "type": "ai_tool",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Create Contact": {
-      "ai_tool": [
-        [
-          {
-            "node": "MCP Client - Hubspot Tools Client",
-            "type": "ai_tool",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Update Contact": {
-      "ai_tool": [
-        [
-          {
-            "node": "MCP Client - Hubspot Tools Client",
-            "type": "ai_tool",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Delete Contact": {
-      "ai_tool": [
-        [
-          {
-            "node": "MCP Client - Hubspot Tools Client",
-            "type": "ai_tool",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Get Companies": {
-      "ai_tool": [
-        [
-          {
-            "node": "MCP Client - Hubspot Tools Client",
-            "type": "ai_tool",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Get Company": {
-      "ai_tool": [
-        [
-          {
-            "node": "MCP Client - Hubspot Tools Client",
-            "type": "ai_tool",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Create Company": {
-      "ai_tool": [
-        [
-          {
-            "node": "MCP Client - Hubspot Tools Client",
-            "type": "ai_tool",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Update Company": {
-      "ai_tool": [
-        [
-          {
-            "node": "MCP Client - Hubspot Tools Client",
-            "type": "ai_tool",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Delete Company": {
-      "ai_tool": [
-        [
-          {
-            "node": "MCP Client - Hubspot Tools Client",
-            "type": "ai_tool",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Get Pipelines": {
-      "ai_tool": [
-        [
-          {
-            "node": "MCP Client - Hubspot Tools Client",
-            "type": "ai_tool",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Get Pipeline": {
-      "ai_tool": [
-        [
-          {
-            "node": "MCP Client - Hubspot Tools Client",
-            "type": "ai_tool",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Get Stages": {
-      "ai_tool": [
-        [
-          {
-            "node": "MCP Client - Hubspot Tools Client",
-            "type": "ai_tool",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Get Stage": {
-      "ai_tool": [
-        [
-          {
-            "node": "MCP Client - Hubspot Tools Client",
-            "type": "ai_tool",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Input Transformer": {
-      "main": [
-        [
-          {
-            "node": "MCP Client - AI Chat Agent",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
     "OpenAI MCP Client Model": {
       "ai_languageModel": [
         [
@@ -1188,17 +257,6 @@
           {
             "node": "MCP Client - AI Chat Agent",
             "type": "ai_memory",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "MCP Client - Hubspot Tools": {
-      "ai_tool": [
-        [
-          {
-            "node": "MCP Client - AI Chat Agent",
-            "type": "ai_tool",
             "index": 0
           }
         ]
@@ -1230,7 +288,7 @@
       "main": [
         [
           {
-            "node": "Input Transformer",
+            "node": "MCP Client - AI Chat Agent",
             "type": "main",
             "index": 0
           }
@@ -1241,8 +299,19 @@
       "main": [
         [
           {
-            "node": "Input Transformer",
+            "node": "MCP Client - AI Chat Agent",
             "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "MCP Client - Hubspot": {
+      "ai_tool": [
+        [
+          {
+            "node": "MCP Client - AI Chat Agent",
+            "type": "ai_tool",
             "index": 0
           }
         ]
@@ -1253,7 +322,7 @@
   "settings": {
     "executionOrder": "v1"
   },
-  "versionId": "95fe1c43-efa5-43ea-9df3-112f2b3df689",
+  "versionId": "e423f38a-7817-4c18-a463-85b9a9d0a037",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "8504ad3bf541c5d16e431f168070b21dcbf61af82ea7bee0c2d833e23192d019"
