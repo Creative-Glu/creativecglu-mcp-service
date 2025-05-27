@@ -1,5 +1,5 @@
 {
-  "name": "MCP Host",
+  "name": "MCP Host - Telegram",
   "nodes": [
     {
       "parameters": {
@@ -20,7 +20,8 @@
           "id": "KFO1136nlORXNVub",
           "name": "Telegram Account"
         }
-      }
+      },
+      "onError": "continueRegularOutput"
     },
     {
       "parameters": {
@@ -31,7 +32,7 @@
       "type": "@n8n/n8n-nodes-langchain.openAi",
       "typeVersion": 1.8,
       "position": [
-        -240,
+        -300,
         -140
       ],
       "id": "8ab4bb36-da60-4883-aa6c-374513a9236c",
@@ -39,9 +40,10 @@
       "credentials": {
         "openAiApi": {
           "id": "L5UoHZfkBt6nb3Ad",
-          "name": "OpenAi account"
+          "name": "OpenAi Account"
         }
-      }
+      },
+      "onError": "continueRegularOutput"
     },
     {
       "parameters": {
@@ -79,8 +81,8 @@
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        540,
-        -260
+        240,
+        -140
       ],
       "id": "85bdbb72-526f-4fa6-89f1-19878f306332",
       "name": "Telegram Reply",
@@ -90,7 +92,22 @@
           "id": "KFO1136nlORXNVub",
           "name": "Telegram Account"
         }
-      }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "jsCode": "return [{\n  chatInput: $input.first().json?.message?.text ?? $input.first().json?.text,\n  sessionId: $('MCP Host - Telegram').first().json.message.chat.id\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        20,
+        -400
+      ],
+      "id": "ab1b16a7-d2cf-4c27-9d0e-5b4b62a80c28",
+      "name": "Input Transformer",
+      "onError": "continueRegularOutput"
     },
     {
       "parameters": {
@@ -113,11 +130,12 @@
       "type": "n8n-nodes-base.executeWorkflow",
       "typeVersion": 1.2,
       "position": [
-        280,
-        -260
+        20,
+        -140
       ],
       "id": "2e7b6ce3-bb59-46aa-8cdf-78175bfcbee1",
-      "name": "MCP Host - Sub-Workflow"
+      "name": "MCP Client - Sub-Workflow",
+      "onError": "continueRegularOutput"
     },
     {
       "parameters": {
@@ -147,17 +165,18 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.2,
       "position": [
-        -240,
+        -300,
         -400
       ],
       "id": "bc068b8c-bcf9-4b2f-b59e-d6c6338a4b41",
-      "name": "Is Chat"
+      "name": "Is Chat Input",
+      "onError": "continueRegularOutput"
     },
     {
       "parameters": {
         "content": "## MCP Host - Telegram",
-        "height": 560,
-        "width": 1420,
+        "height": 540,
+        "width": 1100,
         "color": 4
       },
       "type": "n8n-nodes-base.stickyNote",
@@ -168,19 +187,6 @@
       "typeVersion": 1,
       "id": "80a493b2-cf17-4323-b8fb-1b92e2fffc9a",
       "name": "Sticky Note"
-    },
-    {
-      "parameters": {
-        "jsCode": "return [{\n  message: {\n    text: $input.first().json?.message?.text ?? $input.first().json?.text,\n    chat: {\n      id: $('MCP Host - Telegram').first().json.message.chat.id\n    }\n  }\n}]"
-      },
-      "type": "n8n-nodes-base.code",
-      "typeVersion": 2,
-      "position": [
-        20,
-        -260
-      ],
-      "id": "ab1b16a7-d2cf-4c27-9d0e-5b4b62a80c28",
-      "name": "Input Transformer1"
     }
   ],
   "pinData": {},
@@ -200,7 +206,7 @@
       "main": [
         [
           {
-            "node": "Input Transformer1",
+            "node": "Input Transformer",
             "type": "main",
             "index": 0
           }
@@ -211,7 +217,7 @@
       "main": [
         [
           {
-            "node": "Is Chat",
+            "node": "Is Chat Input",
             "type": "main",
             "index": 0
           }
@@ -223,7 +229,18 @@
         []
       ]
     },
-    "MCP Host - Sub-Workflow": {
+    "Input Transformer": {
+      "main": [
+        [
+          {
+            "node": "MCP Client - Sub-Workflow",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "MCP Client - Sub-Workflow": {
       "main": [
         [
           {
@@ -234,11 +251,11 @@
         ]
       ]
     },
-    "Is Chat": {
+    "Is Chat Input": {
       "main": [
         [
           {
-            "node": "Input Transformer1",
+            "node": "Input Transformer",
             "type": "main",
             "index": 0
           }
@@ -251,24 +268,13 @@
           }
         ]
       ]
-    },
-    "Input Transformer1": {
-      "main": [
-        [
-          {
-            "node": "MCP Host - Sub-Workflow",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
     }
   },
   "active": true,
   "settings": {
     "executionOrder": "v1"
   },
-  "versionId": "815ce29a-6173-406c-86ce-e49cdc3a2512",
+  "versionId": "9477fca7-ef6d-4afd-911e-7af7a1abefca",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "8504ad3bf541c5d16e431f168070b21dcbf61af82ea7bee0c2d833e23192d019"
