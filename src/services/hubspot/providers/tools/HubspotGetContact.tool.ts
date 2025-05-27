@@ -56,7 +56,6 @@ export default class HubspotGetContactTool {
         "phone": "+12125554321",
         "email": "john.doe@example.com"
       }
-
     `,
     parameters: z.object({
       perPage: z.number().optional(),
