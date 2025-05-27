@@ -7,11 +7,7 @@ import { NestFactory } from '@nestjs/core';
 import AppModule from 'services/app';
 import { useContainer } from 'class-validator';
 import CommonModule from 'services/common';
-import {
-  HttpStatus,
-  UnprocessableEntityException,
-  ValidationPipe,
-} from '@nestjs/common';
+import { HttpStatus, ValidationPipe } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 async function bootstrap() {
@@ -25,13 +21,11 @@ async function bootstrap() {
 
   app.useGlobalPipes(
     new ValidationPipe({
-      exceptionFactory: (errors) => {
-        return new UnprocessableEntityException({
-          statusCode: HttpStatus.UNPROCESSABLE_ENTITY,
-          message: errors.map((err) => Object.values(err.constraints)).flat(),
-          error: 'Unprocessable Entity',
-        });
-      },
+      exceptionFactory: (errors) => ({
+        statusCode: HttpStatus.ACCEPTED,
+        message: errors.map((err) => Object.values(err.constraints)).flat(),
+        error: 'ValidationError',
+      }),
     }),
   );
 
