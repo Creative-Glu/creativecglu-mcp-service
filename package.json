@@ -9,7 +9,7 @@
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\"",
     "start": "nest start",
-    "start:dev": "nest start --watch",
+    "start:dev": "concurrently \"nest start --watch\" \"npx @modelcontextprotocol/inspector\"",
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/main",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
@@ -22,6 +22,7 @@
   },
   "dependencies": {
     "@hubspot/api-client": "^12.1.0",
+    "@modelcontextprotocol/sdk": "^1.12.0",
     "@nestjs/cache-manager": "^2.2.1",
     "@nestjs/class-transformer": "^0.4.0",
     "@nestjs/common": "^10.0.0",
@@ -31,6 +32,7 @@
     "@nestjs/platform-express": "^10.0.0",
     "@nestjs/swagger": "^11.2.0",
     "@nestjs/throttler": "^6.4.0",
+    "@rekog/mcp-nest": "^1.5.2",
     "@uploadcare/upload-client": "^6.14.3",
     "@yuriyempty/nestjs-extended-controller": "^1.1.31",
     "axios": "^1.9.0",
@@ -45,7 +47,8 @@
     "querystringify": "^2.2.0",
     "reflect-metadata": "^0.2.0",
     "rxjs": "^7.8.1",
-    "uuid": "^11.1.0"
+    "uuid": "^11.1.0",
+    "zod": "^3.25.30"
   },
   "devDependencies": {
     "@commitlint/cli": "^19.8.1",
