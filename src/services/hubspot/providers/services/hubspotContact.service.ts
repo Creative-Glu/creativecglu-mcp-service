@@ -1,6 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import c from 'common/constants';
-import { HttpError, NotFoundException } from 'common/exceptions';
+import {
+  NotFoundException,
+  UnprocessableEntryException,
+} from 'common/exceptions';
 import { FilterType, ResponseType } from 'common/models';
 import {
   HubspotContactCreateDto,
@@ -107,7 +110,7 @@ export default class HubspotContactService {
 
       return { data, meta: { total: data.length } };
     } catch (err) {
-      throw new HttpError(err.message);
+      throw new UnprocessableEntryException(err?.body?.message ?? err?.message);
     }
   }
 
@@ -122,7 +125,7 @@ export default class HubspotContactService {
         );
 
       if (!contact) {
-        throw new HttpError(
+        throw new UnprocessableEntryException(
           `Contact with ID ${payload.contactId} does not exist`,
         );
       }
@@ -141,7 +144,7 @@ export default class HubspotContactService {
           id: payload.contactId,
         });
 
-      throw new HttpError(err);
+      throw new UnprocessableEntryException(err?.body?.message ?? err?.message);
     }
   }
 
@@ -185,7 +188,7 @@ export default class HubspotContactService {
         },
       };
     } catch (err) {
-      throw new HttpError(err.message);
+      throw new UnprocessableEntryException(err?.body?.message ?? err?.message);
     }
   }
 
@@ -232,7 +235,7 @@ export default class HubspotContactService {
         },
       };
     } catch (err) {
-      throw new HttpError(err.message);
+      throw new UnprocessableEntryException(err?.body?.message ?? err?.message);
     }
   }
 
@@ -242,7 +245,7 @@ export default class HubspotContactService {
     try {
       await this.hubspotClient.client.crm.contacts.basicApi.archive(contactId);
     } catch (err) {
-      throw new HttpError(err.message);
+      throw new UnprocessableEntryException(err?.body?.message ?? err?.message);
     }
   }
 }

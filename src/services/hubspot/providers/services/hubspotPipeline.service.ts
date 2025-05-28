@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { isEmpty } from 'class-validator';
-import { HttpError } from 'common/exceptions';
+import { UnprocessableEntryException } from 'common/exceptions';
 import { ResponseType } from 'common/models';
 import {
   HubspotPipelineSearchDto,
@@ -48,7 +48,7 @@ export default class HubspotPipelineService {
         meta: { total: data.length },
       };
     } catch (err) {
-      throw new HttpError(err.message);
+      throw new UnprocessableEntryException(err?.body?.message ?? err?.message);
     }
   }
 
@@ -70,7 +70,7 @@ export default class HubspotPipelineService {
           id: pipelineId,
         });
 
-      throw new HttpError(err.message);
+      throw new UnprocessableEntryException(err?.body?.message ?? err?.message);
     }
   }
 }
