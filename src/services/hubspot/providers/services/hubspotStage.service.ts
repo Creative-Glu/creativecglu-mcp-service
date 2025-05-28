@@ -1,6 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { isEmpty } from 'class-validator';
-import { HttpError, NotFoundException } from 'common/exceptions';
+import {
+  NotFoundException,
+  UnprocessableEntryException,
+} from 'common/exceptions';
 import { ResponseType } from 'common/models';
 import {
   HubspotStageSearchDto,
@@ -46,7 +49,7 @@ export default class HubspotStageService {
         meta: { total: data.length },
       };
     } catch (err) {
-      throw new HttpError(err.message);
+      throw new UnprocessableEntryException(err?.body?.message ?? err?.message);
     }
   }
 

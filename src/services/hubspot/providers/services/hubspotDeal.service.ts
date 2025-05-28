@@ -1,7 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { isEmpty } from 'class-validator';
 import c from 'common/constants';
-import { HttpError, NotFoundException } from 'common/exceptions';
+import {
+  NotFoundException,
+  UnprocessableEntryException,
+} from 'common/exceptions';
 import { FilterType, ResponseType } from 'common/models';
 import {
   HubspotDealCreateDto,
@@ -175,7 +178,7 @@ export default class HubspotDealService {
         meta: { total: data.length },
       };
     } catch (err) {
-      throw new HttpError(err.message);
+      throw new UnprocessableEntryException(err?.body?.message ?? err?.message);
     }
   }
 
@@ -201,7 +204,7 @@ export default class HubspotDealService {
           id: payload.dealId,
         });
 
-      throw new HttpError(err.message);
+      throw new UnprocessableEntryException(err?.body?.message ?? err?.message);
     }
   }
 
@@ -308,7 +311,7 @@ export default class HubspotDealService {
         },
       };
     } catch (err) {
-      throw new HttpError(err.message);
+      throw new UnprocessableEntryException(err?.body?.message ?? err?.message);
     }
   }
 
@@ -428,7 +431,7 @@ export default class HubspotDealService {
         },
       };
     } catch (err) {
-      throw new HttpError(err.message);
+      throw new UnprocessableEntryException(err?.body?.message ?? err?.message);
     }
   }
 
@@ -438,7 +441,7 @@ export default class HubspotDealService {
     try {
       await this.hubspotClient.client.crm.deals.basicApi.archive(dealId);
     } catch (err) {
-      throw new HttpError(err.message);
+      throw new UnprocessableEntryException(err?.body?.message ?? err?.message);
     }
   }
 
@@ -454,7 +457,7 @@ export default class HubspotDealService {
         } as HubspotDealUpdateDto),
       };
     } catch (err) {
-      throw new HttpError(err.message);
+      throw new UnprocessableEntryException(err?.body?.message ?? err?.message);
     }
   }
 }
