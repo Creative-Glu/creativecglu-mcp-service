@@ -113,9 +113,9 @@
       "parameters": {
         "workflowId": {
           "__rl": true,
-          "value": "zkDz6xJ0WWG5xSyr",
+          "value": "RtkxDulg9ZbgAXDM",
           "mode": "list",
-          "cachedResultName": "MCP Client"
+          "cachedResultName": "MCP Client V2"
         },
         "workflowInputs": {
           "mappingMode": "defineBelow",
@@ -274,7 +274,7 @@
   "settings": {
     "executionOrder": "v1"
   },
-  "versionId": "9477fca7-ef6d-4afd-911e-7af7a1abefca",
+  "versionId": "d79d0125-1ced-4f3f-899d-b590b9569aa1",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "8504ad3bf541c5d16e431f168070b21dcbf61af82ea7bee0c2d833e23192d019"
