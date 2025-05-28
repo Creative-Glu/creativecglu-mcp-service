@@ -1,6 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import c from 'common/constants';
-import { HttpError, NotFoundException } from 'common/exceptions';
+import {
+  NotFoundException,
+  UnprocessableEntryException,
+} from 'common/exceptions';
 import { FilterType, ResponseType } from 'common/models';
 import {
   HubspotCompanyCreateDto,
@@ -67,7 +70,7 @@ export default class HubspotCompanyService {
 
       return { data, meta: { total: data.length } };
     } catch (err) {
-      throw new HttpError(err.message);
+      throw new UnprocessableEntryException(err?.body?.message ?? err?.message);
     }
   }
 
@@ -94,7 +97,7 @@ export default class HubspotCompanyService {
           id: payload.companyId,
         });
 
-      throw new HttpError(err.message);
+      throw new UnprocessableEntryException(err?.body?.message ?? err?.message);
     }
   }
 
@@ -114,7 +117,7 @@ export default class HubspotCompanyService {
         },
       };
     } catch (err) {
-      throw new HttpError(err.message);
+      throw new UnprocessableEntryException(err?.body?.message ?? err?.message);
     }
   }
 
@@ -142,7 +145,7 @@ export default class HubspotCompanyService {
         },
       };
     } catch (err) {
-      throw new HttpError(err.message);
+      throw new UnprocessableEntryException(err?.body?.message ?? err?.message);
     }
   }
 
@@ -152,7 +155,7 @@ export default class HubspotCompanyService {
     try {
       await this.hubspotClient.client.crm.companies.basicApi.archive(companyId);
     } catch (err) {
-      throw new HttpError(err.message);
+      throw new UnprocessableEntryException(err?.body?.message ?? err?.message);
     }
   }
 }
