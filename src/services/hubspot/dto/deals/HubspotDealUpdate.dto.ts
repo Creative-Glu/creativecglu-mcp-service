@@ -5,7 +5,6 @@ import {
   IsNumber,
   IsOptional,
   IsString,
-  Min,
   ValidateIf,
 } from 'class-validator';
 
@@ -40,8 +39,7 @@ export default class HubspotDealUpdateDto {
 
   @IsOptional()
   @IsNumber()
-  @Min(1)
-  amount?: number;
+  amount: number;
 
   @IsOptional()
   @IsString()
