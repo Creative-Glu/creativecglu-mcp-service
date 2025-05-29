@@ -34,7 +34,7 @@ export default class HubspotDealCreateDto {
   @IsString()
   name: string;
 
-  @IsNotEmpty()
+  @IsOptional()
   @IsNumber()
   @Min(1)
   amount: number;

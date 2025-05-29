@@ -360,7 +360,7 @@ export default class HubspotDealService {
     }
 
     if (rest.amount)
-      (rest as Record<string, any>).oooooooooamount = rest.amount.toString();
+      (rest as Record<string, any>).amount = rest.amount.toString();
 
     try {
       const deal = await this.hubspotClient.client.crm.deals.basicApi.update(
