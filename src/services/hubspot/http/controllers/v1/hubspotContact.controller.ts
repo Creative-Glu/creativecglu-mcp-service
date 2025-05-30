@@ -38,7 +38,7 @@ export default class HubspotContactController {
     summary: 'Fetch Hubspot Contacts',
     description:
       // eslint-disable-next-line max-len
-      'Retrieve a list of Hubspot contacts with optional filters like `limit`, `email`, `firstname`, `lastname`, and `phone`.',
+      'Retrieve a list of Hubspot contacts with optional filters like `perPage`, `email`, `firstname`, `lastname`, and `phone`.',
   })
   async getContacts(
     @Query() filter: HubspotContactSearchDto,

@@ -26,29 +26,26 @@ export default class HubspotCompanyService {
 
       const filters: Record<string, any>[] = [];
 
-      if (name) {
+      if (name)
         filters.push({
           propertyName: 'name',
           operator: 'CONTAINS_TOKEN',
           value: name,
         });
-      }
 
-      if (domain) {
+      if (domain)
         filters.push({
           propertyName: 'domain',
           operator: 'EQ',
           value: domain,
         });
-      }
 
-      if (phone) {
+      if (phone)
         filters.push({
           propertyName: 'phone',
           operator: 'EQ',
           value: phone,
         });
-      }
 
       const response =
         await this.hubspotClient.client.crm.companies.searchApi.doSearch({

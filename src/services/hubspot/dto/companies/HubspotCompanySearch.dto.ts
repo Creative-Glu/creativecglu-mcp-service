@@ -12,7 +12,7 @@ import { FilterType } from 'common/models';
 
 export default class HubspotCompanySearchDto extends PartialType(FilterType) {
   @IsOptional()
-  limit?: number;
+  perPage?: number;
 
   @IsOptional()
   @IsString()

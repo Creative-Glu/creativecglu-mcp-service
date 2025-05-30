@@ -4,7 +4,7 @@ import { FilterType } from 'common/models';
 
 export default class HubspotStageSearchDto extends PartialType(FilterType) {
   @IsOptional()
-  limit?: number;
+  perPage?: number;
 
   @IsOptional()
   @IsString()

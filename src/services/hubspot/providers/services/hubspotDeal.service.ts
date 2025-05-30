@@ -110,29 +110,26 @@ export default class HubspotDealService {
 
       const filters: Record<string, any>[] = [];
 
-      if (name) {
+      if (name)
         filters.push({
           propertyName: 'dealname',
           operator: 'CONTAINS_TOKEN',
           value: name,
         });
-      }
 
-      if (amount) {
+      if (amount)
         filters.push({
           propertyName: 'amount',
           operator: 'EQ',
           value: amount,
         });
-      }
 
-      if (stageId) {
+      if (stageId)
         filters.push({
           propertyName: 'dealstage',
           operator: 'CONTAINS_TOKEN',
           value: stageId,
         });
-      }
 
       const response =
         await this.hubspotClient.client.crm.deals.searchApi.doSearch({
