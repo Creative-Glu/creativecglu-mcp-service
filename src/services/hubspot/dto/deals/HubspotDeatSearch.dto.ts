@@ -35,6 +35,10 @@ export default class HubspotDeatSearchDto extends PartialType(FilterType) {
 
   @IsOptional()
   @IsString()
+  productId?: string;
+
+  @IsOptional()
+  @IsString()
   name?: string;
 
   @IsOptional()
