@@ -1,0 +1,263 @@
+{
+  "name": "MCP Host - Telegram",
+  "nodes": [
+    {
+      "parameters": {
+        "resource": "file",
+        "fileId": "={{ $('MCP Host - Telegram').item.json.message.voice.file_id }}"
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        100,
+        340
+      ],
+      "id": "0101e339-fb4c-438c-b035-180e812de500",
+      "name": "Telegram Get File",
+      "webhookId": "076f0443-c6cd-4324-a58f-49524dc15683",
+      "credentials": {
+        "telegramApi": {
+          "id": "5b2QgfLEsDbpWcqO",
+          "name": "TELEGRAM ACCOUNT"
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "resource": "audio",
+        "operation": "transcribe",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        320,
+        340
+      ],
+      "id": "756323b2-2341-4c53-8c28-c76d42c65a48",
+      "name": "Transcribe Audio",
+      "credentials": {
+        "openAiApi": {
+          "id": "DLJqYifNhv5adxi8",
+          "name": "OPENAI_KEY (kevin)"
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "updates": [
+          "message"
+        ],
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        100,
+        80
+      ],
+      "id": "27f90e77-c58a-4148-8a0c-e4ea9719dd79",
+      "name": "MCP Host - Telegram",
+      "webhookId": "1f60a9fc-fa58-4c75-8496-4d304a3cd38f",
+      "credentials": {
+        "telegramApi": {
+          "id": "5b2QgfLEsDbpWcqO",
+          "name": "TELEGRAM ACCOUNT"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('MCP Host - Telegram').item.json.message.chat.id }}",
+        "text": "={{ $json.output }}",
+        "replyMarkup": "=",
+        "forceReply": {},
+        "replyKeyboardOptions": {},
+        "replyKeyboardRemove": {},
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        860,
+        340
+      ],
+      "id": "9eb80077-26ec-4ae8-8c38-38f27e776016",
+      "name": "Telegram Reply",
+      "webhookId": "4a0960d3-f227-415a-8025-785109ea3fcb",
+      "credentials": {
+        "telegramApi": {
+          "id": "5b2QgfLEsDbpWcqO",
+          "name": "TELEGRAM ACCOUNT"
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "jsCode": "return [{\n  chatInput: $input.first().json?.message?.text ?? $input.first().json?.text,\n  sessionId: $('MCP Host - Telegram').first().json.message.chat.id\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        640,
+        80
+      ],
+      "id": "5f864451-c54e-4bef-96a9-3c38590b5628",
+      "name": "Input Transformer",
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "IJr1QApeU1TWAevd",
+          "mode": "list",
+          "cachedResultName": "MCP Client V2"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.2,
+      "position": [
+        640,
+        340
+      ],
+      "id": "0ad032b8-c03b-412d-a5f4-3faf25aa9884",
+      "name": "MCP Client - Sub-Workflow",
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "4ce4c2eb-9554-4b0b-9687-3ed836f350c5",
+              "leftValue": "={{ $json.message.voice }}",
+              "rightValue": "",
+              "operator": {
+                "type": "object",
+                "operation": "notExists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        320,
+        80
+      ],
+      "id": "f843a094-07fd-46fb-b157-8aa8f9557efc",
+      "name": "Is Chat Input",
+      "onError": "continueRegularOutput"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Telegram Get File": {
+      "main": [
+        [
+          {
+            "node": "Transcribe Audio",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Transcribe Audio": {
+      "main": [
+        [
+          {
+            "node": "Input Transformer",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "MCP Host - Telegram": {
+      "main": [
+        [
+          {
+            "node": "Is Chat Input",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Input Transformer": {
+      "main": [
+        [
+          {
+            "node": "MCP Client - Sub-Workflow",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "MCP Client - Sub-Workflow": {
+      "main": [
+        [
+          {
+            "node": "Telegram Reply",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Is Chat Input": {
+      "main": [
+        [
+          {
+            "node": "Input Transformer",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Telegram Get File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "2c643caa-7430-4244-b5a7-1e5f4c1e7b1f",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "0d39019f778e791afbaadc193ebfddb9176008ec8cfebeb3b3f8b35138bc1ea0"
+  },
+  "id": "5crMCV2nBKxOTzbQ",
+  "tags": []
+}
