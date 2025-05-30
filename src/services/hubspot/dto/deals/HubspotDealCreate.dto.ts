@@ -22,12 +22,22 @@ export default class HubspotDealCreateDto {
   companyIds?: string[];
 
   @IsOptional()
+  @ValidateIf((p) => !isEmpty(p.productIds))
+  @IsArray()
+  @IsString({ each: true })
+  productIds?: string[];
+
+  @IsOptional()
   @IsString()
   contactId?: string;
 
   @IsOptional()
   @IsString()
   companyId?: string;
+
+  @IsOptional()
+  @IsString()
+  productId?: string;
 
   @IsNotEmpty()
   @IsString()
