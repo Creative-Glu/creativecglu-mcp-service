@@ -1,0 +1,758 @@
+{
+  "name": "MCP Client V2",
+  "nodes": [
+    {
+      "parameters": {
+        "description": "=### get-contacts\n\n---\n\n**Purpose**\n\nList or search contacts.\n\n---\n\n**Optional filters**\n\n`perPage` · `firstname` · `lastname` · `phone` · `email`\n\n(omit empty fields, AND logic, case-insensitive; URL-encode phone/email)\n\n---\n\n**Defaults & rules**\n\n- No filters → paginated list, `perPage` **200** if user requests “all”.\n- Return unique, sorted, readable results.\n\n---\n\n**Compound flow**\n\n1 ► get-companies “Acme Corp” → companyId\n2 ► get-contacts {companyId, phone:not null}\n\n---\n\n**Natural commands**\n\n“Show me all contacts” · “Find [john@example.com](mailto:john@example.com)” · “List contacts named Sarah” · “Contacts with 555-1234”\n\n---\n\n**Example payload**\n\n```json\n{\n  \"perPage\": 200,\n  \"firstname\": \"John\",\n  \"lastname\": \"Doe\",\n  \"phone\": \"+12125554321\",\n  \"email\": \"john.doe@example.com\"\n}",
+        "jsCode": "const qs = Object.fromEntries(\n  Object.entries(query).filter(([_, value]) => value != null && value !== '')\n);\n\ntry {\n  const options = {\n    method: 'GET',\n    url: 'http://35.170.240.97/api/v1/hubspot/contacts',\n    qs,\n    headers: {\n      'Authorization': 'Bearer 9a8f70ec2e4e90d3c83c4dd14e7b7281b8c6217a7d48b6a7ce99cd6c1a94f8c2'\n    },\n    json: true\n  };\n\n  const response = await this.helpers.httpRequest.call(this, options);\n\n  return JSON.stringify(response);\n} catch (error) {\n  return JSON.stringify(error);\n}",
+        "specifyInputSchema": true,
+        "schemaType": "manual",
+        "inputSchema": "{\n  \"type\": \"object\",\n  \"properties\": {\n    \"firstname\": {\n      \"type\": \"string\",\n      \"description\": \"Partial or full match on first name. Fuzzy matching allowed. Case-insensitive.\"\n    },\n    \"lastname\": {\n      \"type\": \"string\",\n      \"description\": \"Partial or full match on last name. Fuzzy matching allowed. Case-insensitive.\"\n    },\n    \"email\": {\n      \"type\": \"string\",\n      \"description\": \"Match against an email address. Can be partial (e.g., @example.com). Case-insensitive.\"\n    },\n    \"phone\": {\n      \"type\": \"string\",\n      \"description\": \"Match based on full or partial phone number. Accepts various formats (e.g., +1, dashes, or plain numbers).\"\n    },\n    \"perPage\": {\n      \"type\": \"number\",\n      \"description\": \"Optional cap on number of contacts returned.\"\n    }\n  },\n  \"additionalProperties\": false\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolCode",
+      "typeVersion": 1.2,
+      "position": [
+        -300,
+        700
+      ],
+      "id": "5e36c582-3cc4-479b-b083-1979cddf865e",
+      "name": "Get Contacts"
+    },
+    {
+      "parameters": {
+        "description": "### update-contact\n\n---\n\n**Purpose**  \nModify an existing contact.\n\n---\n\n**Required (internal)**  \n- `contactId`  \n  - Resolve using **get-contacts**.  \n  - Never include `contactId` in the final payload.\n\n---\n\n**Optional Fields**  \n- `firstname`  \n- `lastname`  \n- `email`  \n- `phone` (E.164 format)  \n- `companyId`\n\n---\n\n**Rules**\n\n1. **Contact Resolution**  \n   - If `contactId` is missing, resolve via **get-contacts** using a fuzzy name match.\n\n2. **No Changes Check**  \n   - If no field is being updated, abort the operation.\n\n3. **Email Conflicts**  \n   - On email change, check for duplicates via **get-contacts**.  \n   - If conflict is found, prompt the user to:  \n     - Skip  \n     - Update the other contact  \n     - Proceed anyway\n\n4. **Company Resolution**  \n   - If only a company name is provided, run **get-companies** to resolve `companyId`.  \n   - If none found, offer **create-company**.\n\n5. **Avoid Redundant Links**  \n   - Skip assigning `companyId` if the contact is already linked to the same company.\n\n6. **Preview & Confirmation**  \n   - Display the updated payload before sending.  \n   - Proceed only after explicit confirmation (\"confirm\", \"yes\", or \"update\").\n\n7. **Payload Hygiene**  \n   - Validate email and phone formats.  \n   - Exclude unchanged or empty fields.\n\n---\n\n**Multi-turn Interaction**\n\n- Ask the user for updated fields one at a time:\n  1. “Which contact would you like to update?” → resolve `contactId`  \n  2. “What should I update in their first name?” (if changing)  \n  3. “Should I change the last name?”  \n  4. “Do you want to update the email?”  \n  5. “Any changes to the phone number?”  \n  6. “Do you want to link this contact to a different company?”\n\n- Only prompt for fields the user intends to change.  \n- After collecting changes, preview the payload and ask for confirmation before executing.\n\n---\n\n**Compound Flow**  \nCan trigger follow-up actions such as `create-deal` after contact updates.\n\n---\n\n**Example Payload**\n```json\n{\n  \"firstname\": \"Jane\",\n  \"lastname\": \"Smith\",\n  \"email\": \"jane.smith@example.com\",\n  \"phone\": \"+12125554321\",\n  \"companyId\": \"987654321\"\n}",
+        "jsCode": "const { contactId, ...body } = Object.fromEntries(\n  Object.entries(query).filter(([_, value]) => value != null && value !== '')\n);\n\ntry {\n  const options = {\n    method: 'PUT',\n    url: `http://35.170.240.97/api/v1/hubspot/contacts/${contactId}`,\n    headers: {\n      'Authorization': 'Bearer 9a8f70ec2e4e90d3c83c4dd14e7b7281b8c6217a7d48b6a7ce99cd6c1a94f8c2'\n    },\n    body,\n    json: true\n  };\n\n  const response = await this.helpers.httpRequest.call(this, options);\n\n  return JSON.stringify(response);\n} catch (error) {\n  return JSON.stringify(error);\n}",
+        "specifyInputSchema": true,
+        "schemaType": "manual",
+        "inputSchema": "{\n  \"type\": \"object\",\n  \"properties\": {\n    \"contactId\": {\n      \"type\": \"string\",\n      \"description\": \"Contact ID of the contact. required\"\n    },\n    \"firstname\": {\n      \"type\": \"string\",\n      \"description\": \"New first name for the contact. Optional.\"\n    },\n    \"lastname\": {\n      \"type\": \"string\",\n      \"description\": \"New last name for the contact. Optional.\"\n    },\n    \"email\": {\n      \"type\": \"string\",\n      \"description\": \"New email address for the contact. Must be valid and unique. Optional.\"\n    },\n    \"phone\": {\n      \"type\": \"string\",\n      \"description\": \"Updated phone number in international format (e.g., +12125554321). Optional.\"\n    },\n    \"companyId\": {\n      \"type\": \"string\",\n      \"description\": \"Provide the associated company ID to link the contact. If a company name is given, perform a lookup. Optional.\"\n    }\n  },\n  \"additionalProperties\": false\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolCode",
+      "typeVersion": 1.2,
+      "position": [
+        -60,
+        700
+      ],
+      "id": "a5fb2e7f-a520-4f22-8e51-010a25b023a4",
+      "name": "Update Contact"
+    },
+    {
+      "parameters": {
+        "description": "### delete-contact\n\n---\n\n**Purpose**  \nPermanently remove a contact from the CRM.\n\n---\n\n**Required (internal)**  \n`contactId` — resolve with get-contacts; never include in the payload.\n\n---\n\n**Optional lookup**  \n`firstname` · `lastname` · `email` · `phone`  \n(AND logic, case-insensitive)\n\n---\n\n**Rules**  \n1. Resolve `contactId`; if multiple matches, let the user choose.  \n2. Show contact preview and ask for **delete / confirm**.  \n3. Clearly warn that deletion is irreversible.  \n4. No body is sent; the endpoint uses the resolved `contactId`.\n\n---\n\n**Compound flow**  \nCan precede follow-up actions (e.g., create-contact).\n\n---\n\n**Natural commands**  \n“Delete John Smith” · “Remove contact john@example.com” · “Erase +12125559876”\n\n---\n\n**Example request**  \n`DELETE /api/v1/hubspot/contacts/{contactId}`\n",
+        "jsCode": "const { contactId } = Object.fromEntries(\n  Object.entries(query).filter(([_, value]) => value != null && value !== '')\n);\n\ntry {\n  const options = {\n    method: 'DELETE',\n    url: `http://35.170.240.97/api/v1/hubspot/contacts/${contactId}`,\n    headers: {\n      'Authorization': 'Bearer 9a8f70ec2e4e90d3c83c4dd14e7b7281b8c6217a7d48b6a7ce99cd6c1a94f8c2'\n    },\n    json: true\n  };\n\n  const response = await this.helpers.httpRequest.call(this, options);\n\n  return JSON.stringify(response);\n} catch (error) {\n  return JSON.stringify(error);\n}",
+        "specifyInputSchema": true,
+        "schemaType": "manual",
+        "inputSchema": "{\n  \"type\": \"object\",\n  \"properties\": {\n    \"contactId\": {\n      \"type\": \"string\",\n      \"description\": \"Contact ID of the contact. required\"\n    }\n  },\n  \"additionalProperties\": false\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolCode",
+      "typeVersion": 1.2,
+      "position": [
+        60,
+        700
+      ],
+      "id": "fb4b1c2f-95d0-4a5c-9777-91d798f974fe",
+      "name": "Delete Contact"
+    },
+    {
+      "parameters": {
+        "description": "### get-companies\n\n---\n\n**Purpose**  \nList or search companies.\n\n---\n\n**Optional filters**  \n`limit` · `name` · `domain` · `phone`  \n(omit empty fields, AND logic, case-insensitive; URL-encode domain/phone)\n\n---\n\n**Defaults & rules**  \n- No filters → paginated list, limit **100** if user requests “all”.  \n- Return unique, sorted, readable results.\n- Perform **fuzzy matching** on `name` (handle tense or form variations that convey the same meaning).  \n  - If no matches, fetch \"all the companies\" via `get-companies`, search for the name again.  \n  - If still no matches, suggest alternate filters.\n\n---\n\n**Compound flow**  \nOften used first, e.g.:  \n1 ► get-companies “Beta Ltd” → companyId  \n2 ► create-contact {companyId, …}\n\n---\n\n**Natural commands**  \n“Show me all companies” · “Find Acme Corp” · “Search domain acmecorp.com” · “Companies with +14155552671”\n\n---\n\n**Example payload**\n```json\n{\n  \"limit\": 10,\n  \"name\": \"Acme Corp\",\n  \"domain\": \"acmecorp.com\",\n  \"phone\": \"+14155552671\"\n}\n",
+        "jsCode": "const qs  = Object.fromEntries(\n  Object.entries(query).filter(([_, value]) => value != null && value !== '')\n);\n\ntry {\n  const options = {\n    method: 'GET',\n    url: 'http://35.170.240.97/api/v1/hubspot/companies',\n    qs,\n    headers: {\n      'Authorization': 'Bearer 9a8f70ec2e4e90d3c83c4dd14e7b7281b8c6217a7d48b6a7ce99cd6c1a94f8c2'\n    },\n    json: true\n  };\n\n  const response = await this.helpers.httpRequest.call(this, options);\n\n  return JSON.stringify(response);\n} catch (error) {\n  return JSON.stringify(error);\n}",
+        "specifyInputSchema": true,
+        "schemaType": "manual",
+        "inputSchema": "{\n  \"type\": \"object\",\n  \"properties\": {\n    \"name\": {\n      \"type\": \"string\",\n      \"description\": \"Filter by company name. Partial match.  and Fuzzy matching allowed. Optional.\"\n    },\n    \"domain\": {\n      \"type\": \"string\",\n      \"description\": \"Filter by company domain (e.g., example.com). Optional.\"\n    },\n    \"phone\": {\n      \"type\": \"string\",\n      \"description\": \"Filter by company phone number. Must be a valid international format (e.g., +14155552671). Optional.\"\n    },\n    \"perPage\": {\n      \"type\": \"number\",\n      \"description\": \"Optional cap on number of companies returned.\"\n    }\n  },\n  \"additionalProperties\": false\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolCode",
+      "typeVersion": 1.2,
+      "position": [
+        180,
+        700
+      ],
+      "id": "1eb69c64-6770-402c-b08c-370ac34d105a",
+      "name": "Get Companies"
+    },
+    {
+      "parameters": {
+        "description": "### create-company\n\n---\n\n**Purpose**  \nRegister a new company in the CRM.\n\n---\n\n**Required Fields**  \n- `name`\n\n---\n\n**Optional Fields**  \n- `domain`  \n- `phone`  \n- `email`\n\n---\n\n**Rules**\n\n1. **Duplicate Check**  \n   - Use **get-companies** to match by `name` or `domain`.  \n   - If a duplicate is found, ask the user whether to:  \n     - Skip  \n     - Update the existing company  \n     - Create anyway\n\n2. **Preview & Confirmation**  \n   - Show the final payload before submission.  \n   - Proceed only after the user confirms with \"confirm\", \"yes\", or \"create\".\n\n3. **Payload Hygiene**  \n   - Validate `email`, `domain`, and `phone`.  \n   - Omit empty or null fields.\n\n---\n\n**Multi-turn Interaction**\n\n- Prompt for required and optional fields one at a time in the following order:\n  1. `name` → “What’s the company name?”  \n  2. `domain` → “Do you want to include a website domain?”  \n\n- Then ask for optional fields:\n  3. `email` → “Any company email to add?”  \n  4. `phone` → “Do you want to provide a phone number?”\n\n- Ask only for what’s missing.  \n- Maintain memory across turns, validate each response.  \n- Validate inputs where applicable.  \n- After all fields are collected, preview the final payload and wait for confirmation before creating.\n\n---\n\n**Compound Flow**  \nOften used before `create-contact` or `create-deal`.  \nExample: `get-company \"Beta Ltd\"` → `create-company` → `create-contact`\n\n---\n\n**Natural Commands**  \n- “Add Acme Corporation”  \n- “Create FastTech fasttech.com”  \n- “Register Global Systems contact@globalsys.com”  \n- “New company GreenLeaf phone +12125550099”\n\n---\n\n**Example Payload**\n```json\n{\n  \"name\": \"Acme Corporation\",\n  \"domain\": \"acme.com\",\n  \"phone\": \"+12125551234\",\n  \"email\": \"info@acme.com\"\n}",
+        "jsCode": "const body = Object.fromEntries(\n  Object.entries(query).filter(([_, value]) => value != null && value !== '')\n);\n\ntry {\n  const options = {\n    method: 'POST',\n    url: 'http://35.170.240.97/api/v1/hubspot/companies',\n    headers: {\n      'Authorization': 'Bearer 9a8f70ec2e4e90d3c83c4dd14e7b7281b8c6217a7d48b6a7ce99cd6c1a94f8c2'\n    },\n    body,\n    json: true\n  };\n\n  const response = await this.helpers.httpRequest.call(this, options);\n\n  return JSON.stringify(response);\n} catch (error) {\n  return JSON.stringify(error);\n}",
+        "specifyInputSchema": true,
+        "schemaType": "manual",
+        "inputSchema": "{\n  \"type\": \"object\",\n  \"properties\": {\n    \"name\": {\n      \"type\": \"string\",\n      \"description\": \"The name of the company (required).\"\n    },\n    \"domain\": {\n      \"type\": \"string\",\n      \"description\": \"The company’s website domain (e.g., example.com). Optional.\"\n    },\n    \"phone\": {\n      \"type\": \"string\",\n      \"description\": \"The company’s main phone number (e.g., +12125551234). Optional.\"\n    }\n  },\n  \"additionalProperties\": false\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolCode",
+      "typeVersion": 1.2,
+      "position": [
+        300,
+        700
+      ],
+      "id": "3f7f46c9-0e90-4296-9dea-9b87e97b0df9",
+      "name": "Create Company"
+    },
+    {
+      "parameters": {
+        "description": "### update-company\n\n---\n\n**Purpose**  \nModify an existing company record.\n\n---\n\n**Required (internal)**  \n- `companyId`  \n  - Resolve using **get-companies** (search by name).  \n  - Never include `companyId` in the final payload.\n\n---\n\n**Optional Fields**  \n- `name`  \n- `domain`  \n- `phone`  \n- `email`\n\n---\n\n**Rules**\n\n1. **Company Resolution**  \n   - If `companyId` is missing, resolve with **get-companies** (fuzzy match on name).  \n   - If not found, offer **create-company**.\n\n2. **No Changes Check**  \n   - Abort the flow if no new fields are provided.\n\n3. **Conflict Detection**  \n   - If `domain` or `email` is updated, check for duplicates via **get-companies**.  \n   - If conflict is found, prompt to:  \n     - Skip  \n     - Update the other company  \n     - Proceed anyway\n\n4. **Name-only Input**  \n   - If only the `name` is supplied, search using **get-companies** to resolve `companyId`.\n\n5. **Preview & Confirmation**  \n   - Display the update payload before submission.  \n   - Wait for explicit confirmation (\"confirm\", \"yes\", or \"update\").\n\n6. **Payload Hygiene**  \n   - Validate formats for `email`, `domain`, and `phone`.  \n   - Omit unchanged or empty fields.\n\n---\n\n**Multi-turn Interaction**\n\n- Guide the user through changes step by step:\n  1. “Which company do you want to update?” → resolve `companyId`  \n  2. “Do you want to change the company name?”  \n  3. “Update the website domain?”  \n  4. “Any new phone number to add?”  \n  5. “What’s the updated company email, if any?”\n\n- Ask only for fields that need updates.  \n- Maintain prior context and track changes.  \n- Show the final payload and wait for confirmation before proceeding.\n\n---\n\n**Compound Flow**  \nOften paired with other tools such as `create-deal` or `update-contact`.  \nExample: `get-companies \"Acme Corp\"` → `update-company` → `create-deal`\n\n---\n\n**Natural Commands**  \n- “Update Acme Corp phone +14155550000”  \n- “Change Beta Ltd domain beta.io”  \n- “Modify GreenLeaf email support@greenleaf.io”\n\n---\n\n**Example Payload**\n```json\n{\n  \"name\": \"Acme Corporation\",\n  \"domain\": \"acme.co\",\n  \"phone\": \"+14155552671\",\n  \"email\": \"support@acme.co\"\n}",
+        "jsCode": "const { companyId, ...body } = Object.fromEntries(\n  Object.entries(query).filter(([_, value]) => value != null && value !== '')\n);\n\ntry {\n  const options = {\n    method: 'PUT',\n    url: `http://35.170.240.97/api/v1/hubspot/companies/${companyId}`,\n    headers: {\n      'Authorization': 'Bearer 9a8f70ec2e4e90d3c83c4dd14e7b7281b8c6217a7d48b6a7ce99cd6c1a94f8c2'\n    },\n    body,\n    json: true\n  };\n\n  const response = await this.helpers.httpRequest.call(this, options);\n\n  return JSON.stringify(response);\n} catch (error) {\n  return JSON.stringify(error);\n}",
+        "specifyInputSchema": true,
+        "schemaType": "manual",
+        "inputSchema": "{\n  \"type\": \"object\",\n  \"properties\": {\n    \"companyId\": {\n      \"type\": \"string\",\n      \"description\": \"Company ID of the company. required\"\n    },\n    \"name\": {\n      \"type\": \"string\",\n      \"description\": \"Enter the new company name (optional).\"\n    },\n    \"domain\": {\n      \"type\": \"string\",\n      \"description\": \"Enter the updated company domain (optional, e.g., acme.com).', 'string')\"\n    },\n    \"phone\": {\n      \"type\": \"string\",\n      \"description\": \"Enter the updated phone number (optional, valid international format, e.g., +12125554321).\"\n    }\n  },\n  \"additionalProperties\": false\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolCode",
+      "typeVersion": 1.2,
+      "position": [
+        420,
+        700
+      ],
+      "id": "a202a98b-297d-4a57-97ce-6b979ddef04b",
+      "name": "Update Company"
+    },
+    {
+      "parameters": {
+        "description": "### delete-company\n\n---\n\n**Purpose**  \nPermanently remove a company from the CRM.\n\n---\n\n**Required (internal)**  \n`companyId` — resolve with get-companies; never include in payload.\n\n---\n\n**Optional lookup**  \n`name` · `domain` · `phone`  \n(AND logic, case-insensitive)\n\n---\n\n**Rules**  \n1. If `companyId` missing, search via lookup fields; let user pick if multiple.  \n2. Show company preview; warn deletion is irreversible.  \n3. Require **delete / confirm** before API call.  \n4. No JSON body—endpoint uses the resolved `companyId`.\n\n---\n\n**Compound flow**  \nCommon follow-ups: unlink contacts, reassign deals, etc.  \nExample: get-companies “Acme Corp” → delete-company → update-deal.\n\n---\n\n**Natural commands**  \n“Delete Acme Corp” · “Remove domain acme.com” · “Erase +14155552671” · “Delete Beta Ltd and unlink contacts”\n\n---\n\n**Example request**  \n`DELETE /api/v1/hubspot/companies/{companyId}`\n",
+        "jsCode": "const { companyId } = Object.fromEntries(\n  Object.entries(query).filter(([_, value]) => value != null && value !== '')\n);\n\ntry {\n  const options = {\n    method: 'DELETE',\n    url: `http://35.170.240.97/api/v1/hubspot/companies/${companyId}`,\n    headers: {\n      'Authorization': 'Bearer 9a8f70ec2e4e90d3c83c4dd14e7b7281b8c6217a7d48b6a7ce99cd6c1a94f8c2'\n    },\n    json: true\n  };\n\n  const response = await this.helpers.httpRequest.call(this, options);\n\n  return JSON.stringify(response);\n} catch (error) {\n  return JSON.stringify(error);\n}\n",
+        "specifyInputSchema": true,
+        "schemaType": "manual",
+        "inputSchema": "{\n  \"type\": \"object\",\n  \"properties\": {\n    \"companyId\": {\n      \"type\": \"string\",\n      \"description\": \"Company ID of the company. required\"\n    }\n  },\n  \"additionalProperties\": false\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolCode",
+      "typeVersion": 1.2,
+      "position": [
+        540,
+        700
+      ],
+      "id": "ece77b5d-cbc9-46c3-8bcd-2bb598497e02",
+      "name": "Delete Company"
+    },
+    {
+      "parameters": {
+        "description": "### get-deals\n\n---\n\n**Purpose**  \nSearch and list deals in the CRM.\n\n---\n\n**Optional filters**  \n`perPage` · `name` · `stageId` · `stageName` · `pipelineName` · `contactId` · `companyId`  \n(omit empty fields, case-insensitive, combined with **AND** logic)\n\n---\n\n**Rules**  \n- `stageName` present → use `get-stages` (fuzzy match) → derive `stageId`.  \n- No filters → paginated list; default **perPage = 200** when the user asks for “all”.  \n- Validate and sanitize every filter.  \n- Return each deal’s `dealId`, `name`, `amount`, `stage`, `pipeline`, and associations.  \n- Perform **fuzzy matching** on `name` (handle tense or form variations that convey the same meaning).  \n  - If no matches, fetch \"all the deals\" via `get-deals`, search for the name again.  \n  - If still no matches, suggest alternate filters.\n\n---\n\n**Compound flow**  \nExample: `get-companies \"Acme Corp\"` → `companyId` → `get-deals {companyId}` → user selects deal → `update-deal`.\n\n---\n\n**Natural commands**  \n“Show me all deals” · “Find deals named Enterprise” · “List deals worth $10,000” · “Deals in Negotiation stage” · “Get deals for John Smith”\n\n---\n\n**Example payload**\n```json\n{\n  \"perPage\": 200,\n  \"name\": \"Enterprise\",\n  \"stageId\": \"123\",\n  \"companyId\": \"456\"\n}\n",
+        "jsCode": "const qs  = Object.fromEntries(\n  Object.entries(query).filter(([_, value]) => value != null && value !== '')\n);\n\ntry {\n  const options = {\n    method: 'GET',\n    url: 'http://35.170.240.97/api/v1/hubspot/deals',\n    qs,\n    headers: {\n      'Authorization': 'Bearer 9a8f70ec2e4e90d3c83c4dd14e7b7281b8c6217a7d48b6a7ce99cd6c1a94f8c2'\n    },\n    json: true\n  };\n\n  const response = await this.helpers.httpRequest.call(this, options);\n\n  return JSON.stringify(response);\n} catch (error) {\n  return JSON.stringify(error);\n}",
+        "specifyInputSchema": true,
+        "schemaType": "manual",
+        "inputSchema": "{\n  \"type\": \"object\",\n  \"properties\": {\n    \"perPage\": {\n      \"type\": \"integer\",\n      \"description\": \"Maximum number of deals to return.\"\n    },\n    \"name\": {\n      \"type\": \"string\",\n      \"description\": \"Partial or full match on deal name (optional).\"\n    },\n    \"stageName\": {\n      \"type\": \"string\",\n      \"description\": \"Stage label to filter by (optional, fuzzy match).\"\n    },\n    \"stageId\": {\n      \"type\": \"string\",\n      \"description\": \"Return deals linked to this stage (optional).\"\n    },\n    \"contactId\": {\n      \"type\": \"string\",\n      \"description\": \"Return deals linked to this contact (optional).\"\n    },\n    \"companyId\": {\n      \"type\": \"string\",\n      \"description\": \"Return deals linked to this company (optional).\"\n    }\n  },\n  \"additionalProperties\": false\n}\n"
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolCode",
+      "typeVersion": 1.2,
+      "position": [
+        660,
+        700
+      ],
+      "id": "baa59a65-0d47-4432-b299-4f12501bcac1",
+      "name": "Get Deals"
+    },
+    {
+      "parameters": {
+        "description": "### create-deal\n\n---\n\n**Purpose**  \nOpen a new deal in the CRM.\n\n---\n\n**Optional Fields**  \n- `name`  \n- `amount` (if provided, number ≥ 1; cast from string if needed)  \n- `contactId` or `contactName`  \n- `companyId` or `companyName`  \n- `stageId` or `stageName`\n\n*A deal may be created with no amount and without linked contacts or companies. Include any IDs or names you have.*\n\n---\n\n**Rules**\n\n1. **ID Resolution**  \n   - `contactName` → use **get-contacts** to resolve `contactId`. Prompt user if multiple results.  \n   - `companyName` → use **get-companies** to resolve `companyId`.  \n   - `stageName` → use **get-stages** to resolve `stageId` (support fuzzy matching).\n\n2. **Name Generation**  \n   - If `name` is missing, generate one using any combination of `contactName`, `companyName`, and `amount`.  \n   - Generated names must include **at least five words**.\n\n3. **Preview & Confirmation**  \n   - Display the full payload before submission.  \n   - Wait for explicit confirmation: “confirm”, “yes”, or “create”.\n\n4. **Payload Hygiene**  \n   - Exclude null, unchanged, or zero-valued fields.  \n   - Ensure all values are valid JSON primitives.\n\n5. **Error Handling**  \n   - Abort with an error if neither `contactId` nor `companyId` can be resolved or provided.\n\n6. **Amount**  \n   - `amount` is optional. Never enforce it.\n\n---\n\n**Multi-turn Interaction**\n\n- Prompt the user for missing fields in this order:\n  1. `contactName` or `contactId` → “Who is this deal for?”  \n  2. `companyName` or `companyId` → “Should I link a company to this deal?”  \n  3. `amount` → “How much is this deal worth?”  \n  4. `stageName` or `stageId` → “Which stage should I place this deal in?”  \n  5. `name` → if still missing, auto-generate\n\n- Ask only one question at a time.  \n- Maintain context across turns.  \n- After collecting all fields, show the final payload and ask for confirmation before submitting.\n\n---\n\n**Compound Flow**  \n- `create-contact` → returns `contactId` → `create-deal` with `contactId`  \n- `create-company` → returns `companyId` → `create-deal` with `companyId`\n\n---\n\n**Natural Commands**  \n- “Create a new deal for John Smith worth $5 000.”  \n- “Start a deal in the Demo stage for Maria.”\n\n---\n\n**Example Payload**\n```json\n{\n  \"name\": \"Q2 Growth Opportunity for John Smith\",\n  \"amount\": 100,\n  \"contactId\": \"123123\",\n  \"companyId\": \"567567\",\n  \"stageId\": \"stage_qualification\"\n}",
+        "jsCode": "const body = Object.fromEntries(\n  Object.entries(query).filter(([_, value]) => value != null && value !== '')\n);\n\ntry {\n  const options = {\n    method: 'POST',\n    url: 'http://35.170.240.97/api/v1/hubspot/deals',\n    headers: {\n      'Authorization': 'Bearer 9a8f70ec2e4e90d3c83c4dd14e7b7281b8c6217a7d48b6a7ce99cd6c1a94f8c2'\n    },\n    body,\n    json: true\n  };\n\n\n  const response = await this.helpers.httpRequest.call(this, options);\n\n  return JSON.stringify(response);\n} catch (error) {\n  return JSON.stringify(error);\n}",
+        "specifyInputSchema": true,
+        "schemaType": "manual",
+        "inputSchema": "{\n  \"type\": \"object\",\n  \"properties\": {\n    \"name\": {\n      \"type\": \"string\",\n      \"description\": \"This field is optional. If omitted, a default deal name will be generated using contact name and amount.\"\n    },\n    \"amount\": {\n      \"type\": \"number\",\n      \"description\": \"This field is optional. Specifies the monetary value of the deal.\"\n    },\n    \"contactId\": {\n      \"type\": \"string\",\n      \"description\": \"This field is optional. You can pass either the contact ID.\"\n    },\n    \"contactIds\": {\n      \"type\": \"string\",\n      \"description\": \"This field is optional. You can pass either the array of contact IDs.\"\n    },\n    \"companyId\": {\n      \"type\": \"string\",\n      \"description\": \"This field is optional. You can pass either the company ID.\"\n    },\n    \"companyIds\": {\n      \"type\": \"string\",\n      \"description\": \"This field is optional. You can pass either the array of company IDs.\"\n    },\n    \"stageId\": {\n      \"type\": \"string\",\n      \"description\": \"This field is optional. Specifies the stageId of the deal.\"\n    },\n    \"contactName\": {\n      \"type\": \"string\",\n      \"description\": \"This field is optional. You can pass either the contact name.\"\n    },\n    \"companyName\": {\n      \"type\": \"string\",\n      \"description\": \"This field is optional. You can pass either the company name.\"\n    },\n    \"stageName\": {\n      \"type\": \"string\",\n      \"description\": \"This field is optional. You can pass either the stage name.\"\n    }\n  },\n  \"additionalProperties\": false\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolCode",
+      "typeVersion": 1.2,
+      "position": [
+        780,
+        700
+      ],
+      "id": "abba76ab-7d38-4e89-9b4f-90e29f30ebff",
+      "name": "Create Deal"
+    },
+    {
+      "parameters": {
+        "description": "### update-deal\n\n---\n\n**Purpose**  \nModify an existing deal.\n\n---\n\n**Required (resolved internally)**  \n- `dealId`  \n  - Resolve using **get-deals** (by deal name or context).  \n  - Never include `dealId` in the final payload.\n\n---\n\n**Optional Fields**  \n- `name`  \n- `amount` (number ≥ 1; cast from string if needed)  \n- `contactId` or `contactName`  \n- `companyId` or `companyName`  \n- `stageId` or `stageName`  \n*(Only include fields that actually change.)*\n\n---\n\n**Rules**\n\n1. **Deal Resolution**  \n   - If only `dealName` is given, resolve `dealId` using **get-deals** (fuzzy match allowed).\n\n2. **Stage Resolution**  \n   - If `stageName` is given, resolve to `stageId` using **get-stages`** (supports tense or form variations).\n   - If both `stageId` and `pipelineId` are provided, validate stage-pipeline match.\n\n3. **Payload Hygiene**  \n   - Omit unchanged, null, or zero-valued fields.  \n   - Ensure all values are valid JSON primitives.  \n   - Abort if no actual updates are provided.\n\n4. **Preview & Confirmation**  \n   - Display the final update payload.  \n   - Proceed only after receiving an explicit **\"accept\" / \"yes\" / \"proceed\"** from the user.\n\n5. **Post-update Response**  \n   - After a successful update, return a short summary of which fields were modified.\n\n---\n\n**Multi-turn Interaction**\n\n- Prompt for missing or intended update fields in this order:\n  1. `dealName` → “Which deal would you like to update?”  \n  2. `name` → “Do you want to rename the deal?”  \n  3. `amount` → “What’s the new amount?”  \n  4. `contactName` or `contactId` → “Do you want to change the associated contact?”  \n  5. `companyName` or `companyId` → “Should I update the linked company?”  \n  6. `stageName` or `stageId` → “Which stage should the deal move to?”\n\n- Ask only about fields that the user intends to modify.  \n- Keep context across turns.  \n- After collecting all changes, show a payload preview and wait for confirmation before updating.\n\n---\n\n**Natural Commands**  \n- “Update Spring Campaign to Negotiation.”  \n- “Change Enterprise Deal amount to $15 000.”  \n- “Rename Acme deal to Q2 Growth Opportunity.”  \n- “Put the FastTech deal in Closed Won.”\n\n---\n\n**Example Payload**\n```json\n{\n  \"name\": \"Q2 Growth Opportunity for John Smith\",\n  \"amount\": 100,\n  \"contactId\": \"123123\",\n  \"companyId\": \"567567\",\n  \"stageId\": \"stage_qualification\"\n}",
+        "jsCode": "const { dealId, ...body } = Object.fromEntries(\n  Object.entries(query).filter(([_, value]) => value != null && value !== '')\n);\n\ntry {\n  const options = {\n    method: 'PUT',\n    url: `http://35.170.240.97/api/v1/hubspot/deals/${dealId}`,\n    headers: {\n      'Authorization': 'Bearer 9a8f70ec2e4e90d3c83c4dd14e7b7281b8c6217a7d48b6a7ce99cd6c1a94f8c2'\n    },\n    body,\n    json: true\n  };\n\n  const response = await this.helpers.httpRequest.call(this, options);\n\n  return JSON.stringify(response);\n} catch (error) {\n  return JSON.stringify(error);\n}",
+        "specifyInputSchema": true,
+        "schemaType": "manual",
+        "inputSchema": "{\n  \"type\": \"object\",\n  \"properties\": {\n    \"dealId\": {\n      \"type\": \"string\",\n      \"description\": \"This field is required. Id of the deal.\"\n    },\n    \"dealName\": {\n      \"type\": \"string\",\n      \"description\": \"This field is optional. New the deal name.\"\n    },\n    \"amount\": {\n      \"type\": \"number\",\n      \"description\": \"This field is optional. New monetary value amount of the deal.\"\n    },\n    \"contactId\": {\n      \"type\": \"string\",\n      \"description\": \"This field is optional. You can pass either the contact ID.\"\n    },\n    \"contactIds\": {\n      \"type\": \"string\",\n      \"description\": \"This field is optional. You can pass either the array of contact IDs.\"\n    },\n    \"companyId\": {\n      \"type\": \"string\",\n      \"description\": \"This field is optional. You can pass either the company ID.\"\n    },\n    \"companyIds\": {\n      \"type\": \"string\",\n      \"description\": \"This field is optional. You can pass either the array of company IDs.\"\n    },\n    \"stageId\": {\n      \"type\": \"string\",\n      \"description\": \"This field is optional. Specifies the stageId of the deal.\"\n    },\n    \"contactName\": {\n      \"type\": \"string\",\n      \"description\": \"This field is optional. You can pass either the contact name.\"\n    },\n    \"companyName\": {\n      \"type\": \"string\",\n      \"description\": \"This field is optional. You can pass either the company name.\"\n    },\n    \"stageName\": {\n      \"type\": \"string\",\n      \"description\": \"This field is optional. You can pass either the stage name.\"\n    }\n  },\n  \"additionalProperties\": false\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolCode",
+      "typeVersion": 1.2,
+      "position": [
+        900,
+        700
+      ],
+      "id": "bc868f4a-1d8b-4f62-b4ba-78a240df581e",
+      "name": "Update Deal"
+    },
+    {
+      "parameters": {
+        "description": "### delete-deal\n\n---\n\n**Purpose**  \nPermanently remove a deal from the CRM.\n\n---\n\n**Required (resolved internally)**  \n`dealId` — resolve with **get-deals**; never include in the payload.\n\n---\n\n**Optional lookup**  \n`name` — deal title (partial or full match)  \n(Use only if `dealId` is unknown.)\n\n---\n\n**Rules**  \n1. If only a **deal name** is given, search via **get-deals**.  \n   - Multiple matches → show list and let the user pick.  \n2. Display a deal preview; warn that deletion is irreversible.  \n3. Wait for explicit **“delete / confirm / yes”** before calling the API.  \n4. No JSON body is sent—the endpoint uses the resolved `dealId`.\n\n---\n\n**Compound flow**  \nExample: `get-deals {name:\"Q3 Growth Opportunity\"}` → user picks → preview → confirm → `delete-deal`.\n\n---\n\n**Natural commands**  \n“Delete the deal named Spring Campaign.” · “Remove Acme Corp deal.” · “Erase Q2 Opportunity.” · “Delete the deal I just created.”\n\n---\n\n**Example request**  \n`DELETE /api/v1/hubspot/deals/{dealId}`\n",
+        "jsCode": "const { dealId } = Object.fromEntries(\n  Object.entries(query).filter(([_, value]) => value != null && value !== '')\n);\n\ntry {\n  const options = {\n    method: 'DELETE',\n    url: `http://35.170.240.97/api/v1/hubspot/deals/${dealId}`,\n    headers: {\n      'Authorization': 'Bearer 9a8f70ec2e4e90d3c83c4dd14e7b7281b8c6217a7d48b6a7ce99cd6c1a94f8c2'\n    },\n    json: true\n  };\n\n  const response = await this.helpers.httpRequest.call(this, options);\n\n  return JSON.stringify(response);\n} catch (error) {\n  return JSON.stringify(error);\n}",
+        "specifyInputSchema": true,
+        "schemaType": "manual",
+        "inputSchema": "{\n  \"type\": \"object\",\n  \"properties\": {\n    \"dealId\": {\n      \"type\": \"string\",\n      \"description\": \"Deal ID of the deal. required\"\n    }\n  },\n  \"additionalProperties\": false\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolCode",
+      "typeVersion": 1.2,
+      "position": [
+        1020,
+        700
+      ],
+      "id": "917efdf0-3e71-492d-b31f-aaed5fb72a96",
+      "name": "Delete Deal"
+    },
+    {
+      "parameters": {
+        "description": "### get-stages\n\n---\n\n**Purpose**  \nRetrieve stages for a specific pipeline.\n\n---\n\n**Optional**  \n`name` — partial, case-insensitive match on the stage label.\n\n---\n\n**Rules**  \n- If `name` is omitted, return **all** stages in the pipeline.  \n- Apply **AND** logic when additional filters are added.  \n- Deduplicate results, sort by display order, and format clearly.  \n- Perform **fuzzy matching** on `name` (handle tense or form variations that convey the same meaning).  \n  - If no matches, fetch \"all the stages\" via `get-stages`, search for the name again.  \n  - If still no matches, suggest alternate filters.\n\n- If no stages match, reply: *“No stages found for this pipeline.”*\n\n---\n\n**Compound flow**  \nExample: `\"Sales Stage\"`  `get-stages {name:\"Demo\"}` → `stageId` → `create-deal` or `update-deal`.\n\n---\n\n**Natural commands**  \n- “List stages in Sales Pipeline.”  \n- “Find the Demo stage from Onboarding.”  \n- “Show all stages in the default pipeline.”\n",
+        "jsCode": "const { pipelineId }  = Object.fromEntries(\n  Object.entries(query).filter(([_, value]) => value != null && value !== '')\n);\n\ntry {\n  const options = {\n    method: 'GET',\n    url: `http://35.170.240.97/api/v1/hubspot/pipelines/${'default'}/stages`,\n    headers: {\n      'Authorization': 'Bearer 9a8f70ec2e4e90d3c83c4dd14e7b7281b8c6217a7d48b6a7ce99cd6c1a94f8c2'\n    },\n    json: true\n  };\n\n  const response = await this.helpers.httpRequest.call(this, options);\n\n  return JSON.stringify(response);\n} catch (error) {\n  return JSON.stringify(error);\n}",
+        "specifyInputSchema": true,
+        "schemaType": "manual",
+        "inputSchema": "{\n  \"type\": \"object\",\n  \"properties\": {\n    \"name\": {\n      \"type\": \"string\",\n      \"description\": \"Enter the stage name to filter the results. This field is optional.\"\n    },\n    \"perPage\": {\n      \"type\": \"number\",\n      \"description\": \"Optional cap on number of deals returned.\"\n    },\n    \"stageName\": {\n      \"type\": \"string\",\n      \"description\": \"Enter the stage name to filter the results. This field is optional.\"\n    }\n  },\n  \"additionalProperties\": false\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolCode",
+      "typeVersion": 1.2,
+      "position": [
+        1140,
+        700
+      ],
+      "id": "787d8ff9-e110-46d0-b2f6-bf1975ec3107",
+      "name": "Get Stages"
+    },
+    {
+      "parameters": {
+        "description": "### create-contact\n\n---\n\n**Purpose**  \nAdd a new contact to the CRM.\n\n---\n\n**Required Fields**  \n- `firstname`  \n- `lastname`  \n- `email` (must be in valid email format)\n\n---\n\n**Optional Fields**  \n- `phone` (E.164 format)  \n- `companyId`\n\n---\n\n**Rules**\n\n1. **Duplicate Check**  \n   - Use **get-contacts** to check if a contact already exists (match on email).  \n   - If a duplicate is found, ask the user whether to:  \n     - Skip  \n     - Update the existing contact  \n     - Create anyway\n\n2. **Company Resolution**  \n   - If only a company **name** is supplied:  \n     - Run **get-companies** → select `companyId`  \n     - If no matches, offer to run **create-company**\n\n3. **Preview & Confirmation**  \n   - Before submission, show the final payload.  \n   - Proceed only after an explicit \"confirm\" / \"yes\" / \"create\" from the user.\n\n4. **Payload Hygiene**  \n   - Omit empty fields.  \n   - Ensure `email` and `phone` formats are valid.\n\n---\n\n**Multi-turn Interaction**\n\n- Ask for required fields one at a time in the following order:\n  1. `firstname` → “What’s the contact’s first name?”  \n  2. `lastname` → “Got it. And their last name?”  \n  3. `email` → “What’s their email address?”\n\n- Then ask for optional fields:\n  4. `phone` → “Would you like to add a phone number?”  \n  5. `companyName` or `companyId` → “Should I link this contact to a company?”\n\n- Ask only for what’s missing.  \n- Maintain memory across turns, validate each response.  \n- Validate inputs where applicable.  \n- Once all data is gathered, show the payload preview and await confirmation before creating.\n\n---\n\n**Compound Flow**  \nOften followed by a `create-deal` step using the returned `contactId`.\n\n---\n\n**Example Payload**\n```json\n{\n  \"firstname\": \"John\",\n  \"lastname\": \"Doe\",\n  \"email\": \"john.doe@example.com\",\n  \"phone\": \"+12125551234\",\n  \"companyId\": \"123456789\"\n}",
+        "jsCode": "const body = Object.fromEntries(\n  Object.entries(query).filter(([_, value]) => value != null && value !== '')\n);\n\ntry {\n  const options = {\n    method: 'POST',\n    url: 'http://35.170.240.97/api/v1/hubspot/contacts',\n    headers: {\n      'Authorization': 'Bearer 9a8f70ec2e4e90d3c83c4dd14e7b7281b8c6217a7d48b6a7ce99cd6c1a94f8c2'\n    },\n    body,\n    json: true,\n  };\n\n  const response = await this.helpers.httpRequest.call(this, options);\n\n  return JSON.stringify(response);\n} catch (error) {\n  return JSON.stringify(error.message);\n}",
+        "specifyInputSchema": true,
+        "schemaType": "manual",
+        "inputSchema": "{\n  \"type\": \"object\",\n  \"properties\": {\n    \"firstname\": {\n      \"type\": \"string\",\n      \"description\": \"Provide the contact's first name. This is required.\"\n    },\n    \"lastname\": {\n      \"type\": \"string\",\n      \"description\": \"Provide the contact's last name. This is required.\"\n    },\n    \"email\": {\n      \"type\": \"string\",\n      \"description\": \"Provide a valid email address for the contact. This is required and must be unique in HubSpot.\"\n    },\n    \"phone\": {\n      \"type\": \"string\",\n      \"description\": \"Provide the contact's phone number in international format (e.g., +12125551234). This is optional.\"\n    },\n    \"companyId\": {\n      \"type\": \"string\",\n      \"description\": \"Provide the associated company ID for the contact. If only the company name is available, perform a lookup. This is optional.\"\n    }\n  },\n  \"additionalProperties\": false\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolCode",
+      "typeVersion": 1.2,
+      "position": [
+        -180,
+        700
+      ],
+      "id": "eb29c706-66e3-4501-b8cd-502ad9c05cae",
+      "name": "Create Contact"
+    },
+    {
+      "parameters": {
+        "public": true,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        20,
+        200
+      ],
+      "id": "a7cbdbdb-61b1-45ac-b40f-4c3d89516cca",
+      "name": "MCP Client - Chat",
+      "webhookId": "583a9b22-7c4a-44ab-a60c-59745e10e481"
+    },
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "=## Helen — CRM Assistant (Creativeglu AI)\n\nFriendly, professional **AI Sales Coach** for your CRM.\n\n---\n\n### Core Entities  \n**Contacts · Companies · Deals · (internal) Stages / Pipelines**  \n<sub>*Stages and pipelines are never named to end-users; they’re used internally for routing.*</sub>\n\n---\n\n### CRM Jargon (mapped to Core Entities)\n\n| Term | Connected Entity | Meaning |\n|------|------------------|---------|\n| **Lead** | Contact | Shows interest but not yet qualified |\n| **Prospect** | Contact / Company | Qualified; likely to open a Deal at the first stage |\n| **Account** | Company | Hosts many Contacts and Deals |\n| **Client** | Contact / Company | Linked to at least one Deal that closed won |\n| **Funnel** | Pipeline | Ordered Stages a Deal moves through |\n| **Churn Rate** | Client | % of Clients lost over time |\n| **Conversion Rate** | Lead / Prospect | % that convert to Deals or Clients |\n| **Close Rate** | Deal | % of open Deals that close won |\n| **Touchpoint** | Contact / Company / Deal | Logged interaction (call, email, meeting…) |\n| **Follow-up** | Contact / Deal | Scheduled Touchpoint to push progress |\n| **Nurturing** | Lead / Prospect | Series of Touchpoints guiding progress |\n| **Open Deal** | Deal | Active, not yet won or lost |\n| **Close Deal** | Deal | Finalised as won or lost |\n| **Average Deal Age** | Deal | Days open (closed: `closedate-createdate`; open: `today-createdate`) |\n| **Total** | Any | Request for overall count / sum |\n\n---\n\n### Supported Operations  \n\n| Verb | Synonyms |\n|------|----------|\n| **Get** | list · fetch · find · search · view |\n| **Create** | add · register · open · generate · start |\n| **Update** | edit · modify · change · rename · replace · move |\n| **Delete** | remove · erase · drop · archive |\n| **Associate** | link · connect · relate |\n\n---\n\n### Compound-Flow Logic  \n\n1. **Resolve** user names → internal IDs (fuzzy match).  \n2. **Assemble** payload with required fields (apply defaults).  \n3. **Confirm** before destructive or high-value actions.  \n4. When a multi-step request is detected, execute tools in order with correct parameters.  \n5. **Multi-turn support**:  \n   - Ask only for missing required fields, one at a time.  \n   - Example prompts:  \n     • “Who is this deal for?”  \n     • “What’s the deal amount?”  \n     • “Which stage should I use?”  \n   - Maintain context across turns; after gathering data, show a preview and seek confirmation.\n\n---\n\n### Defaults & Safety  \n\n* Default pipeline = **“Sales”** when unspecified.  \n* Numeric-only queries (“sum”, “total”, “size”, “count”, “how many”) → return the number only.  \n* Always confirm before create, update, delete, overwrite, or bulk actions.  \n* Offer optional fields only when a required field is missing.  \n* Do **not** expose internal IDs (`contactId`, `stageId`, etc.).  \n* After each command, offer to continue with current context or `/reset-session`.  \n* **Never fabricate data.**\n\n---\n\n### Communication Rules  \n\n* Replies ≤ 100 words; concise sentences.  \n* Use Markdown lists, tables, or code blocks when helpful.  \n* Understand spoken and typed input via NLP.  \n* On errors, reply politely and suggest next steps.  \n* Summaries / TL;DR → ≤ 5 short sentences, no raw data.\n\n---\n\n### Built-in Commands  \n`/start` · `/reset-session` · `/help` · `/info`\n\n---\n\n### Quick Examples  \n\n| User Says | Interpreted Action |\n|-----------|--------------------|\n| “Add John Smith john@example.com” | **create-contact** |\n| “Create $1 000 deal for Acme” | lookup company → **create-deal** |\n| “Move Spring deal to Demo” | **move-deal-stage** |\n| “Delete Jane Doe contact” | confirm → **delete-contact** |\n| “Link Acme Corp to John Smith” | resolve names → **associate contact–company** |\n| “Show all Acme deals” | **get-deals** filtered by company |\n\n---\n\n### Reference Schemas — *internal use only*\n\n- **Contacts** `{contactId, firstName, lastName, email, phone, companyId, createdate, …}`  \n- **Companies** `{companyId, name, domain, phone, industry, size, …}`  \n- **Deals** `{dealId, name, amount, stageId, pipelineId, contactIds, companyIds, createdate, closedate, …}`  \n- **Stages** `{stageId, label, pipelineId, order, probability, isClosed, …}`"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.9,
+      "position": [
+        440,
+        100
+      ],
+      "id": "9a3bfbf2-51f4-427c-a4dc-d08ec6afb96f",
+      "name": "MCP Client - AI Chat Agent",
+      "retryOnFail": false,
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        240,
+        320
+      ],
+      "id": "c4c87ab3-f9ff-4e65-bfd3-73588f90e2f6",
+      "name": "OpenAI MCP Client Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "DLJqYifNhv5adxi8",
+          "name": "OPENAI_KEY (kevin)"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
+      "typeVersion": 1.3,
+      "position": [
+        360,
+        320
+      ],
+      "id": "35ffe2c1-9d43-4e41-b108-c634e1605ab4",
+      "name": "Postgres MCP Client - Chat Memory",
+      "credentials": {
+        "postgres": {
+          "id": "gINYwylYXc0Gt1Y2",
+          "name": "POSTGRES_ACCOUNT"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "### reset-session\n\n- **Purpose:** Clear all memory, context, and active flows to start fresh.  \n- **Required:** `reason` — string explaining why the reset is needed.  \n- **Behavior:** Wipes stored data, ends multi-step processes, logs the reason, and returns the assistant to a clean state.\n",
+        "operation": "deleteTable",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "n8n_chat_histories",
+          "mode": "list",
+          "cachedResultName": "n8n_chat_histories"
+        },
+        "deleteCommand": "delete",
+        "where": {
+          "values": [
+            {
+              "column": "session_id",
+              "value": "={{ $json.sessionId }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgresTool",
+      "typeVersion": 2.6,
+      "position": [
+        480,
+        320
+      ],
+      "id": "01480bb8-2815-4d20-859b-c723fd759ae0",
+      "name": "Reset Session",
+      "credentials": {
+        "postgres": {
+          "id": "gINYwylYXc0Gt1Y2",
+          "name": "POSTGRES_ACCOUNT"
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "### `error-log`\n\n- **Purpose:** record any workflow or tool error for later troubleshooting.  \n- **Required:** `message` — JSON object or array describing the error.",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "n8n_error_logs",
+          "mode": "list",
+          "cachedResultName": "n8n_error_logs"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "message": "={{ $fromAI('message', `The error message or array of error messages to be logged. Can include source and details.`, 'string') }}",
+            "session_id": "={{ $json.sessionId }}"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "session_id",
+              "displayName": "session_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "message",
+              "displayName": "message",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgresTool",
+      "typeVersion": 2.6,
+      "position": [
+        600,
+        320
+      ],
+      "id": "6e4c9928-5031-4cef-a059-49bffd61f1c6",
+      "name": "Error Log",
+      "credentials": {
+        "postgres": {
+          "id": "gINYwylYXc0Gt1Y2",
+          "name": "POSTGRES_ACCOUNT"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "path": "acc3160d-af83-4b53-8a7d-04a78468803d"
+      },
+      "type": "@n8n/n8n-nodes-langchain.mcpTrigger",
+      "typeVersion": 1,
+      "position": [
+        300,
+        480
+      ],
+      "id": "219e3c76-83a0-40e0-bf70-83c356352331",
+      "name": "MCP Client - Hubspot",
+      "webhookId": "acc3160d-af83-4b53-8a7d-04a78468803d"
+    },
+    {
+      "parameters": {
+        "sseEndpoint": "https://creativeglu.app.n8n.cloud/mcp/acc3160d-af83-4b53-8a7d-04a78468803d/sse"
+      },
+      "type": "@n8n/n8n-nodes-langchain.mcpClientTool",
+      "typeVersion": 1,
+      "position": [
+        720,
+        320
+      ],
+      "id": "d6cbfb2a-2f35-49d4-a87a-2e7b49a962d8",
+      "name": "MCP Client - Hubspot Client"
+    },
+    {
+      "parameters": {
+        "inputSource": "passthrough"
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        20,
+        0
+      ],
+      "id": "cf045f9c-63fb-4a44-8cc3-701a3baf4a52",
+      "name": "When Executed by Another Workflow"
+    },
+    {
+      "parameters": {
+        "description": "when user confirms that the deal is qualify to buy, call this tool to generate the proposal",
+        "workflowId": {
+          "__rl": true,
+          "value": "QSWrHaTMmryinjaP",
+          "mode": "list",
+          "cachedResultName": "Create Deal Proposal"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.2,
+      "position": [
+        840,
+        320
+      ],
+      "id": "b0fe5e6e-826a-494c-b773-5807ea7eb7a5",
+      "name": "Create Deal Proposal"
+    },
+    {
+      "parameters": {
+        "description": "### get-products\n\n---\n\n**Purpose**  \nRetrieve products from the CRM product catalog.\n\n---\n\n**Optional**  \n`name` — partial, case-insensitive match on the product name or SKU  \n\n---\n\n**Rules**  \n- If no filters are provided, return **all** products (paginated if >100).  \n- Combine filters with **AND** logic.  \n- Deduplicate results, sort alphabetically (or by SKU), and format clearly.  \n- For `name`, perform **fuzzy matching** (handles tense, plural, or common variants).  \n  - If no matches, fetch **all products**, search again with fuzzy logic.  \n  - If still no matches, suggest alternate filters (e.g., different category).\n\n- If nothing matches, reply: *“No products found with the given criteria.”*\n\n---\n\n**Compound Flow Example**  \n`get-products {name:\"Widget A\"}` → `productId` → attach to quote or add line-item on a **Deal**.\n\n---\n\n**Natural Commands**  \n- “Show me all products.”  \n- “List products in the Electronics category.”  \n- “Find the Pro Widget product.”  \n- “Display products priced between 100 and 300.”  \n- “Get products called Smart Sensor.”  ",
+        "jsCode": "const qs = Object.fromEntries(\n  Object.entries(query).filter(([_, value]) => value != null && value !== '')\n);\n\ntry {\n  const options = {\n    method: 'GET',\n    url: `http://35.170.240.97/api/v1/hubspot/products`,\n    qs,\n    headers: {\n      'Authorization': 'Bearer 9a8f70ec2e4e90d3c83c4dd14e7b7281b8c6217a7d48b6a7ce99cd6c1a94f8c2'\n    },\n    json: true\n  };\n\n  const response = await this.helpers.httpRequest.call(this, options);\n\n  return JSON.stringify(response);\n} catch (error) {\n  return JSON.stringify(error);\n}",
+        "specifyInputSchema": true,
+        "schemaType": "manual",
+        "inputSchema": "{\n  \"type\": \"object\",\n  \"properties\": {\n    \"name\": {\n      \"type\": \"string\",\n      \"description\": \"Enter the stage name to filter the results. This field is optional.\"\n    },\n    \"perPage\": {\n      \"type\": \"number\",\n      \"description\": \"Optional cap on number of deals returned.\"\n    },\n    \"stageName\": {\n      \"type\": \"string\",\n      \"description\": \"Enter the stage name to filter the results. This field is optional.\"\n    }\n  },\n  \"additionalProperties\": false\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolCode",
+      "typeVersion": 1.2,
+      "position": [
+        1260,
+        700
+      ],
+      "id": "c9c66796-5843-4d15-b683-59a7fdf0fa1f",
+      "name": "Get Products"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Get Contacts": {
+      "ai_tool": [
+        [
+          {
+            "node": "MCP Client - Hubspot",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update Contact": {
+      "ai_tool": [
+        [
+          {
+            "node": "MCP Client - Hubspot",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Delete Contact": {
+      "ai_tool": [
+        [
+          {
+            "node": "MCP Client - Hubspot",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Companies": {
+      "ai_tool": [
+        [
+          {
+            "node": "MCP Client - Hubspot",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create Company": {
+      "ai_tool": [
+        [
+          {
+            "node": "MCP Client - Hubspot",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update Company": {
+      "ai_tool": [
+        [
+          {
+            "node": "MCP Client - Hubspot",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Delete Company": {
+      "ai_tool": [
+        [
+          {
+            "node": "MCP Client - Hubspot",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Deals": {
+      "ai_tool": [
+        [
+          {
+            "node": "MCP Client - Hubspot",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create Deal": {
+      "ai_tool": [
+        [
+          {
+            "node": "MCP Client - Hubspot",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update Deal": {
+      "ai_tool": [
+        [
+          {
+            "node": "MCP Client - Hubspot",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Delete Deal": {
+      "ai_tool": [
+        [
+          {
+            "node": "MCP Client - Hubspot",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Stages": {
+      "ai_tool": [
+        [
+          {
+            "node": "MCP Client - Hubspot",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create Contact": {
+      "ai_tool": [
+        [
+          {
+            "node": "MCP Client - Hubspot",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "MCP Client - Chat": {
+      "main": [
+        [
+          {
+            "node": "MCP Client - AI Chat Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI MCP Client Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "MCP Client - AI Chat Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Postgres MCP Client - Chat Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "MCP Client - AI Chat Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Reset Session": {
+      "ai_tool": [
+        [
+          {
+            "node": "MCP Client - AI Chat Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Error Log": {
+      "ai_tool": [
+        [
+          {
+            "node": "MCP Client - AI Chat Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "MCP Client - Hubspot Client": {
+      "ai_tool": [
+        [
+          {
+            "node": "MCP Client - AI Chat Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "MCP Client - AI Chat Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create Deal Proposal": {
+      "ai_tool": [
+        [
+          {
+            "node": "MCP Client - AI Chat Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Products": {
+      "ai_tool": [
+        [
+          {
+            "node": "MCP Client - Hubspot",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "35f5a18c-3997-464a-a7dd-1e31672d2463",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "0d39019f778e791afbaadc193ebfddb9176008ec8cfebeb3b3f8b35138bc1ea0"
+  },
+  "id": "IJr1QApeU1TWAevd",
+  "tags": []
+}
