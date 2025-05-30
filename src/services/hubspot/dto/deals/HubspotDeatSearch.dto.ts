@@ -11,7 +11,7 @@ import { FilterType } from 'common/models';
 
 export default class HubspotDeatSearchDto extends PartialType(FilterType) {
   @IsOptional()
-  limit?: number;
+  perPage?: number;
 
   @IsOptional()
   @ValidateIf((p) => !isEmpty(p.contactIds))
@@ -32,6 +32,10 @@ export default class HubspotDeatSearchDto extends PartialType(FilterType) {
   @IsOptional()
   @IsString()
   companyId?: string;
+
+  @IsOptional()
+  @IsString()
+  productId?: string;
 
   @IsOptional()
   @IsString()
