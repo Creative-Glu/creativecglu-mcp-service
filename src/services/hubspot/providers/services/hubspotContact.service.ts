@@ -79,6 +79,8 @@ export default class HubspotContactService {
           value: phone,
         });
 
+      console.log(rest.perPage, rest.perPage ?? c.PER_PAGE);
+
       const response =
         await this.hubspotClient.client.crm.contacts.searchApi.doSearch({
           filterGroups: [
