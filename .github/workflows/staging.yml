@@ -20,14 +20,15 @@ jobs:
 
     - name: Deploy to EC2
       env:
-        CREATIVEGLU_MCP: ${{ vars.CREATIVEGLU_MCP_STG_ENV }}
+        CREATIVEGLU_MCP_ENV: ${{ vars.CREATIVEGLU_MCP_STG_ENV }}
+        CREATIVEGLU_MCP_HOST: ${{ vars.CREATIVEGLU_MCP_STG_HOST }}
         APP_DIR: /var/www/app/creativecglu-mcp-service
       run: |
-        ssh -o StrictHostKeyChecking=no ec2-user@ec2-35-170-240-97.compute-1.amazonaws.com 'bash -se' << EOF
+        ssh -o StrictHostKeyChecking=no $CREATIVEGLU_MCP_HOST 'bash -se' << EOF
           set -euo pipefail
           export APP_DIR="$APP_DIR"
-          export CREATIVEGLU_MCP="$CREATIVEGLU_MCP"
-          echo "\$CREATIVEGLU_MCP" | base64 -d > \$APP_DIR/.env
+          export CREATIVEGLU_MCP_ENV="$CREATIVEGLU_MCP_ENV"
+          echo "\$CREATIVEGLU_MCP_ENV" | base64 -d > \$APP_DIR/.env
           cd \$APP_DIR
           git fetch --depth=1 origin staging
           git reset --hard origin/staging
