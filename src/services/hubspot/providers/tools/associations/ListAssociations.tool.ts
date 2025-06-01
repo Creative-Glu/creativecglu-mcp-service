@@ -1,30 +1,10 @@
 /* eslint-disable max-len */
 import { Injectable } from '@nestjs/common';
 import { Tool } from '@rekog/mcp-nest';
-import { HUBSPOT_OBJECT_TYPES } from 'services/hubspot/models';
+import { AssociationsListSchema } from 'services/hubspot/dto';
 import { z } from 'zod';
 
 import { HubspotClientV2 } from '../../clients';
-
-const AssociationsListSchema = z.object({
-  objectType: z
-    .string()
-    .describe(
-      `The type of HubSpot object to get associations from. Valid values include: ${HUBSPOT_OBJECT_TYPES.join(', ')}. For custom objects, use the hubspot-get-schemas tool to get the objectType.`,
-    ),
-  objectId: z
-    .string()
-    .describe('The ID of the HubSpot object to get associations from'),
-  toObjectType: z
-    .string()
-    .describe(
-      `The type of HubSpot object to get associations to. Valid values include: ${HUBSPOT_OBJECT_TYPES.join(', ')}. For custom objects, use the hubspot-get-schemas tool to get the objectType.`,
-    ),
-  after: z
-    .string()
-    .optional()
-    .describe('Paging cursor token for retrieving the next page of results'),
-});
 
 @Injectable()
 export default class ListAssociationsTool {
