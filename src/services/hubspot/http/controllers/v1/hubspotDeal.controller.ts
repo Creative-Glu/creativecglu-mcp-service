@@ -40,7 +40,7 @@ export default class HubspotDealController {
     summary: 'Fetch Hubspot Deals',
     description:
       // eslint-disable-next-line max-len
-      'Retrieve a list of Hubspot deals with optional filters such as `limit`, `dealname`, and `contactId`.',
+      'Retrieve a list of Hubspot deals with optional filters such as `perPage`, `dealname`, and `contactId`.',
   })
   async getDeals(@Query() filter: HubspotDealSearchDto): Promise<ResponseType> {
     return await this.hubspotDealService.getDeals(removeEmpty(filter));
