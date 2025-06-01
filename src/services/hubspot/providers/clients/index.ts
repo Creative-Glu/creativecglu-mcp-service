@@ -1,5 +1,5 @@
-import HubspotClient from './hubspot.client';
+import HubspotClient, { HubspotClientV2 } from './hubspot.client';
 
-export { HubspotClient };
+export { HubspotClient, HubspotClientV2 };
 
-export default [HubspotClient];
+export default [HubspotClient, HubspotClientV2];
