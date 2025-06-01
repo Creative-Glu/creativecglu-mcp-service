@@ -1,4 +1,4 @@
-import { McpModule, McpTransportType } from '@rekog/mcp-nest';
+import { McpModule } from '@rekog/mcp-nest';
 import CommonModule from 'services/common';
 
 export default [
@@ -6,7 +6,7 @@ export default [
   McpModule.forRoot({
     name: process.env.APP_NAME,
     sseEndpoint: '/api/v1/hubspot/sse',
+    mcpEndpoint: '/api/v1/hubspot/mcp',
     version: '1.0.0',
-    transport: McpTransportType.STREAMABLE_HTTP,
   }),
 ];
