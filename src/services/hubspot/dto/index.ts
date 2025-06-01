@@ -1,3 +1,9 @@
+// eslint-disable-next-line max-len
+import AssociationSchemaDefinitionSchema from './associations/AssociationSchemaDefinitionSchema.dto';
+import AssociationsListSchema from './associations/AssociationsListSchema.dto';
+import ObjectAssociationSchema, {
+  AssociationSpecSchema,
+} from './associations/ObjectAssociationSchema.dto';
 import HubspotCompanyCreateDto from './companies/HubspotCompanyCreate.dto';
 import HubspotCompanySearchDto, {
   HubspotCompanySearchV2Dto as HubspotCompanySearchV2Dto,
@@ -15,6 +21,26 @@ import HubspotDealUpdateDto, {
 import HubspotDealSearchDto, {
   HubspotDealSearchV2Dto,
 } from './deals/HubspotDeatSearch.dto';
+import BatchCreateObjectsSchema, {
+  AssociationTypeSchema,
+  AssociationSchema,
+  ObjectInputSchema,
+} from './objects/BatchCreateObjectsSchema.dto';
+import BatchReadObjectsSchema, {
+  ObjectReadInputSchema,
+} from './objects/BatchReadObjectSchema.dto';
+import BatchUpdateObjectsSchema, {
+  PropertiesSchema,
+  ObjectUpdateInputSchema,
+} from './objects/BatchUpdateObjectSchema.dto';
+import ObjectListSchema from './objects/ObjectListSchema.dto';
+import ObjectSearchSchema, {
+  OperatorEnum,
+  FilterSchema,
+  FilterGroupSchema,
+  SortSchema,
+} from './objects/ObjectSearchSchema.dto';
+import SchemaInfoSchema from './objects/SchemaInfoSchema.dto';
 import HubspotPipelineSearchDto, {
   HubspotPipelineSearchV2Dto,
 } from './pipelines/HubspotPipelineSearch.dto';
@@ -26,6 +52,18 @@ import HubspotProductSearchDto, {
 } from './products/HubspotProductSearch.dto';
 
 export {
+  AssociationSchemaDefinitionSchema,
+  AssociationSpecSchema,
+  AssociationsListSchema,
+  BatchReadObjectsSchema,
+  BatchUpdateObjectsSchema,
+  ObjectUpdateInputSchema,
+  FilterGroupSchema,
+  FilterSchema,
+  BatchCreateObjectsSchema,
+  AssociationTypeSchema,
+  AssociationSchema,
+  ObjectInputSchema,
   HubspotCompanyCreateDto,
   HubspotCompanySearchDto,
   HubspotCompanySearchV2Dto,
@@ -41,8 +79,16 @@ export {
   HubspotDealUpdateV2Dto,
   HubspotPipelineSearchDto,
   HubspotPipelineSearchV2Dto,
-  HubspotStageSearchDto,
-  HubspotStageSearchV2Dto,
   HubspotProductSearchDto,
   HubspotProductSearchV2Dto,
+  HubspotStageSearchDto,
+  HubspotStageSearchV2Dto,
+  ObjectAssociationSchema,
+  ObjectListSchema,
+  ObjectReadInputSchema,
+  ObjectSearchSchema,
+  OperatorEnum,
+  PropertiesSchema,
+  SchemaInfoSchema,
+  SortSchema,
 };
