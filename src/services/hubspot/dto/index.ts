@@ -50,20 +50,26 @@ import HubspotStageSearchDto, {
 import HubspotProductSearchDto, {
   HubspotProductSearchV2Dto,
 } from './products/HubspotProductSearch.dto';
+import CreatePropertySchema, {
+  PropertyOptionSchema,
+} from './properties/CreatePropertySchema.dto';
+import GetPropertySchema from './properties/GetPropertySchema.dto';
+import PropertiesListSchema from './properties/PropertiesListSchema.dto';
+import UpdatePropertySchema from './properties/UpdatePropertySchema.dto';
 
 export {
   AssociationSchemaDefinitionSchema,
+  AssociationSchema,
   AssociationSpecSchema,
+  AssociationTypeSchema,
   AssociationsListSchema,
+  BatchCreateObjectsSchema,
   BatchReadObjectsSchema,
   BatchUpdateObjectsSchema,
-  ObjectUpdateInputSchema,
+  CreatePropertySchema,
   FilterGroupSchema,
   FilterSchema,
-  BatchCreateObjectsSchema,
-  AssociationTypeSchema,
-  AssociationSchema,
-  ObjectInputSchema,
+  GetPropertySchema,
   HubspotCompanyCreateDto,
   HubspotCompanySearchDto,
   HubspotCompanySearchV2Dto,
@@ -84,11 +90,16 @@ export {
   HubspotStageSearchDto,
   HubspotStageSearchV2Dto,
   ObjectAssociationSchema,
+  ObjectInputSchema,
   ObjectListSchema,
   ObjectReadInputSchema,
   ObjectSearchSchema,
+  ObjectUpdateInputSchema,
   OperatorEnum,
+  PropertiesListSchema,
   PropertiesSchema,
+  PropertyOptionSchema,
   SchemaInfoSchema,
   SortSchema,
+  UpdatePropertySchema,
 };
