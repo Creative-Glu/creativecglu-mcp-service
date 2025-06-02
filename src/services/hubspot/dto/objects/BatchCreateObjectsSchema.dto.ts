@@ -1,7 +1,7 @@
 import { HUBSPOT_OBJECT_TYPES } from 'services/hubspot/models';
 import z from 'zod';
 
-import { PropertiesSchema } from './BatchUpdateObjectSchema.dto';
+import { PropertiesSchema } from './BatchUpdateObjectsSchema.dto';
 
 export const AssociationTypeSchema = z.object({
   associationCategory: z.enum([
