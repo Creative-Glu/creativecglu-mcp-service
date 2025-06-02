@@ -21,6 +21,15 @@ import HubspotDealUpdateDto, {
 import HubspotDealSearchDto, {
   HubspotDealSearchV2Dto,
 } from './deals/HubspotDeatSearch.dto';
+import CreateEngagementSchema, {
+  metadataSchemas,
+  ENGAGEMENT_TYPES,
+  NoteMetadataSchema,
+  TaskMetadataSchema,
+  AssociationsSchema,
+} from './engagements/CreateEngagementSchema.dto';
+import GetEngagementSchema from './engagements/GetEngagementSchema.dto';
+import UpdateEngagementSchema from './engagements/UpdateEngagementSchema.dto';
 import BatchCreateObjectsSchema, {
   AssociationTypeSchema,
   AssociationSchema,
@@ -58,6 +67,14 @@ import PropertiesListSchema from './properties/PropertiesListSchema.dto';
 import UpdatePropertySchema from './properties/UpdatePropertySchema.dto';
 
 export {
+  UpdateEngagementSchema,
+  GetEngagementSchema,
+  CreateEngagementSchema,
+  metadataSchemas,
+  ENGAGEMENT_TYPES,
+  NoteMetadataSchema,
+  TaskMetadataSchema,
+  AssociationsSchema,
   AssociationSchemaDefinitionSchema,
   AssociationSchema,
   AssociationSpecSchema,
@@ -70,6 +87,19 @@ export {
   FilterGroupSchema,
   FilterSchema,
   GetPropertySchema,
+  ObjectAssociationSchema,
+  ObjectInputSchema,
+  ObjectListSchema,
+  ObjectReadInputSchema,
+  ObjectSearchSchema,
+  ObjectUpdateInputSchema,
+  OperatorEnum,
+  PropertiesListSchema,
+  PropertiesSchema,
+  PropertyOptionSchema,
+  SchemaInfoSchema,
+  SortSchema,
+  UpdatePropertySchema,
   HubspotCompanyCreateDto,
   HubspotCompanySearchDto,
   HubspotCompanySearchV2Dto,
@@ -89,17 +119,4 @@ export {
   HubspotProductSearchV2Dto,
   HubspotStageSearchDto,
   HubspotStageSearchV2Dto,
-  ObjectAssociationSchema,
-  ObjectInputSchema,
-  ObjectListSchema,
-  ObjectReadInputSchema,
-  ObjectSearchSchema,
-  ObjectUpdateInputSchema,
-  OperatorEnum,
-  PropertiesListSchema,
-  PropertiesSchema,
-  PropertyOptionSchema,
-  SchemaInfoSchema,
-  SortSchema,
-  UpdatePropertySchema,
 };
