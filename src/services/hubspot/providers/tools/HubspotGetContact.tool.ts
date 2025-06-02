@@ -1,7 +1,7 @@
 /* eslint-disable max-len */
 import { Injectable } from '@nestjs/common';
 import { Tool } from '@rekog/mcp-nest';
-import { removeEmpty } from 'utils';
+import { FilterType } from 'common/models';
 import { z } from 'zod';
 
 import { HubspotContactService } from '../services';
@@ -61,15 +61,13 @@ export default class HubspotGetContactTool {
       perPage: z.number().optional(),
     }),
   })
-  async getContacts({ perPage }) {
+  async getContacts(filters: FilterType) {
     return {
       content: [
         {
           type: 'text',
           text: JSON.stringify(
-            await this.hubspotContactService.getContacts(
-              removeEmpty({ perPage }),
-            ),
+            await this.hubspotContactService.getContacts(filters),
             null,
             2,
           ),
