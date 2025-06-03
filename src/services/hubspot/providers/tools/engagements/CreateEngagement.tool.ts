@@ -35,7 +35,7 @@ export default class CreateEngagementTool {
     `,
     parameters: CreateEngagementSchema,
   })
-  async createEngagement(args: z.infer<typeof CreateEngagementSchema>) {
+  async process(args: z.infer<typeof CreateEngagementSchema>) {
     try {
       const { type, ownerId, timestamp, associations, metadata } = args;
       const engagementTimestamp = timestamp || Date.now();

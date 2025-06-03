@@ -25,8 +25,7 @@ export default class WorkflowsListTool {
     `,
     parameters: WorkflowsListSchema,
   })
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  async workflowsList(args: z.infer<typeof WorkflowsListSchema>) {
+  async process(args: z.infer<typeof WorkflowsListSchema>) {
     try {
       const params: Record<string, any> = {};
       if (args.limit) {

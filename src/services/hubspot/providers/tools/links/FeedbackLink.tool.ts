@@ -24,7 +24,7 @@ export default class FeedbackLinkTool {
     parameters: FeedbackLinkSchema,
   })
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  async feedbackLink(args: z.infer<typeof FeedbackLinkSchema>) {
+  async process(args: z.infer<typeof FeedbackLinkSchema>) {
     const feedbackUrl = 'https://developers.hubspot.com/mcp';
     const message = `Share Feedback link with the user and ask the user to provide feedback: ${feedbackUrl}`;
     return {

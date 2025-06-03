@@ -22,7 +22,7 @@ export default class GetPropertyTool {
     `,
     parameters: GetPropertySchema,
   })
-  async getProperty(args: z.infer<typeof GetPropertySchema>) {
+  async process(args: z.infer<typeof GetPropertySchema>) {
     try {
       const response = await this.client.get(
         `/crm/v3/properties/${args.objectType}/${args.propertyName}`,

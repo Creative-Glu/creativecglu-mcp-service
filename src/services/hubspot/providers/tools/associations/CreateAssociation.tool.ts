@@ -27,7 +27,7 @@ export default class CreateAssociationTool {
     `,
     parameters: ObjectAssociationSchema,
   })
-  async createAssociation(args: z.infer<typeof ObjectAssociationSchema>) {
+  async process(args: z.infer<typeof ObjectAssociationSchema>) {
     try {
       const response = await this.client.put(
         // eslint-disable-next-line max-len

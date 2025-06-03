@@ -31,7 +31,7 @@ export default class BatchUpdateObjectsTool {
     parameters: BatchUpdateObjectsSchema,
   })
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  async batchUpdateObjects(args: z.infer<typeof BatchUpdateObjectsSchema>) {
+  async process(args: z.infer<typeof BatchUpdateObjectsSchema>) {
     try {
       const response = await this.client.post(
         `/crm/v3/objects/${args.objectType}/batch/update`,

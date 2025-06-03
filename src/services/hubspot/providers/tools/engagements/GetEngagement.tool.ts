@@ -20,7 +20,7 @@ export default class GetEngagementTool {
     `,
     parameters: GetEngagementSchema,
   })
-  async getEngagement(args: z.infer<typeof GetEngagementSchema>) {
+  async process(args: z.infer<typeof GetEngagementSchema>) {
     try {
       const { engagementId } = args;
       const response = await this.client.get(
