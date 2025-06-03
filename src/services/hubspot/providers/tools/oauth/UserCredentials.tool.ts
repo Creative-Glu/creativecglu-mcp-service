@@ -29,7 +29,7 @@ export default class UserCredentialsTool {
     parameters: TokenInfoSchema,
   })
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  async userCredentials(args: z.infer<typeof TokenInfoSchema>) {
+  async process(args: z.infer<typeof TokenInfoSchema>) {
     const accessToken =
       process.env.PRIVATE_APP_ACCESS_TOKEN || process.env.HUBSPOT_ACCESS_TOKEN;
     if (!accessToken) {

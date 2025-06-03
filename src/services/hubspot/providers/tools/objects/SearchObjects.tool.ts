@@ -39,7 +39,7 @@ export default class SearchObjectsTool {
     `,
     parameters: ObjectSearchSchema,
   })
-  async searchObjects(args: z.infer<typeof ObjectSearchSchema>) {
+  async process(args: z.infer<typeof ObjectSearchSchema>) {
     try {
       const { query, limit, after, properties, sorts, filterGroups } = args;
       const requestBody = {

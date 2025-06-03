@@ -34,7 +34,7 @@ export default class UpdateEngagementTool {
     `,
     parameters: UpdateEngagementSchema,
   })
-  async updateEngagement(args: z.infer<typeof UpdateEngagementSchema>) {
+  async process(args: z.infer<typeof UpdateEngagementSchema>) {
     try {
       const { engagementId, ownerId, timestamp, metadata, associations } = args;
       // Build request body with only provided fields

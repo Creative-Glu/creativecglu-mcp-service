@@ -22,14 +22,14 @@ jobs:
       env:
         CREATIVEGLU_MCP_ENV: ${{ vars.CREATIVEGLU_MCP_STG_ENV }}
         CREATIVEGLU_MCP_HOST: ${{ vars.CREATIVEGLU_MCP_STG_HOST }}
-        APP_DIR: /var/www/app/creativecglu-mcp-service
+        CREATIVEGLU_MCP_PATH: ${{ vars.CREATIVEGLU_MCP_PATH }}
       run: |
         ssh -o StrictHostKeyChecking=no $CREATIVEGLU_MCP_HOST 'bash -se' << EOF
           set -euo pipefail
-          export APP_DIR="$APP_DIR"
+          export CREATIVEGLU_MCP_PATH="$CREATIVEGLU_MCP_PATH"
           export CREATIVEGLU_MCP_ENV="$CREATIVEGLU_MCP_ENV"
-          echo "\$CREATIVEGLU_MCP_ENV" | base64 -d > \$APP_DIR/.env
-          cd \$APP_DIR
+          echo "\$CREATIVEGLU_MCP_ENV" | base64 -d > \$CREATIVEGLU_MCP_PATH/.env
+          cd \$CREATIVEGLU_MCP_PATH
           git fetch --depth=1 origin staging
           git reset --hard origin/staging
           npm ci -f
