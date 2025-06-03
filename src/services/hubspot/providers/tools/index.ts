@@ -4,6 +4,7 @@ import ListAssociationsTool from './associations/ListAssociations.tool';
 import CreateEngagementTool from './engagements/CreateEngagement.tool';
 import GetEngagementTool from './engagements/GetEngagement.tool';
 import UpdateEngagementTool from './engagements/UpdateEngagement.tool';
+import HubspotTool from './Hubspot.tool';
 import FeedbackLinkTool from './links/FeedbackLink.tool';
 import GetHubspotLinkTool from './links/GetHubspotLink.tool';
 import UserCredentialsTool from './oauth/UserCredentials.tool';
@@ -21,6 +22,7 @@ import GetWorkflowTool from './workflows/GetWorkflow.tool';
 import WorkflowsListTool from './workflows/WorkflowsList.tool';
 
 export default [
+  HubspotTool,
   GetWorkflowTool,
   WorkflowsListTool,
   UserCredentialsTool,

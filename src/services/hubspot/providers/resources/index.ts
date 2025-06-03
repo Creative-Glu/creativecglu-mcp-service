@@ -1,3 +1,4 @@
 import DealResource from './Deal.resource';
+import HubspotResource from './Hubspot.resource';
 
-export default [DealResource];
+export default [HubspotResource, DealResource];
