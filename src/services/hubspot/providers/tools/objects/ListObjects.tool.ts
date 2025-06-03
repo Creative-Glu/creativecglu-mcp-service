@@ -30,7 +30,7 @@ export default class ListObjectsTool {
     `,
     parameters: ObjectListSchema,
   })
-  async listObjects(args: z.infer<typeof ObjectListSchema>) {
+  async process(args: z.infer<typeof ObjectListSchema>) {
     try {
       const queryParams = new URLSearchParams();
       const paramMappings = {

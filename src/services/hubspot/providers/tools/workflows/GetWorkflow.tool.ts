@@ -25,8 +25,7 @@ export default class GetWorkflowTool {
     `,
     parameters: GetWorkflowSchema,
   })
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  async getWorkflow(args: z.infer<typeof GetWorkflowSchema>) {
+  async process(args: z.infer<typeof GetWorkflowSchema>) {
     try {
       const response = await this.client.get(
         `/automation/v4/flows/${args.flowId}`,

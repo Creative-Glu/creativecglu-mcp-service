@@ -29,7 +29,7 @@ export default class GetSchemaTool {
     parameters: SchemaInfoSchema,
   })
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  async getSchema(args: z.infer<typeof SchemaInfoSchema>) {
+  async process(args: z.infer<typeof SchemaInfoSchema>) {
     try {
       const schemas = await this.client.get('/crm-object-schemas/v3/schemas');
       const simplifiedResults = schemas.results.map((schema) => ({

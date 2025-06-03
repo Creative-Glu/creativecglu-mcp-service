@@ -24,7 +24,7 @@ export default class BatchCreateObjectsTool {
     parameters: BatchReadObjectsSchema,
   })
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  async batchCreateObjects(args: z.infer<typeof BatchReadObjectsSchema>) {
+  async process(args: z.infer<typeof BatchReadObjectsSchema>) {
     try {
       const requestBody: Record<string, any> = {
         inputs: args.inputs,

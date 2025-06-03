@@ -25,7 +25,7 @@ export default class ListPropertiesTool {
     `,
     parameters: PropertiesListSchema,
   })
-  async listProperties(args: z.infer<typeof PropertiesListSchema>) {
+  async process(args: z.infer<typeof PropertiesListSchema>) {
     try {
       const queryParams = new URLSearchParams();
       queryParams.append('archived', args.archived?.toString() || 'false');
