@@ -26,7 +26,7 @@ export default class HubspotPrompt {
     name: 'hubspot-prompt',
     description,
   })
-  async getPrompt() {
+  async process() {
     return {
       messages: [
         {

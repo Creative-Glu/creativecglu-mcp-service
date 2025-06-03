@@ -30,7 +30,7 @@ export default class ListAssociationsTool {
     `,
     parameters: AssociationsListSchema,
   })
-  async listAssociations(args: z.infer<typeof AssociationsListSchema>) {
+  async process(args: z.infer<typeof AssociationsListSchema>) {
     try {
       // Build the API path
       let endpoint = `/crm/v4/objects/${args.objectType}/${args.objectId}/associations/${args.toObjectType}?limit=500`;

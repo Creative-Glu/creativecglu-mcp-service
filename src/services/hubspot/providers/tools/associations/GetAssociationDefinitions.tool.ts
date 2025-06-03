@@ -26,9 +26,7 @@ export default class GetAssociationDefinitionsTool {
     `,
     parameters: AssociationSchemaDefinitionSchema,
   })
-  async getAssociationDefinitions(
-    args: z.infer<typeof AssociationSchemaDefinitionSchema>,
-  ) {
+  async process(args: z.infer<typeof AssociationSchemaDefinitionSchema>) {
     try {
       const response = await this.client.get(
         `/crm/v4/associations/${args.fromObjectType}/${args.toObjectType}/labels`,

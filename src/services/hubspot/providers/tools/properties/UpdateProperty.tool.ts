@@ -27,7 +27,7 @@ export default class UpdatePropertyTool {
     `,
     parameters: UpdatePropertySchema,
   })
-  async updateProperty(args: z.infer<typeof UpdatePropertySchema>) {
+  async process(args: z.infer<typeof UpdatePropertySchema>) {
     try {
       const { objectType, propertyName, ...updateData } = args;
       // Check if at least one field is provided for update

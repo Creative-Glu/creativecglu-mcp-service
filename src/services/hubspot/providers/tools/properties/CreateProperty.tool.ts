@@ -35,7 +35,7 @@ export default class GetPropertyTool {
     parameters: CreatePropertySchema,
   })
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  async createPropertyTool(args: z.infer<typeof CreatePropertySchema>) {
+  async process(args: z.infer<typeof CreatePropertySchema>) {
     try {
       const propertyData = {
         ...args,
