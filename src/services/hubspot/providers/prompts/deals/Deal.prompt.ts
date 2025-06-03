@@ -4,10 +4,11 @@ import { Prompt } from '@rekog/mcp-nest';
 
 const description = `
   📖 Instructions:
-    2. When successfully retrieving a deal, store the full deal object as a resource at:
+    1. When successfully retrieving a deal, store the full deal object as a resource at:
       'mcp://hubspot-resource/deals/{dealId}' with MIME type 'application/json'.
-    3. Use the 'dealId' from the result to populate the URI placeholder.
-    4. Save the entire deal object (JSON) as the content of the resource.
+    2. Use the 'dealId' from the result to populate the URI placeholder.
+    3. Save the entire deal object (JSON) as the content of the resource.
+    4. Ensure the resource is accessible for future reference.
 `;
 
 @Injectable()
