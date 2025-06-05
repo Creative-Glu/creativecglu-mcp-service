@@ -22,8 +22,8 @@ export default class HubspotPrompt {
                   - Use 'MCP - Execute Tool' to run a selected tool  
                   - Use 'MCP - Execute Prompt' to run a selected prompt  
                   - Use 'MCP - Execute Resource' to run a selected resource  
-                  - Follow each tool, prompt, or resource's **description and schema** carefully  
-                - Execute the appropriate tool, prompt, or resource based on the user's request.  
+                  - Follow each tool, prompt, or resource's **description and schema** carefully
+                - Execute the appropriate tool, prompt, or resource based on the user's request.
                 - If a tool supports **pagination**, handle it as described in its definition.
 
               ⚠️ Failure and Retry Logic  
