@@ -1,3 +1,3 @@
-import DealResource from './Deal.resource';
+// import DealResource from './Deal.resource';
 
-export default [DealResource];
+export default [];
