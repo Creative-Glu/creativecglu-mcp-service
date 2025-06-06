@@ -28,7 +28,6 @@ export default class BatchCreateObjectsTool {
     `,
     parameters: BatchCreateObjectsSchema,
   })
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async process(args: z.infer<typeof BatchCreateObjectsSchema>) {
     try {
       const response = await this.client.post(

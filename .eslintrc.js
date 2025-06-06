@@ -17,6 +17,7 @@ module.exports = {
     jest: true,
   },
   ignorePatterns: ['.eslintrc.js'],
+  reportUnusedDisableDirectives: true,
   rules: {
     'linebreak-style': 0,
     'no-unused-vars': 'off',
