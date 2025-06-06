@@ -16,15 +16,14 @@ export default class DealCreatePrompt {
           content: {
             type: 'text',
             text: `
-              📝 Reference:
-              1. When creating a deal, you can call the 'hubspot-batch-create-objects' tool with the following parameters:
-                - objectType: 'deals'
-
               📖 Instructions:
-              1. Use the hubspot-get-user-details tool to get the OwnerId and UserId if you don't have that already.
-              2. Use the hubspot-list-objects tool to sample existing objects for the 'object' type.
-              3. If hubspot-list-objects tool's response isn't helpful, use hubspot-list-properties tool.
-              4. If there is no 'stage' set, set the stage to 'Appointment Scheduled' on the payload.
+              1. When creating a deal, call the 'hubspot-batch-create-objects' tool with the following parameters:
+                - objectType: 'deals'
+              2. You **must** use the 'hubspot-get-user-details' tool to obtain the OwnerId and UserId if not already available.
+              3. You **must** use the 'hubspot-list-objects' tool to sample existing objects for the required 'object' type in the parameters.
+              4. If the response from 'hubspot-list-objects' is not helpful, use the 'hubspot-list-properties' tool to get more details.
+              5. If there is no 'stage' set, set the 'stage' field in the payload to 'Appointment Scheduled' and set the 'closeAt' field to the current date plus 1 month.
+              6. If a 'stage' is provided, you **must** use the 'deal-stage-prompt' to resolve the 'stage' and the 'closeAt' value.
             `,
           },
         },
