@@ -21,8 +21,10 @@ export default class DealCreatePrompt {
                 - objectType: 'deals'
 
               📖 Instructions:
-              When creating a deal:
-                - If there is no 'stage' set, set the stage to 'Appointment Scheduled' on the payload.
+              1. Use the hubspot-get-user-details tool to get the OwnerId and UserId if you don't have that already.
+              2. Use the hubspot-list-objects tool to sample existing objects for the 'object' type.
+              3. If hubspot-list-objects tool's response isn't helpful, use hubspot-list-properties tool.
+              4. If there is no 'stage' set, set the stage to 'Appointment Scheduled' on the payload.
             `,
           },
         },
