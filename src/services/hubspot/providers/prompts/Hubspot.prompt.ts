@@ -26,13 +26,11 @@ export default class HubspotPrompt {
                 - Select and execute the appropriate tool, prompt, or resource based on the user's intent.
                 - If a tool supports **pagination**, handle it according to the schema definition.
 
-
               📌 Additional Guidelines
                 - If the user requests **"all"**, **"total"**, or similar terms:
                   - It means they want to see **all available results**.
                   - If the schema has a limit field, **set it as high as possible**.
                   - If there is no limit field, use the **default behavior** defined by the tool.
-
 
               ⚠️ Failure and Retry Logic
                 If a tool or prompt execution fails:
