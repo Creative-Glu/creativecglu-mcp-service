@@ -1,4 +1,3 @@
-/* eslint-disable max-len */
 import { Injectable } from '@nestjs/common';
 import { Tool } from '@rekog/mcp-nest';
 

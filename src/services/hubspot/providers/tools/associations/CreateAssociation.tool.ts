@@ -30,7 +30,6 @@ export default class CreateAssociationTool {
   async process(args: z.infer<typeof ObjectAssociationSchema>) {
     try {
       const response = await this.client.put(
-        // eslint-disable-next-line max-len
         `/crm/v4/objects/${args.fromObjectType}/${args.fromObjectId}/associations/${args.toObjectType}/${args.toObjectId}`,
         { body: args.associations },
       );
@@ -43,7 +42,6 @@ export default class CreateAssociationTool {
       };
     } catch (error) {
       throw new Error(
-        // eslint-disable-next-line max-len
         `Error creating HubSpot association: ${error instanceof Error ? error.message : String(error)}`,
       );
     }

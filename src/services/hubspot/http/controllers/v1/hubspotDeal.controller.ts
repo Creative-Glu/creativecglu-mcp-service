@@ -89,7 +89,6 @@ export default class HubspotDealController {
   @ApiOperation({
     summary: 'Delete a Hubspot Deal',
     description:
-      // eslint-disable-next-line max-len
       'Delete an existing Hubspot deal identified by its unique `dealId`.',
   })
   async deleteDeal(
