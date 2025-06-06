@@ -4,7 +4,7 @@ import { Resource } from '@rekog/mcp-nest';
 @Injectable()
 export default class DealResource {
   @Resource({
-    uri: 'mcp://hubspot-resource/deals/{dealId}',
+    uri: 'mcp://hubspot-resource/deal-resource/{dealId}',
     name: 'deal-resource',
     mimeType: 'text/plain',
   })
