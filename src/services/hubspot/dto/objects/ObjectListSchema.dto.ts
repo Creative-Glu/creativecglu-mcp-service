@@ -11,7 +11,7 @@ const ObjectListSchema = z.object({
     .int()
     .min(1)
     .max(500)
-    .default(100)
+    .default(200)
     .describe('The maximum number of results to display per page (max: 500).'),
   after: z
     .string()
