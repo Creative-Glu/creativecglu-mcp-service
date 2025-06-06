@@ -1,0 +1,38 @@
+name: Deploy to EC2 StagingV2
+
+on:
+  push:
+    branches:
+      - stagingV2
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v4
+
+    - name: Set up SSH
+      uses: webfactory/ssh-agent@v0.8.0
+      with:
+        ssh-private-key: ${{ secrets.CREATIVEGLU_STG_SSH_KEY }}
+
+    - name: Deploy to EC2
+      env:
+        CREATIVEGLU_MCP_ENV: ${{ vars.CREATIVEGLU_MCP_STG_ENV }}
+        CREATIVEGLU_MCP_HOST: ${{ vars.CREATIVEGLU_MCP_STG_HOST }}
+        CREATIVEGLU_MCP_PATH: ${{ vars.CREATIVEGLU_MCP_PATH }}
+      run: |
+        ssh -o StrictHostKeyChecking=no $CREATIVEGLU_MCP_HOST 'bash -se' << EOF
+          set -euo pipefail
+          export CREATIVEGLU_MCP_PATH="$CREATIVEGLU_MCP_PATH"
+          export CREATIVEGLU_MCP_ENV="$CREATIVEGLU_MCP_ENV"
+          echo "\$CREATIVEGLU_MCP_ENV" | base64 -d > \$CREATIVEGLU_MCP_PATH/.env
+          cd \$CREATIVEGLU_MCP_PATH
+          git fetch --depth=1 origin stagingV2
+          git reset --hard origin/stagingV2
+          npm ci -f
+          npm run build
+          pm2 reload all --update-env
+        EOF
