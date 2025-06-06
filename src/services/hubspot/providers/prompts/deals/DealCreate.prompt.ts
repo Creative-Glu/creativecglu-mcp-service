@@ -22,8 +22,7 @@ export default class DealCreatePrompt {
 
               📖 Instructions:
               When creating a deal:
-              - If there is no 'stage' set, set the stage to 'Appointment Scheduled'.
-                - add 'closeAt' to the current date plus 1 month to the payload.
+                - If there is no 'stage' set, set the stage to 'Appointment Scheduled' on the payload.
             `,
           },
         },
