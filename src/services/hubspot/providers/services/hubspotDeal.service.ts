@@ -218,7 +218,7 @@ export default class HubspotDealService {
       );
       return {
         data,
-        meta: { total: data.length },
+        meta: { total: response.total },
       };
     } catch (err) {
       throw new UnprocessableEntryException(err?.body?.message ?? err?.message);

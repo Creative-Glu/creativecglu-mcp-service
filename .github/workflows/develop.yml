@@ -1,9 +1,9 @@
-name: Deploy to EC2 Staging
+name: Deploy to EC2 develop
 
 on:
   push:
     branches:
-      - staging
+      - develop
 
 jobs:
   deploy:
@@ -20,8 +20,8 @@ jobs:
 
     - name: Deploy to EC2
       env:
-        CREATIVEGLU_MCP_ENV: ${{ vars.CREATIVEGLU_MCP_STG_ENV }}
-        CREATIVEGLU_MCP_HOST: ${{ vars.CREATIVEGLU_MCP_STG_HOST }}
+        CREATIVEGLU_MCP_ENV: ${{ vars.CREATIVEGLU_MCP_DEV_ENV }}
+        CREATIVEGLU_MCP_HOST: ${{ vars.CREATIVEGLU_MCP_DEV_HOST }}
         CREATIVEGLU_MCP_PATH: ${{ vars.CREATIVEGLU_MCP_PATH }}
       run: |
         ssh -o StrictHostKeyChecking=no $CREATIVEGLU_MCP_HOST 'bash -se' << EOF
@@ -30,8 +30,8 @@ jobs:
           export CREATIVEGLU_MCP_ENV="$CREATIVEGLU_MCP_ENV"
           echo "\$CREATIVEGLU_MCP_ENV" | base64 -d > \$CREATIVEGLU_MCP_PATH/.env
           cd \$CREATIVEGLU_MCP_PATH
-          git fetch --depth=1 origin staging
-          git reset --hard origin/staging
+          git fetch --depth=1 origin develop
+          git reset --hard origin/develop
           npm ci -f
           npm run build
           pm2 reload all --update-env
