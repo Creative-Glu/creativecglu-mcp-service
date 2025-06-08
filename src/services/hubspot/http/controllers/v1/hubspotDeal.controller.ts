@@ -10,7 +10,6 @@ import {
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
-import { ApiOperation } from '@nestjs/swagger';
 import { ExtendedController } from '@yuriyempty/nestjs-extended-controller';
 import { ResponseType } from 'common/models';
 import {
@@ -36,22 +35,11 @@ export default class HubspotDealController {
   }
 
   @Get()
-  @ApiOperation({
-    summary: 'Fetch Hubspot Deals',
-    description:
-      // eslint-disable-next-line max-len
-      'Retrieve a list of Hubspot deals with optional filters such as `perPage`, `dealname`, and `contactId`.',
-  })
   async getDeals(@Query() filter: HubspotDealSearchDto): Promise<ResponseType> {
     return await this.hubspotDealService.getDeals(removeEmpty(filter));
   }
 
   @Get(':dealId')
-  @ApiOperation({
-    summary: 'Fetch a Hubspot Deal by ID',
-    description:
-      'Retrieve a specific Hubspot deal using its unique identifier `dealId`.',
-  })
   async getDealById(
     @Param() payload: HubspotDealSearchV2Dto,
   ): Promise<ResponseType> {
@@ -59,12 +47,6 @@ export default class HubspotDealController {
   }
 
   @Post()
-  @ApiOperation({
-    summary: 'Create a Hubspot Deal',
-    description:
-      // eslint-disable-next-line max-len
-      'Create a new Hubspot deal with the specified details, including an array of `contactIds`, `dealname`, `amount`, and optional fields such as `stage` and `pipeline`.',
-  })
   async createDeal(
     @Body() payload: HubspotDealCreateDto,
   ): Promise<ResponseType> {
@@ -72,12 +54,6 @@ export default class HubspotDealController {
   }
 
   @Put(':dealId')
-  @ApiOperation({
-    summary: 'Update a Hubspot Deal',
-    description:
-      // eslint-disable-next-line max-len
-      'Update an existing Hubspot deal with the specified details, including an array of `contactIds`, `dealname`, `amount`, and optional fields such as `stage` and `pipeline`, identified by its unique `dealId`.',
-  })
   async updateDeal(
     @Body() payload: HubspotDealUpdateDto,
     @Param() { dealId }: HubspotDealSearchV2Dto,
@@ -86,11 +62,6 @@ export default class HubspotDealController {
   }
 
   @Delete(':dealId')
-  @ApiOperation({
-    summary: 'Delete a Hubspot Deal',
-    description:
-      'Delete an existing Hubspot deal identified by its unique `dealId`.',
-  })
   async deleteDeal(
     @Param() { dealId }: HubspotDealSearchV2Dto,
   ): Promise<ResponseType> {
@@ -102,12 +73,6 @@ export default class HubspotDealController {
   }
 
   @Patch(':dealId')
-  @ApiOperation({
-    summary: 'Update Hubspot Deal Stage',
-    description:
-      // eslint-disable-next-line max-len
-      'Update the stage of an existing Hubspot deal by its unique `dealId`. Only stage-related fields should be provided in the request payload.',
-  })
   async changeDealStage(
     @Body() payload: HubspotDealUpdateV2Dto,
     @Param() { dealId }: HubspotDealSearchV2Dto,
