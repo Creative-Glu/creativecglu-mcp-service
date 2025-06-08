@@ -16,14 +16,14 @@ export default class CreateAssociationTool {
     name: 'hubspot-create-association',
     description: `
     🛡️ Guardrails:
-      1.  Data Modification Warning: This tool modifies HubSpot data. Only use when the user has explicitly requested to update their CRM.
+      1. Data Modification Warning: This tool modifies HubSpot data. Only use when the user has explicitly requested to update their CRM.
 
     🎯 Purpose:
       1. Establishes relationships between HubSpot objects, linking records across different object types, by creating an association between two objects.
 
     📋 Prerequisites:
-      1. Use the hubspot-get-user-details tool to get the OwnerId and UserId if you don't have that already.
-      2. Use the hubspot-get-association-definitions tool to identify valid association types before creating associations.
+      1. Use the 'hubspot-get-user-details' tool to get the OwnerId and UserId if you don't have that already.
+      2. Use the 'hubspot-get-association-definitions' tool to identify valid association types before creating associations.
     `,
     parameters: ObjectAssociationSchema,
   })

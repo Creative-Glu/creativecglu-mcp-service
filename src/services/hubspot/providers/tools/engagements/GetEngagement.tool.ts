@@ -15,8 +15,8 @@ export default class GetEngagementTool {
   @Tool({
     name: 'hubspot-get-engagement',
     description: `
-      🎯 Purpose:
-        1. Retrieves a HubSpot engagement by ID.
+    🎯 Purpose:
+      1. Retrieves a HubSpot engagement by ID.
     `,
     parameters: GetEngagementSchema,
   })

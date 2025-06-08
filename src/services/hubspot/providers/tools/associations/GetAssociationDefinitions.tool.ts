@@ -15,14 +15,14 @@ export default class GetAssociationDefinitionsTool {
   @Tool({
     name: 'hubspot-get-association-definitions',
     description: `
-      🎯 Purpose:
-        1. Retrieves valid association types between specific HubSpot object types.
+    🎯 Purpose:
+      1. Retrieves valid association types between specific HubSpot object types.
 
-      📦 Returns:
-        1. Array of valid association definitions with type IDs, labels, and categories.
+    📦 Returns:
+      1. Array of valid association definitions with type IDs, labels, and categories.
 
-      🧭 Usage Guidance:
-        1. Always use before creating associations to ensure valid relationship types or to help troubleshoot association creation errors.
+    🧭 Usage Guidance:
+      1. Always use before creating associations to ensure valid relationship types or to help troubleshoot association creation errors.
     `,
     parameters: AssociationSchemaDefinitionSchema,
   })

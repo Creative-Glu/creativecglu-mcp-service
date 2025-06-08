@@ -24,9 +24,9 @@ export default class ListObjectsTool {
       🧭 Usage Guidance:
         1. Use for initial data exploration to understand the data structure of a HubSpot object type.
         2. Helps list objects when the search criteria or filter criteria is not clear.
-        3. Use hubspot-search-objects for targeted queries when the data structure is known.
-        4. Use hubspot-batch-read-objects to retrieve specific objects by their IDs.
-        5. Use hubspot-list-associations to list associations between objects.
+        3. Use 'hubspot-search-objects' for targeted queries when the data structure is known.
+        4. Use 'hubspot-batch-read-objects' to retrieve specific objects by their IDs.
+        5. Use 'hubspot-list-associations' to list associations between objects.
     `,
     parameters: ObjectListSchema,
   })

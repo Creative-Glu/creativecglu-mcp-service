@@ -22,8 +22,8 @@ export default class UpdatePropertyTool {
         1. Updates existing custom properties for HubSpot object types, enabling data structure customization.
 
       🧭 Usage Guidance:
-        1. Use hubspot-list-objects tool to sample existing objects for the object type.
-        2. If hubspot-list-objects tool's response isn't helpful, use hubspot-list-properties tool.
+        1. Use 'hubspot-list-objects' tool to sample existing objects for the object type.
+        2. If 'hubspot-list-objects' tool's response isn't helpful, use 'hubspot-list-properties' tool.
     `,
     parameters: UpdatePropertySchema,
   })

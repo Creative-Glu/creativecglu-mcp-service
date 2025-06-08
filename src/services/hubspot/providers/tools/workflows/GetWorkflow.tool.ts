@@ -21,7 +21,7 @@ export default class GetWorkflowTool {
       🧭 Usage Guidance:
         1. Use the "flowId" parameter to specify which workflow to retrieve.
         2. This endpoint returns complete workflow information including actions, enrollment criteria, and scheduling.
-        3. Use the hubspot-list-workflows tool first to identify the workflow ID you need.
+        3. Use the 'hubspot-list-workflows' tool first to identify the workflow ID you need.
     `,
     parameters: GetWorkflowSchema,
   })
