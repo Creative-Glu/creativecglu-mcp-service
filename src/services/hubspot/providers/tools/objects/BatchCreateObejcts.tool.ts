@@ -22,9 +22,32 @@ export default class BatchCreateObjectsTool {
         1. Creates multiple HubSpot objects of the same objectType in a single API call, optimizing for bulk operations.
 
       📋 Prerequisites:
-        1. Use the 'hubspot-get-user-details' tool to get the OwnerId and UserId if you don't have that already.
-        2. Use the 'hubspot-list-objects' tool to sample existing objects for the object type.
-        3. Use the 'hubspot-get-association-definitions' tool to identify valid association types before creating associations.
+        1. Use the hubspot-get-user-details tool to get the OwnerId and UserId if you don't have that already.
+        2. Use the hubspot-list-objects tool to sample existing objects for the object type.
+        3. Use the hubspot-get-association-definitions tool to identify valid association types before creating associations.
+
+      📦 Example Payload
+      {
+        "objectType": "deals",
+        "inputs": {
+          "properties": {
+            "dealname": "New Deal",
+            "amount": "1000",
+            "closedate": "2024-12-31T00:00:00Z"
+          },
+          "associations": [
+              {
+                "types": [
+                  {
+                    "associationCategory": "HUBSPOT_DEFINED",
+                    "associationTypeId": 6
+                  }
+                ],
+                "to": { "id": "123456" }
+              }
+          ] 
+        }
+      }
     `,
     parameters: BatchCreateObjectsSchema,
   })
