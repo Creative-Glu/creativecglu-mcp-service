@@ -6,7 +6,7 @@ import { Prompt } from '@rekog/mcp-nest';
 export default class DealCreatePrompt {
   @Prompt({
     name: 'deal-create-prompt',
-    description: 'Handles creation of deal prompts',
+    description: 'Use this prompt when the user intends to create a new deal.',
   })
   async process() {
     return {

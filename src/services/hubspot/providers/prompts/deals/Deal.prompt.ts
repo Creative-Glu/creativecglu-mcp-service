@@ -6,7 +6,7 @@ export default class DealPrompt {
   @Prompt({
     name: 'deal-prompt',
     description:
-      'Execute this prompt for all HubSpot deal-related business logic or prompts',
+      'Use this prompt for all HubSpot deal-related business logic or user prompts.',
   })
   async process() {
     return {

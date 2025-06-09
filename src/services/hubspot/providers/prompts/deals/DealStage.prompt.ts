@@ -6,7 +6,7 @@ import { Prompt } from '@rekog/mcp-nest';
 export default class DealStagePrompt {
   @Prompt({
     name: 'deal-stage-prompt',
-    description: `Handles deal stage transitions.`,
+    description: `Use when a deal's stage is assigned or updated. Manages stage transitions accordingly.`,
   })
   async process() {
     return {

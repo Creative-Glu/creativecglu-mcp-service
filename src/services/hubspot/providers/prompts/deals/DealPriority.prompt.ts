@@ -7,7 +7,7 @@ export default class DealPriorityPrompt {
   @Prompt({
     name: 'deal-piority-prompt',
     description:
-      'Handles and sorts deals by priority based on defined criteria.',
+      'Use this prompt to sort deals by priority based on defined criteria.',
   })
   async process() {
     return {
