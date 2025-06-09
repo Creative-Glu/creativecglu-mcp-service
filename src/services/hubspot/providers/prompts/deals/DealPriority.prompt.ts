@@ -6,7 +6,8 @@ import { Prompt } from '@rekog/mcp-nest';
 export default class DealPriorityPrompt {
   @Prompt({
     name: 'deal-piority-prompt',
-    description: 'Sorts deals by priority based on defined criteria.',
+    description:
+      'Handles and sorts deals by priority based on defined criteria.',
   })
   async process() {
     return {
@@ -26,6 +27,7 @@ export default class DealPriorityPrompt {
                   • Proximity to close date (sooner = higher priority)
                   • Duration spent in the current stage (longer = higher priority)
                   • Last updated timestamp (more recent = higher activity)
+                - pick top 10 deals based on the above criteria.
             `,
           },
         },
