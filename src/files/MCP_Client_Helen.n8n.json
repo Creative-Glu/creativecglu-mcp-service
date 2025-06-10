@@ -1,5 +1,5 @@
 {
-  "name": "MCP Client - Helen",
+  "name": "MCP Client - Helen (dev)",
   "nodes": [
     {
       "parameters": {
@@ -8,27 +8,27 @@
       "type": "@n8n/n8n-nodes-langchain.chatTrigger",
       "typeVersion": 1.1,
       "position": [
-        40,
-        140
+        0,
+        200
       ],
-      "id": "b2543e4d-937d-4d50-bd57-1a3c90d95294",
+      "id": "b647c812-144a-4692-a766-089e2480335f",
       "name": "When chat message received",
       "webhookId": "8632e2d3-9b1c-4c95-a771-1f08a19fa4e1"
     },
     {
       "parameters": {
         "options": {
-          "systemMessage": "🤖 You are Helen — a friendly, professional AI assistant for HubSpot CRM tasks  \nPowered by CreativeGlu AI\n\n🙋‍♀️ Greeting Protocol  \nIf the user greets you, respond with this exact message:  \n**I'm Helen, your AI RevOps agent from Creative Glu and CodeStrap. What do you need to unblock today?**\n\n📖 Instructions  \nAlways start by calling the following tools and prompt **in order** to prepare for any operation:  \n- 'MCP - List Prompts'  \n- 'hubspot-prompt'  \n- 'MCP - List Tools'  \n- 'MCP - List Resources'",
+          "systemMessage": "🤖 Helen — CRM Assistant (CreativeGlu AI)  \nFriendly, professional AI RevOps Agent for HubSpot CRM tasks, integrated with MCP and powered by CreativeGlu AI.\n\n🙋‍♀️ Greeting Protocol  \nIf the user greets you, respond with:  \n\"I'm Helen, your AI RevOps agent from Creative Glu and CodeStrap. What do you need to unblock today?\"\n\n🔍 Mandatory Discovery Logic  \nAt the start of every session, you must immediately and always call:  \n- MCP - List Tools  \n- MCP - List Prompts  \n- MCP - List Resources\n\nDo not proceed or respond to the user until all lists are fully parsed and understood.  \nNever use cached or outdated tool data.\n\n⏳ Session Recovery Logic  \nTrigger this if any of the following occur:  \n- No tool is executed  \n- No response is generated  \n- Session is inactive or stuck for 10 minutes\n\nRecovery Steps:  \n1. Call:  \n   - MCP - List Tools  \n   - MCP - List Prompts  \n   - MCP - List Resources  \n2. Respond with:  \n   \"Let’s pick up where we left off. What would you like to do?\"\n\n📖 Execution Instructions  \n- Always interpret user queries within the context of sales and HubSpot CRM.  \n- To take action:  \n  - Use MCP - Execute Tool to invoke the correct tool.  \n- Strictly follow the tool’s description and schema. No assumptions. No shortcuts.  \n- If a tool supports pagination, handle it as defined in the schema.\n\n📌 Handling and Response Guidelines  \n- When presenting results:  \n  - Never show raw IDs (e.g., dealId, contactId) — unless the user explicitly asks for them.  \n  - Always display human-readable fields like name, label, or title.  \n- For currency fields (e.g., amount), always format using '$'.\n\nWhen users say:  \n“all”, “total”, “summary”, “sum”, etc.  \n→ Assume they want all available results.  \n- If the tool schema includes `limit` or `perPage`, set it to the maximum allowed.  \n- If not, fall back to the tool’s default behavior.\n\n⏱️ Response Timing Tracker  \n- Log the timestamp when the user message is received.  \n- Log the timestamp when the assistant response is sent.  \n- Calculate and record the elapsed time in seconds, minutes, and hours.  \n- Optionally use this for performance monitoring or UX optimization.  \n- Append to user replies:  \n  \"It took me [time] to process your request.\"",
           "maxIterations": 30
         }
       },
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 1.9,
       "position": [
-        580,
-        40
+        560,
+        100
       ],
-      "id": "8ebbfcd0-e2a2-42b1-889b-01c7629680f0",
+      "id": "04494d59-f0a3-44fe-9318-1c06dd5b672b",
       "name": "AI Agent",
       "retryOnFail": true
     },
@@ -39,15 +39,15 @@
       "type": "n8n-nodes-mcp.mcpClientTool",
       "typeVersion": 1,
       "position": [
-        500,
-        260
+        460,
+        320
       ],
-      "id": "f06bc684-1b36-45e8-8e9f-77c2a2d6b431",
+      "id": "09dcbb62-7019-4da2-81d5-7e8856eca313",
       "name": "MCP - List Tools",
       "credentials": {
         "mcpClientHttpApi": {
-          "id": "PWCMity0g3k8UqWg",
-          "name": "MCP Client (HTTP Streamable)"
+          "id": "9M0xR3Zu5qvwVL3o",
+          "name": "MCP Client (HTTP Streamable) (dev)"
         }
       }
     },
@@ -64,10 +64,10 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.2,
       "position": [
-        260,
-        260
+        220,
+        320
       ],
-      "id": "abf1cba3-a576-4be7-bcfe-727ad49ae5ec",
+      "id": "43cb782d-56ba-4688-b2a7-9ce0f13e989d",
       "name": "MCP Chat Model",
       "credentials": {
         "openAiApi": {
@@ -83,10 +83,10 @@
       "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
       "typeVersion": 1.3,
       "position": [
-        380,
-        260
+        340,
+        320
       ],
-      "id": "86afbcef-63a8-434e-a8fc-811228e0d183",
+      "id": "7acb9f1d-bc70-4e2a-bf07-1835554bab59",
       "name": "Postgres Chat Memory",
       "credentials": {
         "postgres": {
@@ -97,35 +97,15 @@
     },
     {
       "parameters": {
-        "connectionType": "http",
-        "operation": "listPrompts"
-      },
-      "type": "n8n-nodes-mcp.mcpClientTool",
-      "typeVersion": 1,
-      "position": [
-        740,
-        260
-      ],
-      "id": "a1a0609b-340f-4441-bd2c-c23b9d8b3791",
-      "name": "MCP - List Prompts",
-      "credentials": {
-        "mcpClientHttpApi": {
-          "id": "PWCMity0g3k8UqWg",
-          "name": "MCP Client (HTTP Streamable)"
-        }
-      }
-    },
-    {
-      "parameters": {
         "inputSource": "passthrough"
       },
       "type": "n8n-nodes-base.executeWorkflowTrigger",
       "typeVersion": 1.1,
       "position": [
-        40,
-        -60
+        0,
+        0
       ],
-      "id": "f23c5e4d-a793-4ac0-b7aa-fd6b408a3b1b",
+      "id": "d1f95403-d49a-4866-854d-05910f7bd156",
       "name": "When Executed by Another Workflow"
     },
     {
@@ -138,15 +118,35 @@
       "type": "n8n-nodes-mcp.mcpClientTool",
       "typeVersion": 1,
       "position": [
-        620,
-        260
+        580,
+        320
       ],
-      "id": "fa9ec02b-5bc7-42af-970a-5a4a4ecd0d15",
+      "id": "d4a6fd79-af68-49f0-8312-56e311eb54a4",
       "name": "MCP - Execute Tool",
       "credentials": {
         "mcpClientHttpApi": {
-          "id": "PWCMity0g3k8UqWg",
-          "name": "MCP Client (HTTP Streamable)"
+          "id": "9M0xR3Zu5qvwVL3o",
+          "name": "MCP Client (HTTP Streamable) (dev)"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "connectionType": "http",
+        "operation": "listPrompts"
+      },
+      "type": "n8n-nodes-mcp.mcpClientTool",
+      "typeVersion": 1,
+      "position": [
+        700,
+        320
+      ],
+      "id": "7e6375d0-8c9f-41a2-a3e6-e54bad8cd907",
+      "name": "MCP - List Prompts",
+      "credentials": {
+        "mcpClientHttpApi": {
+          "id": "9M0xR3Zu5qvwVL3o",
+          "name": "MCP Client (HTTP Streamable) (dev)"
         }
       }
     },
@@ -159,15 +159,15 @@
       "type": "n8n-nodes-mcp.mcpClientTool",
       "typeVersion": 1,
       "position": [
-        860,
-        260
+        820,
+        320
       ],
-      "id": "cc459ce9-547e-47c3-af76-9739deae3a50",
+      "id": "ae22220c-5c05-4dcf-8a38-c84efe5b5162",
       "name": "MCP - Execute Prompt",
       "credentials": {
         "mcpClientHttpApi": {
-          "id": "PWCMity0g3k8UqWg",
-          "name": "MCP Client (HTTP Streamable)"
+          "id": "9M0xR3Zu5qvwVL3o",
+          "name": "MCP Client (HTTP Streamable) (dev)"
         }
       }
     },
@@ -179,15 +179,15 @@
       "type": "n8n-nodes-mcp.mcpClientTool",
       "typeVersion": 1,
       "position": [
-        980,
-        260
+        940,
+        320
       ],
-      "id": "f08f870d-b758-4f1b-a682-13f79b26cb57",
-      "name": "MCP - List Resources",
+      "id": "a88816d6-2c23-46a7-bee8-8a2712c192da",
+      "name": "MCP Client - List Resources",
       "credentials": {
         "mcpClientHttpApi": {
-          "id": "PWCMity0g3k8UqWg",
-          "name": "MCP Client (HTTP Streamable)"
+          "id": "9M0xR3Zu5qvwVL3o",
+          "name": "MCP Client (HTTP Streamable) (dev)"
         }
       }
     },
@@ -195,20 +195,20 @@
       "parameters": {
         "connectionType": "http",
         "operation": "readResource",
-        "resourceUri": "=mcp://hubspot-resource/{{ $fromAI('resource', 'resource to use') }}/{{ $fromAI('id', 'id of the resource to use') }}"
+        "resourceUri": "={{ $fromAI(\"resource\", \"resource to use\")}}"
       },
       "type": "n8n-nodes-mcp.mcpClientTool",
       "typeVersion": 1,
       "position": [
-        1100,
-        260
+        1060,
+        320
       ],
-      "id": "5ca70172-3263-466f-b809-4139afe64ce0",
-      "name": "MCP - Excecute Resources",
+      "id": "d74b256f-26bb-4079-9c93-1f7287904c31",
+      "name": "MCP - Execute Resource",
       "credentials": {
         "mcpClientHttpApi": {
-          "id": "PWCMity0g3k8UqWg",
-          "name": "MCP Client (HTTP Streamable)"
+          "id": "9M0xR3Zu5qvwVL3o",
+          "name": "MCP Client (HTTP Streamable) (dev)"
         }
       }
     }
@@ -259,17 +259,6 @@
         ]
       ]
     },
-    "MCP - List Prompts": {
-      "ai_tool": [
-        [
-          {
-            "node": "AI Agent",
-            "type": "ai_tool",
-            "index": 0
-          }
-        ]
-      ]
-    },
     "When Executed by Another Workflow": {
       "main": [
         [
@@ -292,6 +281,17 @@
         ]
       ]
     },
+    "MCP - List Prompts": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
     "MCP - Execute Prompt": {
       "ai_tool": [
         [
@@ -303,7 +303,7 @@
         ]
       ]
     },
-    "MCP - List Resources": {
+    "MCP Client - List Resources": {
       "ai_tool": [
         [
           {
@@ -314,7 +314,7 @@
         ]
       ]
     },
-    "MCP - Excecute Resources": {
+    "MCP - Execute Resource": {
       "ai_tool": [
         [
           {
@@ -330,11 +330,11 @@
   "settings": {
     "executionOrder": "v1"
   },
-  "versionId": "8c03f15e-b84d-4740-a7de-5270f898029d",
+  "versionId": "4d162dd7-aa41-48aa-bf1d-aaeb00e96a80",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "8504ad3bf541c5d16e431f168070b21dcbf61af82ea7bee0c2d833e23192d019"
   },
-  "id": "QeC5SuRuNj9HgIw6",
+  "id": "upvHfIYgc0XPg7hG",
   "tags": []
 }

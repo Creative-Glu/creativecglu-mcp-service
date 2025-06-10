@@ -65,7 +65,10 @@ export default class HubspotCompanyService {
         })),
       );
 
-      return { data, meta: { total: data.length } };
+      return {
+        data,
+        meta: { total: response.total },
+      };
     } catch (err) {
       throw new UnprocessableEntryException(err?.body?.message ?? err?.message);
     }

@@ -1,5 +1,4 @@
 import { Get, Param, Query, UsePipes, ValidationPipe } from '@nestjs/common';
-import { ApiOperation } from '@nestjs/swagger';
 import { ExtendedController } from '@yuriyempty/nestjs-extended-controller';
 import { ResponseType } from 'common/models';
 import {
@@ -22,12 +21,6 @@ export default class HubspotPipelineController {
   }
 
   @Get()
-  @ApiOperation({
-    summary: 'Fetch Hubspot Pipelines',
-    description:
-      // eslint-disable-next-line max-len
-      'Retrieve a list of Hubspot pipelines with optional filters such as `perPage` and `pipelineName`.',
-  })
   async getPipelines(
     @Query() filter: HubspotPipelineSearchDto,
   ): Promise<ResponseType> {
@@ -35,11 +28,6 @@ export default class HubspotPipelineController {
   }
 
   @Get(':pipelineId')
-  @ApiOperation({
-    summary: 'Fetch a Hubspot Pipeline by ID',
-    description:
-      'Retrieve a specific Hubspot pipeline using its unique identifier `pipelineId`.',
-  })
   async getPipelineById(
     @Param() payload: HubspotPipelineSearchV2Dto,
   ): Promise<ResponseType> {

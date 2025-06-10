@@ -15,16 +15,16 @@ export default class GetSchemaTool {
   @Tool({
     name: 'hubspot-get-schemas',
     description: `
-      🎯 Purpose:
-        1. Retrieves all custom object schemas defined in the HubSpot account.
+    🎯 Purpose:
+      1. Retrieves all custom object schemas defined in the HubSpot account.
 
-      🧭 Usage Guidance:
-        1. Before working with custom objects to understand available object types,
-          their properties, and associations.
+    🧭 Usage Guidance:
+      1. Before working with custom objects to understand available object types,
+        their properties, and associations.
 
-      📦 Returns:
-        1. Provides the objectTypeId and objectType for each schema.
-        2. These attributes should be used for this object type instead of "custom" in subsequent requests.
+    📦 Returns:
+      1. Provides the objectTypeId and objectType for each schema.
+      2. These attributes should be used for this object type instead of "custom" in subsequent requests.
     `,
     parameters: SchemaInfoSchema,
   })

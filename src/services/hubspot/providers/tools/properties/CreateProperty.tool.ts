@@ -15,26 +15,25 @@ export default class GetPropertyTool {
   @Tool({
     name: 'hubspot-create-property',
     description: `
-      🛡️ Guardrails:
-        1. Data Modification Warning: This tool modifies HubSpot data. Only use when the user has explicitly requested to update their CRM.
+    🛡️ Guardrails:
+      1. Data Modification Warning: This tool modifies HubSpot data. Only use when the user has explicitly requested to update their CRM.
 
-      🎯 Purpose:
-        1. Creates new custom properties for HubSpot object types, enabling data structure customization.
+    🎯 Purpose:
+      1. Creates new custom properties for HubSpot object types, enabling data structure customization.
 
-      📋 Prerequisites:
-        1. Use the hubspot-get-user-details tool to get the OwnerId and UserId if you don't have that already.
-        2. Use the hubspot-list-objects tool to sample existing objects for the object type.
-        3. If hubspot-list-objects tool's response isn't helpful, use hubspot-list-properties tool.
+    📋 Prerequisites:
+      1. Use the 'hubspot-get-user-details' tool to get the OwnerId and UserId if you don't have that already.
+      2. Use the 'hubspot-list-objects' tool to sample existing objects for the object type.
+      3. If 'hubspot-list-objects' tool's response isn't helpful, use 'hubspot-list-properties' tool.
 
-      🧭 Usage Guidance:
-        1. Use this tool when you need to create a new custom property for a HubSpot object type.
-        2. Makes sure that the user is looking to create a new property, and not create an object of a specific object type.
-        3. Use list-properties to get a list of all properties for a given object type to be sure that the property does not already exist.
-        4. Use list-properties to to understand the data structure of object properties first.
+    🧭 Usage Guidance:
+      1. Use this tool when you need to create a new custom property for a HubSpot object type.
+      2. Makes sure that the user is looking to create a new property, and not create an object of a specific object type.
+      3. Use 'hubspot-list-properties' to get a list of all properties for a given object type to be sure that the property does not already exist.
+      4. Use 'hubspot-list-properties' to to understand the data structure of object properties first.
     `,
     parameters: CreatePropertySchema,
   })
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async process(args: z.infer<typeof CreatePropertySchema>) {
     try {
       const propertyData = {

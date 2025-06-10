@@ -29,7 +29,6 @@ export default class GetHubspotLinkTool {
     `,
     parameters: GetHubspotLinkSchema,
   })
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async process(args: z.infer<typeof GetHubspotLinkSchema>) {
     const { portalId, uiDomain, pageRequests } = args;
     const validationResult = this.validateRequests(pageRequests);

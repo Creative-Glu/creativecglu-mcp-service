@@ -26,11 +26,10 @@ export default class BatchUpdateObjectsTool {
       📋 Prerequisites:
         1. Use the hubspot-get-user-details tool to get the OwnerId and UserId if you don't have that already.
         2. Use the hubspot-list-objects tool to sample existing objects for the object type.
-        3. If hubspot-list-objects tool's response isn't helpful, use hubspot-list-properties tool.
+        3. If hubspot-list-objects tool's response isn't helpful, use 'hubspot-list-properties' tool.
     `,
     parameters: BatchUpdateObjectsSchema,
   })
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async process(args: z.infer<typeof BatchUpdateObjectsSchema>) {
     try {
       const response = await this.client.post(

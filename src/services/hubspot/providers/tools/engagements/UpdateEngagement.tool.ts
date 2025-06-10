@@ -15,22 +15,22 @@ export default class UpdateEngagementTool {
   @Tool({
     name: 'hubspot-update-engagement',
     description: `
-      🛡️ Guardrails:
-        1. Data Modification Warning: This tool modifies HubSpot data. Only use when the user has explicitly requested to update their CRM.
+    🛡️ Guardrails:
+      1. Data Modification Warning: This tool modifies HubSpot data. Only use when the user has explicitly requested to update their CRM.
 
-      🎯 Purpose:
-        1. Updates an existing HubSpot engagement (Note or Task).
-        2. Allows modification of engagement attributes, content, and metadata.
+    🎯 Purpose:
+      1. Updates an existing HubSpot engagement (Note or Task).
+      2. Allows modification of engagement attributes, content, and metadata.
 
-      📋 Prerequisites:
-        1. You need the engagement ID to update an existing engagement.
-        2. Use the hubspot-get-engagement tool to get the current engagement details if needed.
-        3. Use the hubspot-get-user-details tool to get the owner ID.
+    📋 Prerequisites:
+      1. You need the engagement ID to update an existing engagement.
+      2. Use the 'hubspot-get-engagement' tool to get the current engagement details if needed.
+      3. Use the 'hubspot-get-user-details' tool to get the owner ID.
 
-      🧭 Usage Guidance:
-        1. Use for updating NOTE content or TASK details (subject, description, status).
-        2. Only include the fields you want to update - other fields will remain unchanged.
-        3. HubSpot notes and task descriptions support HTML formatting. However headings (<h1>, <h2>, etc.) look ugly in the CRM. So use them sparingly.
+    🧭 Usage Guidance:
+      1. Use for updating NOTE content or TASK details (subject, description, status).
+      2. Only include the fields you want to update - other fields will remain unchanged.
+      3. HubSpot notes and task descriptions support HTML formatting. However headings (<h1>, <h2>, etc.) look ugly in the CRM. So use them sparingly.
     `,
     parameters: UpdateEngagementSchema,
   })

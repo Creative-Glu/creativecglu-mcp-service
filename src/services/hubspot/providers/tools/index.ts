@@ -4,11 +4,10 @@ import ListAssociationsTool from './associations/ListAssociations.tool';
 import CreateEngagementTool from './engagements/CreateEngagement.tool';
 import GetEngagementTool from './engagements/GetEngagement.tool';
 import UpdateEngagementTool from './engagements/UpdateEngagement.tool';
-import HubspotTool from './Hubspot.tool';
 import FeedbackLinkTool from './links/FeedbackLink.tool';
 import GetHubspotLinkTool from './links/GetHubspotLink.tool';
 import UserCredentialsTool from './oauth/UserCredentials.tool';
-import BatchCreateObjectsTool from './objects/BatchReadObjects.tool';
+import BatchCreateObjectsTool from './objects/BatchCreateObejcts.tool';
 import BatchReadObjectsTool from './objects/BatchReadObjects.tool';
 import BatchUpdateObjectsTool from './objects/BatchUpdateObjects.tool';
 import GetSchemaTool from './objects/GetSchema.tool';
@@ -22,26 +21,25 @@ import GetWorkflowTool from './workflows/GetWorkflow.tool';
 import WorkflowsListTool from './workflows/WorkflowsList.tool';
 
 export default [
-  HubspotTool,
-  GetWorkflowTool,
-  WorkflowsListTool,
   UserCredentialsTool,
-  BatchCreateObjectsTool,
-  BatchReadObjectsTool,
-  BatchUpdateObjectsTool,
-  CreateAssociationTool,
-  CreateEngagementTool,
-  CreatePropertyTool,
-  FeedbackLinkTool,
-  GetAssociationDefinitionsTool,
-  GetEngagementTool,
-  GetHubspotLinkTool,
-  GetPropertyTool,
-  GetSchemaTool,
-  ListAssociationsTool,
   ListObjectsTool,
-  ListPropertiesTool,
   SearchObjectsTool,
-  UpdateEngagementTool,
+  CreateAssociationTool,
+  GetAssociationDefinitionsTool,
+  ListAssociationsTool,
+  BatchCreateObjectsTool,
+  BatchUpdateObjectsTool,
+  BatchReadObjectsTool,
+  ListPropertiesTool,
+  GetPropertyTool,
+  CreatePropertyTool,
   UpdatePropertyTool,
+  CreateEngagementTool,
+  GetEngagementTool,
+  UpdateEngagementTool,
+  FeedbackLinkTool,
+  GetSchemaTool,
+  GetHubspotLinkTool,
+  WorkflowsListTool,
+  GetWorkflowTool,
 ];

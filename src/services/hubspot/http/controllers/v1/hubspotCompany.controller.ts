@@ -9,7 +9,6 @@ import {
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
-import { ApiOperation } from '@nestjs/swagger';
 import { ExtendedController } from '@yuriyempty/nestjs-extended-controller';
 import { ResponseType } from 'common/models';
 import {
@@ -33,12 +32,6 @@ export default class HubspotCompanyController {
   }
 
   @Get()
-  @ApiOperation({
-    summary: 'Fetch Hubspot Companies',
-    description:
-      // eslint-disable-next-line max-len
-      'Retrieve a list of Hubspot companies with optional filters like `perPage`, `name` and `domain` and `phone`.',
-  })
   async getCompanies(
     @Query() filter: HubspotCompanySearchDto,
   ): Promise<ResponseType> {
@@ -46,11 +39,6 @@ export default class HubspotCompanyController {
   }
 
   @Get(':companyId')
-  @ApiOperation({
-    summary: 'Fetch Hubspot Company by ID',
-    description:
-      'Retrieve details of a specific Hubspot company using its unique `companyId`.',
-  })
   async getCompanyById(
     @Param() payload: HubspotCompanySearchV2Dto,
   ): Promise<ResponseType> {
@@ -58,12 +46,6 @@ export default class HubspotCompanyController {
   }
 
   @Post()
-  @ApiOperation({
-    summary: 'Create a Hubspot Company',
-    description:
-      // eslint-disable-next-line max-len
-      'Create a new Hubspot company using the provided details, such as `name`, `domain`, and other optional fields like `phone`.',
-  })
   async createCompany(
     @Body() payload: HubspotCompanyCreateDto,
   ): Promise<ResponseType> {
@@ -71,12 +53,6 @@ export default class HubspotCompanyController {
   }
 
   @Put(':companyId')
-  @ApiOperation({
-    summary: 'Update a Hubspot Company',
-    description:
-      // eslint-disable-next-line max-len
-      'Update an existing Hubspot company using the provided details, such as `name`, `domain`, and other optional fields like `phone`, identified by its unique `companyId`.',
-  })
   async updateCompany(
     @Body() payload: HubspotCompanyCreateDto,
     @Param() { companyId }: HubspotCompanySearchV2Dto,
@@ -88,11 +64,6 @@ export default class HubspotCompanyController {
   }
 
   @Delete(':companyId')
-  @ApiOperation({
-    summary: 'Delete a Hubspot Company',
-    description:
-      'Delete an existing Hubspot company identified by its unique `companyId`.',
-  })
   async deleteCompany(
     @Param() { companyId }: HubspotCompanySearchV2Dto,
   ): Promise<ResponseType> {

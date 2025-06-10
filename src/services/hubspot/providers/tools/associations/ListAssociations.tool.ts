@@ -15,18 +15,18 @@ export default class ListAssociationsTool {
   @Tool({
     name: 'hubspot-list-associations',
     description: `
-      🎯 Purpose:
-        1. Retrieves existing relationships between a specific object and other objects of a particular type.
-        2. For example, you can find all companies that a contact is associated with, all deals related to a company, or discover which customers have an open ticket.
+    🎯 Purpose:
+      1. Retrieves existing relationships between a specific object and other objects of a particular type.
+      2. For example, you can find all companies that a contact is associated with, all deals related to a company, or discover which customers have an open ticket.
 
-      📦 Returns:
-        1. Collection of associated object IDs and relationship metadata.
-        2. Use hubspot-batch-read-objects to get more information about the associated objects.
+    📦 Returns:
+      1. Collection of associated object IDs and relationship metadata.
+      2. Use 'hubspot-batch-read-objects' to get more information about the associated objects.
 
-      🧭 Usage Guidance:
-        1. Use this tool when mapping relationships between different HubSpot objects to understand your data's connections.
-        2. This tool is ideal when you already know a specific record's ID and need to discover its relationships with other object types.
-        3. Prefer this over hubspot-search-objects tool when exploring established connections rather than filtering by properties or criteria.
+    🧭 Usage Guidance:
+      1. Use this tool when mapping relationships between different HubSpot objects to understand your data's connections.
+      2. This tool is ideal when you already know a specific record's ID and need to discover its relationships with other object types.
+      3. Prefer this over hubspot-search-objects tool when exploring established connections rather than filtering by properties or criteria.
     `,
     parameters: AssociationsListSchema,
   })

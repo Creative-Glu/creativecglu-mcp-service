@@ -19,7 +19,7 @@ export default class ListPropertiesTool {
         1. This tool retrieves a complete catalog of properties for any HubSpot object type.
 
       🧭 Usage Guidance:
-        1. This API has a large response that can consume a lot of tokens. Use the hubspot-list-objects tool to sample existing objects for the object type first.
+        1. This API has a large response that can consume a lot of tokens. Use the 'hubspot-list-objects' tool to sample existing objects for the object type first.
         2. Try to use the hubspot-get-property tool to get a specific property.
         3. Use at the beginning of workflows to understand available data structures.
     `,
